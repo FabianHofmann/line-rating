@@ -1,6 +1,8 @@
 pypsa-eur
 .snakemake
 figures
+results
+networks
 .vscode
 scripts/__pycache__
 *.aux

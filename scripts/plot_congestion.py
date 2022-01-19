@@ -64,48 +64,62 @@ def get_arrow_parameters(plot_data_lines, line, figure):
 if "snakemake" not in globals():
     from _helpers import mock_snakemake
 
-    snakemake = mock_snakemake("plot_flow_expansion")
+    snakemake = mock_snakemake('plot_congestion', network='elec', simpl='',
+                                  clusters='40', ll='v1.0', opts='Co2L-4H')
+    n={"lr":pypsa.Network(snakemake.input.lr), "nolr":pypsa.Network(snakemake.input.nolr)}
 
-    n={"w_lr":pypsa.Network("elec_s_40_ec_lv1.0_Co2L-4H_ll_lr.nc"), "w/o_lr":pypsa.Network("elec_s_40_ec_lv1.0_Co2L-4H_ll_no_lr.nc")}
-
-    ####
+    ### heper functions
 
     def sign(x):
         return np.sign(x)
-
-    plot_data_buses=n["w/o_lr"].buses[n["w/o_lr"].buses.carrier=='AC'].loc[:,['x', 'y']]
-
-    plot_data_lines=pd.DataFrame(index=n["w/o_lr"].lines.index, columns=['x0','x1','y0','y1'])
-    for line in n["w/o_lr"].lines.index:
-        bus0=n["w/o_lr"].lines.loc[line]['bus0']
-        bus1=n["w/o_lr"].lines.loc[line]['bus1']
-        plot_data_lines.loc[line]['x0']=n["w/o_lr"].buses.loc[bus0]['x']
-        plot_data_lines.loc[line]['x1']=n["w/o_lr"].buses.loc[bus1]['x']
-        plot_data_lines.loc[line]['y0']=n["w/o_lr"].buses.loc[bus0]['y']
-        plot_data_lines.loc[line]['y1']=n["w/o_lr"].buses.loc[bus1]['y']
-
-    ####
-    plot_data_lines["mean_p_w/o_lr"]=np.abs(n["w/o_lr"].lines_t["p0"].mean(axis=0))
-    plot_data_lines["mean_p_w_lr"]=np.abs(n["w_lr"].lines_t["p0"].mean(axis=0))
-    plot_data_lines["flow_direction_w/o_lr"]=n["w/o_lr"].lines_t["p0"].mean(axis=0).transform(sign)
-    plot_data_lines["flow_direction_w_lr"]=n["w_lr"].lines_t["p0"].mean(axis=0).transform(sign)
+    
+    def normalize(x):
+        return(x-x.min())/(x.max()-x.min())
 
 
-    ####
-    results=["w/o_lr","w_lr"]
-    gen_expansion={}
-    for result in results:
-        gen_expansion.update({result:n[result].generators.groupby(["bus", "carrier"]).sum()["p_nom_opt"]-n[result].generators.groupby(["bus", "carrier"]).sum()["p_nom"]})
-  
-    ###
+    ### Line and Bus Location Data
 
-    figures=["w/o_lr", "w_lr"]
+    plot_data_buses=n["nolr"].buses[n["nolr"].buses.carrier=='AC'].loc[:,['x', 'y']]
+
+    plot_data_lines=pd.DataFrame(index=n["nolr"].lines.index, columns=['x0','x1','y0','y1'])
+    for line in n["nolr"].lines.index:
+        bus0=n["nolr"].lines.loc[line]['bus0']
+        bus1=n["nolr"].lines.loc[line]['bus1']
+        plot_data_lines.loc[line]['x0']=n["nolr"].buses.loc[bus0]['x']
+        plot_data_lines.loc[line]['x1']=n["nolr"].buses.loc[bus1]['x']
+        plot_data_lines.loc[line]['y0']=n["nolr"].buses.loc[bus0]['y']
+        plot_data_lines.loc[line]['y1']=n["nolr"].buses.loc[bus1]['y']
+
+    ### Line Flow Data
+    plot_data_lines["mean_p_nolr"]=np.abs(n["nolr"].lines_t["p0"].mean(axis=0))
+    plot_data_lines["mean_p_lr"]=np.abs(n["lr"].lines_t["p0"].mean(axis=0))
+    plot_data_lines["flow_direction_nolr"]=n["nolr"].lines_t["p0"].mean(axis=0).transform(sign)
+    plot_data_lines["flow_direction_lr"]=n["lr"].lines_t["p0"].mean(axis=0).transform(sign)
+
+
+    ### utilization
+    line_util=dict()
+    for key in n.keys():
+        if key =="nolr":
+            line_util.update({key: np.abs(n[key].lines_t.p0).divide(n[key].lines.s_nom_opt, axis=1)})
+        elif key=="lr":
+            line_util.update({key: np.abs((n[key].lines_t.p0*n[key].lines_t.s_max_pu)).divide(n[key].lines.s_nom_opt, axis=1)})
+        line_util.update({key+"_mean":line_util[key].mean(axis=0)})
+        line_util.update({key+"_mean_nom":normalize(line_util[key].mean(axis=0))})
+
+    #other approach to make both flows comparable
+    # line_util_min=np.min([line_util[key].mean(axis=0).min() for key in n.keys()])
+    # line_util_max=np.max([line_util[key].mean(axis=0).max() for key in n.keys()])
+    # for key in n.keys():
+    #     line_util.update({key+"_mean_nom":line_util[key].mean(axis=0).apply(lambda x: (x-line_util_min)/(line_util_max-line_util_min))})
+
+    ### Plots
+
+    figures=["nolr", "lr"]
     #used to scale all wind extension at buses with the max_wind_expansion
-    max_wind_expansion=np.max([gen_expansion[result][np.core.defchararray.find(gen_expansion[result].index.get_level_values(1).values.astype(str),"wind")!=-1].groupby("bus").sum().max() for result in results])
 
     fig=plt.figure(figsize=(20,15))
     ax=[]
-    divider=np.max([plot_data_lines[f"mean_p_{figure}"].max() for figure in figures])
     for i, figure in enumerate(figures):
         ax.append(plt.subplot(1,len(figures), i+1, projection=ccrs.PlateCarree()))
         ax[i].set_extent([4, 16, 47, 56], ccrs.PlateCarree())
@@ -116,14 +130,16 @@ if "snakemake" not in globals():
         ax[i].scatter(x=plot_data_buses['x'], y=plot_data_buses['y'], color='black')
         ax[i].set_title(figure)
         subax=[]
-        for j, bus in enumerate(plot_data_buses.index):
-            #Plots the wind expansion data at each bus
-            subax.append(add_subplot_axes(fig, ax[i], [plot_data_buses.loc[bus]["x"], plot_data_buses.loc[bus]["y"], 0.025, 0.05]))
-            subax[j].bar(x=[0],width=0.3, alpha=0.95, height=gen_expansion[figure][np.core.defchararray.find(gen_expansion[figure].index.get_level_values(1).values.astype(str),"wind")!=-1].loc[bus].sum())
-            subax[j].set_ylim([0, max_wind_expansion])
+        # for j, bus in enumerate(plot_data_buses.index):
+        #     #Plots the wind expansion data at each bus
+        #     subax.append(add_subplot_axes(fig, ax[i], [plot_data_buses.loc[bus]["x"], plot_data_buses.loc[bus]["y"], 0.025, 0.05]))
+        #     subax[j].bar(x=[0.5],width=0.5, alpha=0.95, height=gen_curtail[figure].groupby("bus").sum().loc[bus]/max_bus_curtail)
+        #     subax[j].set_ylim([0, 1])
         for line in plot_data_lines.index:
             #plots the lines. The width of each line is related to its capacity in relation to the max capacity
-            ax[i].plot([plot_data_lines.loc[line]["x0"],plot_data_lines.loc[line]["x1"]], [plot_data_lines.loc[line]["y0"],plot_data_lines.loc[line]["y1"]], color="black" , linewidth=0.5+plot_data_lines.loc[line][f"mean_p_{figure}"]/divider*3)
+            ax[i].plot([plot_data_lines.loc[line]["x0"],plot_data_lines.loc[line]["x1"]], [plot_data_lines.loc[line]["y0"],plot_data_lines.loc[line]["y1"]], color="black" , linewidth=0.5+line_util[f"{figure}_mean_nom"][line]*2)
             x,y,dx,dy=get_arrow_parameters(plot_data_lines, line, figure)
             ax[i].arrow(x,y,dx,dy, color="black", width=0.0, head_width=0.15)
             #ax[i].annotate(line, (x,y))
+
+    fig.savefig(snakemake.output[0], bbox_inches="tight")
