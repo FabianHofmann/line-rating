@@ -31,3 +31,4 @@ scripts/__pycache__
 *.fls
 *.run.xml
 *.synctex.gz
+*.fdb_latexmk
