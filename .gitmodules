@@ -2,3 +2,4 @@
 	path = pypsa-eur
 	url = git@github.com:PyPSA/pypsa-eur.git
 	branch= line-rating
+	ignore= dirty
