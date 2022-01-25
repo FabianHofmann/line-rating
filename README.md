@@ -15,3 +15,10 @@ conda env create -f environment.yaml
 conda activate line-rating
 ```
 
+update submodule with:
+
+```
+git submodule update --remote
+
+```
+

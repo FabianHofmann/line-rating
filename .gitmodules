@@ -1,3 +1,4 @@
 [submodule "pypsa-eur"]
 	path = pypsa-eur
 	url = git@github.com:PyPSA/pypsa-eur.git
+	branch= line-rating
