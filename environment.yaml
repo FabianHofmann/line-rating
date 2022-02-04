@@ -55,6 +55,7 @@ dependencies:
   - tabula-py
 
   - pip:
+    - gurobipy
     - vresutils==0.3.1
     - tsam>=1.1.0
     - git+https://github.com/PyPSA/atlite.git

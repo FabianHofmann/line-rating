@@ -112,29 +112,29 @@ if "snakemake" not in globals():
     max_bus_curtail=max([gen_curtail["nolr"].groupby("bus").sum().max(), gen_curtail["lr"].groupby("bus").sum().max()])
 
     ### Plots
-
+    figures_name={"nolr":"Static line rating", "lr": "Dynamic line rating"}
     figures=["nolr", "lr"]
     #used to scale all wind extension at buses with the max_wind_expansion
     max_wind_expansion=np.max([gen_expansion[result][np.core.defchararray.find(gen_expansion[result].index.get_level_values(1).values.astype(str),"wind")!=-1].groupby("bus").sum().max() for result in results])
 
-    fig=plt.figure(figsize=(20,15))
-    ax=[]
+    fig, ax=plt.subplots(1,2,figsize=(25,10), subplot_kw={"projection":ccrs.PlateCarree()})
     divider=np.max([plot_data_lines[f"mean_p_{figure}"].max() for figure in figures])
+    fig.suptitle('Wind expansion comparison between power system with static and dynamic line rating', fontsize=20)
+    fig.subplots_adjust(top=0.9,bottom=0.05,left=0.05,right=0.95,hspace=0.01,wspace=0.01)
     for i, figure in enumerate(figures):
-        ax.append(plt.subplot(1,len(figures), i+1, projection=ccrs.PlateCarree()))
         ax[i].set_extent([4, 16, 47, 56], ccrs.PlateCarree())
         ax[i].coastlines(resolution='10m')
         ax[i].add_feature(cartopy.feature.OCEAN, color='steelblue')
         ax[i].add_feature(cartopy.feature.LAND, edgecolor='black', color="burlywood")
         ax[i].add_feature(cartopy.feature.BORDERS)
         ax[i].scatter(x=plot_data_buses['x'], y=plot_data_buses['y'], color='black')
-        ax[i].set_title(figure)
+        ax[i].set_title(figures_name[figure], fontsize=15)
         subax=[]
         for j, bus in enumerate(plot_data_buses.index):
             #Plots the wind expansion data at each bus
             subax.append(add_subplot_axes(fig, ax[i], [plot_data_buses.loc[bus]["x"], plot_data_buses.loc[bus]["y"], 0.025, 0.05]))
-            subax[j].bar(x=[0],width=0.5, alpha=0.95, height=gen_expansion[figure][np.core.defchararray.find(gen_expansion[figure].index.get_level_values(1).values.astype(str),"wind")!=-1].loc[bus].sum()/max_wind_expansion)
-            subax[j].bar(x=[0.5],width=0.5, alpha=0.95, height=gen_curtail[figure].groupby("bus").sum().loc[bus]/max_bus_curtail)
+            subax[j].bar(x=[0],width=0.5, alpha=0.95, color="aqua", height=gen_expansion[figure][np.core.defchararray.find(gen_expansion[figure].index.get_level_values(1).values.astype(str),"wind")!=-1].loc[bus].sum()/max_wind_expansion)
+            #subax[j].bar(x=[0.5],width=0.5, alpha=0.95, height=gen_curtail[figure].groupby("bus").sum().loc[bus]/max_bus_curtail)
             subax[j].set_ylim([0, 1])
         for line in plot_data_lines.index:
             #plots the lines. The width of each line is related to its capacity in relation to the max capacity
@@ -143,4 +143,4 @@ if "snakemake" not in globals():
             ax[i].arrow(x,y,dx,dy, color="black", width=0.0, head_width=0.15)
             #ax[i].annotate(line, (x,y))
 
-    plt.savefig(snakemake.output[0], bbox_inches="tight")
+    fig.savefig(snakemake.output[0], bbox_inches="tight")

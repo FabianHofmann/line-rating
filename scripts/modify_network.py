@@ -13,7 +13,12 @@ if __name__ == "__main__":
     n.lines_t.s_max_pu.drop(n.lines_t.s_max_pu.columns, axis=1, inplace=True)
     n.export_to_netcdf(snakemake.output.prepared)
     
-    #unprepared
+    #unprepared_lr
     n = pypsa.Network(snakemake.input.unprepared)
     #n.lines_t.s_max_pu.drop(n.lines_t.s_max_pu.columns, axis=1, inplace=True)
-    n.export_to_netcdf(snakemake.output.unprepared)
+    n.export_to_netcdf(snakemake.output.unprepared_lr)
+
+    #unprepared_lr
+    n = pypsa.Network(snakemake.input.unprepared)
+    n.lines_t.s_max_pu.drop(n.lines_t.s_max_pu.columns, axis=1, inplace=True)
+    n.export_to_netcdf(snakemake.output.unprepared_nolr)

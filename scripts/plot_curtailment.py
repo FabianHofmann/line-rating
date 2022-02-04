@@ -64,7 +64,7 @@ def get_arrow_parameters(plot_data_lines, line, figure):
 if "snakemake" not in globals():
     from _helpers import mock_snakemake
 
-    snakemake = mock_snakemake('plot_flow_wind_expansion', network='elec', simpl='',
+    snakemake = mock_snakemake('plot_curtailment', network='elec', simpl='',
                                   clusters='40', ll='v1.0', opts='Co2L-4H')
     n={"lr":pypsa.Network(snakemake.input.lr), "nolr":pypsa.Network(snakemake.input.nolr)}
 
@@ -96,36 +96,40 @@ if "snakemake" not in globals():
     results=["nolr","lr"]
     gen_curtail={}
     for result in results:
-    #first curtailment is summed over all snapshots-> for single snap shot do not use .sum() and overwrite columns instead of index in next row
+    #first curtailment is summed over all snapshots-> for single snap shot do not use .sum() and overwrite columns instead of index in next row       
         curtail=(n[result].generators_t.p_max_pu*n[result].generators.p_nom_opt).subtract(n[result].generators_t.p, axis="columns").sum()
+        #ignore generator dummy
+        curtail=curtail.drop("dummy", axis =0)
         curtail.index=n[result].generators.groupby(["bus", "carrier"]).p_nom_opt.sum().index
         curtail.dropna(inplace=True)
         gen_curtail.update({result:curtail})
     
     max_bus_curtail=max([gen_curtail["nolr"].groupby("bus").sum().max(), gen_curtail["lr"].groupby("bus").sum().max()])
+    #max_wind_curtail=max([gen_curtail["nolr"][gen_curtail["nolr"].index.get_level_values("carrier").str.contains("wind")].groupby("bus").sum().max(),gen_curtail["lr"][gen_curtail["lr"].index.get_level_values("carrier").str.contains("wind")].groupby("bus").sum().max()])
 
     ### Plots
-
+    figures_name={"nolr":"Static line rating", "lr": "Dynamic line rating"}
     figures=["nolr", "lr"]
     #used to scale all wind extension at buses with the max_wind_expansion
 
-    fig=plt.figure(figsize=(20,15))
-    ax=[]
+    fig, ax=plt.subplots(1,2,figsize=(25,10), subplot_kw={"projection":ccrs.PlateCarree()})
     divider=np.max([plot_data_lines[f"mean_p_{figure}"].max() for figure in figures])
+    fig.suptitle('Nodal curtailment comparison between power system with static and dynamic line rating', fontsize=20)
+    fig.subplots_adjust(top=0.9,bottom=0.05,left=0.05,right=0.95,hspace=0.01,wspace=0.01)
     for i, figure in enumerate(figures):
-        ax.append(plt.subplot(1,len(figures), i+1, projection=ccrs.PlateCarree()))
         ax[i].set_extent([4, 16, 47, 56], ccrs.PlateCarree())
         ax[i].coastlines(resolution='10m')
         ax[i].add_feature(cartopy.feature.OCEAN, color='steelblue')
         ax[i].add_feature(cartopy.feature.LAND, edgecolor='black', color="burlywood")
         ax[i].add_feature(cartopy.feature.BORDERS)
         ax[i].scatter(x=plot_data_buses['x'], y=plot_data_buses['y'], color='black')
-        ax[i].set_title(figure)
+        ax[i].set_title(figures_name[figure], fontsize=15)
         subax=[]
         for j, bus in enumerate(plot_data_buses.index):
             #Plots the wind expansion data at each bus
             subax.append(add_subplot_axes(fig, ax[i], [plot_data_buses.loc[bus]["x"], plot_data_buses.loc[bus]["y"], 0.025, 0.05]))
             subax[j].bar(x=[0.5],width=0.5, alpha=0.95, height=gen_curtail[figure].groupby("bus").sum().loc[bus]/max_bus_curtail)
+            #subax[j].bar(x=[0],width=0.5,color="white", alpha=0.95, height=gen_curtail[figure][gen_curtail[figure].index.get_level_values("carrier").str.contains("wind")].groupby("bus").sum().loc[bus]/max_wind_curtail)   
             subax[j].set_ylim([0, 1])
         for line in plot_data_lines.index:
             #plots the lines. The width of each line is related to its capacity in relation to the max capacity
@@ -134,4 +138,4 @@ if "snakemake" not in globals():
             ax[i].arrow(x,y,dx,dy, color="black", width=0.0, head_width=0.15)
             #ax[i].annotate(line, (x,y))
 
-    fig.savefig(snakemake.output[0])
+    fig.savefig(snakemake.output[0],bbox_inches="tight")

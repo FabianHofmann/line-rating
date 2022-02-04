@@ -15,6 +15,12 @@ conda env create -f environment.yaml
 conda activate line-rating
 ```
 
+download submodules after cloning:
+
+```
+git submodule update --init
+```
+ 
 update submodule with:
 
 ```
