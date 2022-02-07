@@ -66,7 +66,7 @@ if __name__ == "__main__":
     if "snakemake" not in globals():
         from _helpers import mock_snakemake
         snakemake = mock_snakemake('plot_curtailment', network='elec', simpl='',
-                                      clusters='40', ll='v1', opts='Co2L')
+                                      clusters='40', ll='v1.0', opts='Co2L-4H', ext="png")
 
     n={"lr":pypsa.Network(snakemake.input.lr), "nolr":pypsa.Network(snakemake.input.nolr)}
 
@@ -119,6 +119,7 @@ if __name__ == "__main__":
     fig.suptitle('Nodal curtailment comparison between power system with static and dynamic line rating', fontsize=20)
     fig.subplots_adjust(top=0.9,bottom=0.05,left=0.05,right=0.95,hspace=0.01,wspace=0.01)
     for i, figure in enumerate(figures):
+        ax[i].set_extent([4, 16, 47, 56], ccrs.PlateCarree())
         ax[i].coastlines(resolution='10m')
         ax[i].add_feature(cartopy.feature.OCEAN, color='steelblue')
         ax[i].add_feature(cartopy.feature.LAND, edgecolor='black', color="burlywood")
@@ -138,6 +139,5 @@ if __name__ == "__main__":
             x,y,dx,dy=get_arrow_parameters(plot_data_lines, line, figure)
             ax[i].arrow(x,y,dx,dy, color="black", width=0.0, head_width=0.15)
             #ax[i].annotate(line, (x,y))
-        ax[i].set_extent([4, 16, 47, 56], ccrs.PlateCarree())
 
     fig.savefig(snakemake.output[0],bbox_inches="tight")

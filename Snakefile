@@ -73,21 +73,21 @@ rule plot_flow_wind_expansion:
     input: 
         nolr="results/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_nolr.nc",
         lr="results/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_lr.nc"
-    output: "figures/flow_wind_expansion_s{simpl}_{clusters}_ec_l{ll}_{opts}.pdf"
+    output: "figures/flow_wind_expansion_s{simpl}_{clusters}_ec_l{ll}_{opts}.{ext}"
     script: "scripts/plot_flow_wind_expansion.py"
 
 rule plot_curtailment:
     input: 
         nolr= "results/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_nolr_op.nc",
         lr= "results/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_lr_op.nc"
-    output: "figures/curtailment_s{simpl}_{clusters}_ec_l{ll}_{opts}.pdf"
+    output: "figures/curtailment_s{simpl}_{clusters}_ec_l{ll}_{opts}.{ext}"
     script: "scripts/plot_curtailment.py"
 
 rule plot_congestion:
     input: 
         nolr= "results/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_nolr_op.nc",
         lr= "results/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_lr_op.nc"
-    output: "figures/congestion_s{simpl}_{clusters}_ec_l{ll}_{opts}.png"
+    output: "figures/congestion_s{simpl}_{clusters}_ec_l{ll}_{opts}.{ext}"
     script: "scripts/plot_congestion.py"
 
 

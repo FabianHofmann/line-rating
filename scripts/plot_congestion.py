@@ -66,7 +66,7 @@ if __name__ == "__main__":
     if "snakemake" not in globals():
         from _helpers import mock_snakemake
         snakemake = mock_snakemake('plot_congestion', network='elec', simpl='',
-                                      clusters='40', ll='v1.0', opts='Co2L-4H')
+                                      clusters='40', ll='v1.0', opts='Co2L-4H', ext="png")
 
     n={"lr":pypsa.Network(snakemake.input.lr), "nolr":pypsa.Network(snakemake.input.nolr)}
 
