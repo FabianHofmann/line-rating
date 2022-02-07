@@ -184,6 +184,13 @@ solving:
     track_iterations: false
   solver:
     name: gurobi
+    method: 2 # barrier
+    crossover: 0
+    BarConvTol: 1.e-5
+    FeasibilityTol: 1.e-6
+    AggFill: 0
+    PreDual: 0
+    GURO_PAR_BARDENSETHRESH: 200
 
 plotting:
   map:
