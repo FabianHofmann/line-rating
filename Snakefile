@@ -1,5 +1,3 @@
-# configfile: "config.yaml"
-
 wildcard_constraints:
     simpl="[a-zA-Z0-9]*|all",
     clusters="[0-9]+m?|all",
@@ -36,7 +34,7 @@ rule solve_network_nolr:
         solver=pypsaeur(normpath("logs/solve_network/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_nolr_solver.log")),
         python=pypsaeur("logs/solve_network/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_nolr_python.log"),
         memory=pypsaeur("logs/solve_network/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_nolr_memory.log")
-    benchmark: pypsaeur("benchmarks/solve_network/elec_s{simpl}_{clusters}_ec_l{ll}_nolr_{opts}")
+    benchmark: pypsaeur("benchmarks/solve_network/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_nolr")
     threads: 4
     shadow: "shallow"
     script: pypsaeur("scripts/solve_network.py")
@@ -75,14 +73,14 @@ rule plot_flow_wind_expansion:
     input: 
         nolr="results/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_nolr.nc",
         lr="results/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_lr.nc"
-    output: "figures/flow_wind_expansion_s{simpl}_{clusters}_ec_l{ll}_{opts}.png"
+    output: "figures/flow_wind_expansion_s{simpl}_{clusters}_ec_l{ll}_{opts}.pdf"
     script: "scripts/plot_flow_wind_expansion.py"
 
 rule plot_curtailment:
     input: 
         nolr= "results/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_nolr_op.nc",
         lr= "results/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_lr_op.nc"
-    output: "figures/curtailment_s{simpl}_{clusters}_ec_l{ll}_{opts}.png"
+    output: "figures/curtailment_s{simpl}_{clusters}_ec_l{ll}_{opts}.pdf"
     script: "scripts/plot_curtailment.py"
 
 rule plot_congestion:

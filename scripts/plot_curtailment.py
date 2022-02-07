@@ -24,11 +24,11 @@ def add_subplot_axes(fig, ax,rect):#,axisbg='w'):
     inax_position  = data_to_axis.transform(rect[0:2])
     fig_to_ax = fig.transFigure + ax.transAxes.inverted()
     ax_to_fig = fig_to_ax.inverted()
-    infig_position = ax_to_fig.transform(inax_position)    
+    infig_position = ax_to_fig.transform(inax_position)
     x = infig_position[0]
     y = infig_position[1]
     width *= rect[2]
-    height *= rect[3] 
+    height *= rect[3]
     subax = fig.add_axes([x,y,width,height]) #,axisbg=axisbg)
     x_labelsize = subax.get_xticklabels()[0].get_size()
     y_labelsize = subax.get_yticklabels()[0].get_size()
@@ -61,11 +61,13 @@ def get_arrow_parameters(plot_data_lines, line, figure):
 
 
 
-if "snakemake" not in globals():
-    from _helpers import mock_snakemake
+if __name__ == "__main__":
 
-    snakemake = mock_snakemake('plot_curtailment', network='elec', simpl='',
-                                  clusters='40', ll='v1.0', opts='Co2L-4H')
+    if "snakemake" not in globals():
+        from _helpers import mock_snakemake
+        snakemake = mock_snakemake('plot_curtailment', network='elec', simpl='',
+                                      clusters='40', ll='v1', opts='Co2L')
+
     n={"lr":pypsa.Network(snakemake.input.lr), "nolr":pypsa.Network(snakemake.input.nolr)}
 
     ### Line and Bus Location Data
@@ -96,14 +98,14 @@ if "snakemake" not in globals():
     results=["nolr","lr"]
     gen_curtail={}
     for result in results:
-    #first curtailment is summed over all snapshots-> for single snap shot do not use .sum() and overwrite columns instead of index in next row       
+    #first curtailment is summed over all snapshots-> for single snap shot do not use .sum() and overwrite columns instead of index in next row
         curtail=(n[result].generators_t.p_max_pu*n[result].generators.p_nom_opt).subtract(n[result].generators_t.p, axis="columns").sum()
         #ignore generator dummy
-        curtail=curtail.drop("dummy", axis =0)
+        curtail=curtail.drop("dummy", axis =0, errors='ignore')
         curtail.index=n[result].generators.groupby(["bus", "carrier"]).p_nom_opt.sum().index
         curtail.dropna(inplace=True)
         gen_curtail.update({result:curtail})
-    
+
     max_bus_curtail=max([gen_curtail["nolr"].groupby("bus").sum().max(), gen_curtail["lr"].groupby("bus").sum().max()])
     #max_wind_curtail=max([gen_curtail["nolr"][gen_curtail["nolr"].index.get_level_values("carrier").str.contains("wind")].groupby("bus").sum().max(),gen_curtail["lr"][gen_curtail["lr"].index.get_level_values("carrier").str.contains("wind")].groupby("bus").sum().max()])
 
@@ -117,7 +119,6 @@ if "snakemake" not in globals():
     fig.suptitle('Nodal curtailment comparison between power system with static and dynamic line rating', fontsize=20)
     fig.subplots_adjust(top=0.9,bottom=0.05,left=0.05,right=0.95,hspace=0.01,wspace=0.01)
     for i, figure in enumerate(figures):
-        ax[i].set_extent([4, 16, 47, 56], ccrs.PlateCarree())
         ax[i].coastlines(resolution='10m')
         ax[i].add_feature(cartopy.feature.OCEAN, color='steelblue')
         ax[i].add_feature(cartopy.feature.LAND, edgecolor='black', color="burlywood")
@@ -129,7 +130,7 @@ if "snakemake" not in globals():
             #Plots the wind expansion data at each bus
             subax.append(add_subplot_axes(fig, ax[i], [plot_data_buses.loc[bus]["x"], plot_data_buses.loc[bus]["y"], 0.025, 0.05]))
             subax[j].bar(x=[0.5],width=0.5, alpha=0.95, height=gen_curtail[figure].groupby("bus").sum().loc[bus]/max_bus_curtail)
-            #subax[j].bar(x=[0],width=0.5,color="white", alpha=0.95, height=gen_curtail[figure][gen_curtail[figure].index.get_level_values("carrier").str.contains("wind")].groupby("bus").sum().loc[bus]/max_wind_curtail)   
+            #subax[j].bar(x=[0],width=0.5,color="white", alpha=0.95, height=gen_curtail[figure][gen_curtail[figure].index.get_level_values("carrier").str.contains("wind")].groupby("bus").sum().loc[bus]/max_wind_curtail)
             subax[j].set_ylim([0, 1])
         for line in plot_data_lines.index:
             #plots the lines. The width of each line is related to its capacity in relation to the max capacity
@@ -137,5 +138,6 @@ if "snakemake" not in globals():
             x,y,dx,dy=get_arrow_parameters(plot_data_lines, line, figure)
             ax[i].arrow(x,y,dx,dy, color="black", width=0.0, head_width=0.15)
             #ax[i].annotate(line, (x,y))
+        ax[i].set_extent([4, 16, 47, 56], ccrs.PlateCarree())
 
     fig.savefig(snakemake.output[0],bbox_inches="tight")

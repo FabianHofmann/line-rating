@@ -24,11 +24,11 @@ def add_subplot_axes(fig, ax,rect):#,axisbg='w'):
     inax_position  = data_to_axis.transform(rect[0:2])
     fig_to_ax = fig.transFigure + ax.transAxes.inverted()
     ax_to_fig = fig_to_ax.inverted()
-    infig_position = ax_to_fig.transform(inax_position)    
+    infig_position = ax_to_fig.transform(inax_position)
     x = infig_position[0]
     y = infig_position[1]
     width *= rect[2]
-    height *= rect[3] 
+    height *= rect[3]
     subax = fig.add_axes([x,y,width,height]) #,axisbg=axisbg)
     x_labelsize = subax.get_xticklabels()[0].get_size()
     y_labelsize = subax.get_yticklabels()[0].get_size()
@@ -61,11 +61,13 @@ def get_arrow_parameters(plot_data_lines, line, figure):
 
 
 
-if "snakemake" not in globals():
-    from _helpers import mock_snakemake
+if __name__ == "__main__":
 
-    snakemake = mock_snakemake('plot_flow_wind_expansion', network='elec', simpl='',
-                                  clusters='40', ll='v1.0', opts='Co2L-4H')
+    if "snakemake" not in globals():
+        from _helpers import mock_snakemake
+        snakemake = mock_snakemake('plot_flow_wind_expansion', network='elec', simpl='',
+                                      clusters='40', ll='v1.0', opts='Co2L-4H')
+
     n={"lr":pypsa.Network(snakemake.input.lr), "nolr":pypsa.Network(snakemake.input.nolr)}
 
     ### Line and Bus Location Data
@@ -97,7 +99,7 @@ if "snakemake" not in globals():
     gen_expansion={}
     for result in results:
         gen_expansion.update({result:n[result].generators.groupby(["bus", "carrier"]).sum()["p_nom_opt"]-n[result].generators.groupby(["bus", "carrier"]).sum()["p_nom"]})
-  
+
     ###Curtailment Data
 
     results=["nolr","lr"]
@@ -108,7 +110,7 @@ if "snakemake" not in globals():
         curtail.index=n[result].generators.groupby(["bus", "carrier"]).p_nom_opt.sum().index
         curtail.dropna(inplace=True)
         gen_curtail.update({result:curtail})
-    
+
     max_bus_curtail=max([gen_curtail["nolr"].groupby("bus").sum().max(), gen_curtail["lr"].groupby("bus").sum().max()])
 
     ### Plots
