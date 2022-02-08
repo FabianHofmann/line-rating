@@ -54,6 +54,9 @@ dependencies:
   - country_converter
   - tabula-py
 
+# Develop
+  - pre-commit
+
   - pip:
     - gurobipy
     - vresutils==0.3.1

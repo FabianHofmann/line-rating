@@ -49,6 +49,6 @@ repos:
         entry: jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace
     exclude: pypsa-eur
 -   repo: https://github.com/snakemake/snakefmt
-      rev: 0.4.4
-      hooks:
+    rev: 0.4.4
+    hooks:
       - id: snakefmt
