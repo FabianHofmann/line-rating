@@ -6,17 +6,17 @@ Path to results with line rating and without line rating has to specified.
 TODO: Find a way how to automate the workflow. So far only idea using wildcards instead of config.
 """
 
-import matplotlib.pyplot as plt
-import pypsa
-
-plt.style.use("bmh")
 import cartopy
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import cartopy.mpl.geoaxes
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import pypsa
 from matplotlib import cm
+
+plt.style.use("bmh")
 
 
 def add_subplot_axes(fig, ax, rect):  # ,axisbg='w'):
