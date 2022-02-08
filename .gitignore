@@ -30,3 +30,4 @@ scripts/__pycache__
 *.fls
 *.run.xml
 *.synctex.gz
+scripts/.ipynb_checkpoints/
