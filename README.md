@@ -1,6 +1,6 @@
 # Dynamic Line Rating with PyPSA-EUR
 
-Workflow and paper for the Dynamic Line Rating project  
+Workflow and paper for the Dynamic Line Rating project
 
 For installation clone the `PyPSA-EUR` repository into the root directory
 
@@ -20,11 +20,10 @@ download submodules after cloning:
 ```
 git submodule update --init
 ```
- 
+
 update submodule with:
 
 ```
 git submodule update --remote
 
 ```
-

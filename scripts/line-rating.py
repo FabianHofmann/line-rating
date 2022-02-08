@@ -1,17 +1,18 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Sat Oct  2 16:28:34 2021
+Created on Sat Oct  2 16:28:34 2021.
 
 @author: fabian
 """
 
-import pypsa
 import atlite
-import xarray as xr
-import numpy as np
 import geopandas as gpd
-from shapely.geometry import Point, LineString as Line
+import numpy as np
+import pypsa
+import xarray as xr
+from shapely.geometry import LineString as Line
+from shapely.geometry import Point
 
 # n = pypsa.examples.ac_dc_meshed()
 n = pypsa.Network("/home/fabian/vres/py/pypsa-eur/networks/elec.nc")

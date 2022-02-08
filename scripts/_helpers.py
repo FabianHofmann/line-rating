@@ -21,8 +21,9 @@ def mock_snakemake(rulename, **wildcards):
         keyword arguments fixing the wildcards. Only necessary if wildcards are
         needed.
     """
-    import snakemake as sm
     import os
+
+    import snakemake as sm
     from pypsa.descriptors import Dict
     from snakemake.script import Snakemake
 

@@ -7,11 +7,11 @@ headinclude,footinclude, % Extra spacing for the header and footer
 BCOR5mm, % Binding correction
 left=1.5in,right=1in,top=1in,bottom=1in,
 ]{scrartcl}
-\input{structure.tex} 
-\addbibresource{abstract.bib} 
-\hyphenation{Fortran hy-phen-ation} 
+\input{structure.tex}
+\addbibresource{abstract.bib}
+\hyphenation{Fortran hy-phen-ation}
 
-\title{\normalfont\spacedallcaps{Enhancing the German Transmission Grid through Dynamic Line Rating 
+\title{\normalfont\spacedallcaps{Enhancing the German Transmission Grid through Dynamic Line Rating
 % Leveraging the Existing Grid Infrastructure of the German Power System with Dynamic Line Rating
 }} % The article title
 %\subtitle{Subtitle} % Uncomment to display a subtitle
@@ -25,7 +25,7 @@ left=1.5in,right=1in,top=1in,bottom=1in,
 
 \begin{document}
 
-\maketitle 
+\maketitle
 
 % \setcounter{tocdepth}{2} % Set the depth of the table of contents to show sections and subsections only
 % \tableofcontents % Print the table of contents
@@ -37,11 +37,11 @@ left=1.5in,right=1in,top=1in,bottom=1in,
 
 
 
-\section*{Abstract} 
+\section*{Abstract}
 \thispagestyle{empty}
 
 
-The deployment of new renewable energy sources far from load centers is leading to an increasing need for grid capacity. A notable example can be found in Germany, where most of the wind energy is generated in the North while there is significant industrial demand in the South \cite{kuhneConflictsNegotiationProcesses2018}. Whereas the current federal government plans to add $\sim$70~GW wind power capacity until 2030, only a few grid expansion projects have been realized \cite{federalministryofeconomicaffairsandclimateactionGermanyCurrentClimate2022,burgerEnergyCharts}. Moreover, most of these projects have been delayed due to administrative problems and protest activities~\cite{neukirchProtestsGermanElectricity2016}. This trend will likely exacerbate transmission system congestion, which may lead to more grid instability and curtailment. There is therefore a strong incentive to exploit existing grid infrastructure more fully. 
+The deployment of new renewable energy sources far from load centers is leading to an increasing need for grid capacity. A notable example can be found in Germany, where most of the wind energy is generated in the North while there is significant industrial demand in the South \cite{kuhneConflictsNegotiationProcesses2018}. Whereas the current federal government plans to add $\sim$70~GW wind power capacity until 2030, only a few grid expansion projects have been realized \cite{federalministryofeconomicaffairsandclimateactionGermanyCurrentClimate2022,burgerEnergyCharts}. Moreover, most of these projects have been delayed due to administrative problems and protest activities~\cite{neukirchProtestsGermanElectricity2016}. This trend will likely exacerbate transmission system congestion, which may lead to more grid instability and curtailment. There is therefore a strong incentive to exploit existing grid infrastructure more fully.
 
 Traditionally, transmission line capacity is calculated assuming unfavorable, static weather conditions such as 40$^\circ$C ambient temperature and 0.6~$m/s$ wind speed \cite{fernandezReviewDynamicLine2016}. This is referred to as Static Line Rating (SLR). By design, SLR underestimates the capacity of a transmission line and, when implemented in practice, leads to an overestimated transmission capacity. In contrast, Dynamic Line Rating (DLR) calculates the line capacity taking into account the prevailing weather conditions. Cold weather and wind cool overheated transmission lines, enabling the thermal rating to be raised. This results in key benefits in cost-efficiency, congestion reduction and better wind power integration \cite{erdincComprehensiveOverviewDynamic2020}. So far, the literature provides case studies considering DLR in small scale Energy System Optimization Models (ESOMs) \cite{liDayAheadSchedulingPower2019,dabbaghjamaneshEffectiveSchedulingReconfigurable2019,viaforaDayaheadDispatchOptimization2019}. However, it is lacking of an extensive evaluation and assessment of DLR being applied to a higher scale ESOM considering capacity expansion and a CO$_2$ target.
 

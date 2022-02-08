@@ -1,18 +1,19 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Tue Feb  8 09:33:20 2022
+Created on Tue Feb  8 09:33:20 2022.
 
 @author: fabian
 """
 
-from atlite.convert import convert_line_rating
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-import matplotlib.pyplot as plt
+from atlite.convert import convert_line_rating
 
 # Use basic quantities fromt the IEEE test case in atlite/test/test_dynamic_line_rating
+
 
 def current_capacity(**update):
     ds = {
@@ -38,42 +39,47 @@ def current_capacity(**update):
     return convert_line_rating(ds, psi, R, D, Ts, epsilon, alpha)
 
 
-windspeeds = [1,9]
+windspeeds = [1, 9]
 
 # first translating, then averaging
-case1 = sum(current_capacity(wnd100m = w) for w in windspeeds)/len(windspeeds)
+case1 = sum(current_capacity(wnd100m=w) for w in windspeeds) / len(windspeeds)
 
 # first averaging, then translating
-case2 = current_capacity(wnd100m = sum(windspeeds)/len(windspeeds))
+case2 = current_capacity(wnd100m=sum(windspeeds) / len(windspeeds))
 
-windspeedstring = ', '.join(f'{w}m/s' for w in windspeeds)
-print(f"Using windspeed {windspeedstring}: \n"
-      f"First converting then averaging gives {case1}. \n"
-      f"First averaging, then converting gives {case2}.")
+windspeedstring = ", ".join(f"{w}m/s" for w in windspeeds)
+print(
+    f"Using windspeed {windspeedstring}: \n"
+    f"First converting then averaging gives {case1}. \n"
+    f"First averaging, then converting gives {case2}."
+)
 
 
 # %%  Try to derive a correction factor
 # Assume a constant variability around the base wind speed
 
+
 def correction_factor(windspeeds):
-    case1 = sum(current_capacity(wnd100m = w) for w in windspeeds)/len(windspeeds)
-    case2 = current_capacity(wnd100m = sum(windspeeds)/len(windspeeds))
-    return case1/case2
+    case1 = sum(current_capacity(wnd100m=w) for w in windspeeds) / len(windspeeds)
+    case2 = current_capacity(wnd100m=sum(windspeeds) / len(windspeeds))
+    return case1 / case2
+
 
 def variable_wind(base, variability, length=50):
     speed = np.full(length, base)
-    fluctuation = (np.random.rand(length) - .5) * base * variability
+    fluctuation = (np.random.rand(length) - 0.5) * base * variability
     return np.clip(speed + fluctuation, 0, np.inf)
+
 
 B = np.arange(30)
 V = np.arange(0, 1, 0.1)
 combinations = np.array(np.meshgrid(B, V)).T.reshape(-1, 2)
-factors = pd.DataFrame(combinations, columns=['Base', 'Variability'])
-factors['Correction Factor'] = factors.apply(correction_factor, axis=1)
+factors = pd.DataFrame(combinations, columns=["Base", "Variability"])
+factors["Correction Factor"] = factors.apply(correction_factor, axis=1)
 
-sns.set_style('white')
-fig, ax = plt.subplots(1, 1, figsize=(10,5))
-sns.lineplot(data=factors, y='Correction Factor', x='Variability', hue='Base', ax=ax)
-ax.legend(bbox_to_anchor=(1, 1), loc='upper left', title='Base [m/s]')
+sns.set_style("white")
+fig, ax = plt.subplots(1, 1, figsize=(10, 5))
+sns.lineplot(data=factors, y="Correction Factor", x="Variability", hue="Base", ax=ax)
+ax.legend(bbox_to_anchor=(1, 1), loc="upper left", title="Base [m/s]")
 fig.tight_layout()
-fig.savefig('../figures/wind_speed_correctionfactor.pdf')
+fig.savefig("../figures/wind_speed_correctionfactor.pdf")

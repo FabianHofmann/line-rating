@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Tue Nov 16 13:53:32 2021
+Created on Tue Nov 16 13:53:32 2021.
 
 @author: fabian
 """
@@ -9,8 +9,8 @@ Created on Tue Nov 16 13:53:32 2021
 import numpy as np
 import pandas as pd
 import xarray as xr
-from xarray import DataArray, Dataset
 from atlite.convert import convert_line_rating as line_rating
+from xarray import DataArray, Dataset
 
 if "snakemake" not in globals():
     from _helpers import mock_snakemake
@@ -28,7 +28,11 @@ W = DataArray(w, coords={"Wind speed": speed}, dims="Wind speed")
 angle = np.arange(0, 100, 10)
 degree = xr.IndexVariable("Wind angle", angle, attrs={"units": "°"})
 degree_str = degree.round(0).astype(int).astype(str).astype(object) + "°"
-A = DataArray(np.deg2rad(angle), coords={"Wind angle": degree_str}, dims="Wind angle",)
+A = DataArray(
+    np.deg2rad(angle),
+    coords={"Wind angle": degree_str},
+    dims="Wind angle",
+)
 
 ds = Dataset(
     {
