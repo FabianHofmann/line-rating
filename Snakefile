@@ -158,3 +158,9 @@ rule plot_congestion:
         "figures/congestion_s{simpl}_{clusters}_ec_l{ll}_{opts}.{ext}",
     script:
         "scripts/plot_congestion.py"
+
+rule test_voltage_angles:
+    input:
+        "results/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_lr.nc",
+    script:
+        "scripts/test_voltage_angles.py"
