@@ -1,6 +1,7 @@
 import os
 import numpy as np
 import pypsa
+import pandas as pd
 
 def normed(s): return s/s.sum()
 
@@ -12,6 +13,11 @@ def test_voltage_angles():
     n=100
     network.set_snapshots(network.snapshots[:n])
 
+    # calculate voltage angles
+    v_ang=network.buses_t.v_ang
+    v_ang_diff=v_ang[network.lines.bus0].values-v_ang[network.lines.bus1].values
+    v_ang_diff = pd.DataFrame(v_ang_diff, index=v_ang.index, columns= network.lines.index)
+
     #For the PF, set the P to the optimised P
     network.generators_t.p_set = network.generators_t.p
     network.stores_t.p_set = network.stores_t.p
@@ -20,8 +26,8 @@ def test_voltage_angles():
     network.generators.control = "PV"
 
     #neglect storage buses
-    storage_filter=network.buses.index[network.buses.carrier != "AC"]
-    network.buses.drop(storage_filter, axis=0, inplace=True)
+    #storage_filter=network.buses.index[network.buses.carrier != "AC"]
+    #network.buses.drop(storage_filter, axis=0, inplace=True)
 
     #Need some PQ buses so that Jacobian doesn't break
     f = network.generators[network.generators.bus==network.generators.bus.iloc[0]]
@@ -55,5 +61,3 @@ if __name__ == "__main__":
         )
 
     test_voltage_angles()
-
-    

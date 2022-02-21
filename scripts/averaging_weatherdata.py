@@ -55,11 +55,17 @@ print(
 )
 
 
+df=pd.read_csv("../data/LiDAR_Data_ANH_2013-2014.csv", parse_dates=True)
+df.index=pd.to_datetime(df["DataTimeStamp"])
+
+
 # %%  Try to derive a correction factor
 # Assume a constant variability around the base wind speed
 
 
 def correction_factor(windspeeds):
+    if windspeeds.empty:
+        return np.nan
     case1 = sum(current_capacity(wnd100m=w) for w in windspeeds) / len(windspeeds)
     case2 = current_capacity(wnd100m=sum(windspeeds) / len(windspeeds))
     return case1 / case2
@@ -71,15 +77,12 @@ def variable_wind(base, variability, length=50):
     return np.clip(speed + fluctuation, 0, np.inf)
 
 
-B = np.arange(30)
-V = np.arange(0, 1, 0.1)
-combinations = np.array(np.meshgrid(B, V)).T.reshape(-1, 2)
-factors = pd.DataFrame(combinations, columns=["Base", "Variability"])
-factors["Correction Factor"] = factors.apply(correction_factor, axis=1)
+factors= df["2_WindSpeed"].resample("h").apply(correction_factor).dropna()
 
 sns.set_style("white")
 fig, ax = plt.subplots(1, 1, figsize=(10, 5))
-sns.lineplot(data=factors, y="Correction Factor", x="Variability", hue="Base", ax=ax)
+#sns.lineplot(data=factors, y="Correction Factor", x="Variability", hue="Base", ax=ax)
+factors.plot(ax=ax)
 ax.legend(bbox_to_anchor=(1, 1), loc="upper left", title="Base [m/s]")
 fig.tight_layout()
 fig.savefig("../figures/wind_speed_correctionfactor.pdf")
