@@ -30,7 +30,7 @@ snapshots:
 
 enable:
   prepare_links_p_nom: false
-  retrieve_databundle: true
+  retrieve_databundle: false
   build_cutout: true
   retrieve_cutout: false
   build_natura_raster: false
@@ -141,6 +141,7 @@ lines:
   length_factor: 1.25
   under_construction: 'keep' # 'zero': set capacity to zero, 'remove': remove, 'keep': with full capacity
   cutout: "europe-2013-era5"
+  line_clipping: true #if true voltage angle only below 30°
   line_rating: true
 
 links:
