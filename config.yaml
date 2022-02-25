@@ -30,7 +30,7 @@ snapshots:
 
 enable:
   prepare_links_p_nom: false
-  retrieve_databundle: false
+  retrieve_databundle: true
   build_cutout: true
   retrieve_cutout: false
   build_natura_raster: false
