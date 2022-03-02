@@ -14,14 +14,14 @@ summary_dir: results
 scenario:
   simpl: ['']
   ll: ['v1.0']
-  clusters: [40]
+  clusters: ["all"]
   opts: [Co2L-4H]
 
 countries: ['DE']
 
 clustering:
   simplify:
-    to_substations: false # network is simplified to nodes with positive or negative power injection (i.e. substations or offwind connections)
+    to_substations: true # network is simplified to nodes with positive or negative power injection (i.e. substations or offwind connections)
 
 snapshots:
   start: "2013-01-01"
