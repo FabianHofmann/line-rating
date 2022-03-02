@@ -55,8 +55,8 @@ print(
 )
 
 
-df=pd.read_csv("../data/LiDAR_Data_ANH_2013-2014.csv", parse_dates=True)
-df.index=pd.to_datetime(df["DataTimeStamp"])
+df = pd.read_csv("../data/LiDAR_Data_ANH_2013-2014.csv", parse_dates=True)
+df.index = pd.to_datetime(df["DataTimeStamp"])
 
 
 # %%  Try to derive a correction factor
@@ -77,11 +77,11 @@ def variable_wind(base, variability, length=50):
     return np.clip(speed + fluctuation, 0, np.inf)
 
 
-factors= df["2_WindSpeed"].resample("h").apply(correction_factor).dropna()
+factors = df["2_WindSpeed"].resample("h").apply(correction_factor).dropna()
 
 sns.set_style("white")
 fig, ax = plt.subplots(1, 1, figsize=(10, 5))
-#sns.lineplot(data=factors, y="Correction Factor", x="Variability", hue="Base", ax=ax)
+# sns.lineplot(data=factors, y="Correction Factor", x="Variability", hue="Base", ax=ax)
 factors.plot(ax=ax)
 ax.legend(bbox_to_anchor=(1, 1), loc="upper left", title="Base [m/s]")
 fig.tight_layout()

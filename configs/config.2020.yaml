@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: CC0-1.0
 
 version: 0.4.0
-tutorial: false
+tutorial: true
 
 logging:
   level: INFO
@@ -15,7 +15,7 @@ scenario:
   simpl: ['']
   ll: ['v1.0']
   clusters: ["all"]
-  opts: [Co2L-4H]
+  opts: [Co2L]
 
 countries: ['DE']
 
@@ -39,11 +39,12 @@ enable:
 
 electricity:
   voltages: [220., 300., 380.]
-  co2limit: 175.e+6 #https://www.bmwi.de/Redaktion/DE/Artikel/Industrie/klimaschutz-klimaschutzplan-2050.html
+  co2limit: 225.e+6 # This is the actual value of 2019, see (Corona lead to a strong reduction)
+  # https://www.umweltbundesamt.de/sites/default/files/medien/5750/publikationen/2021-05-26_cc-45-2021_strommix_2021.pdf
   #agg_p_nom_limits: ../data/agg_p_nom_minmax.csv
 
   extendable_carriers:
-    Generator: [OCGT]
+    Generator: []
     StorageUnit: [] #battery, H2
     Store: [battery, H2]
     Link: []
@@ -54,8 +55,8 @@ electricity:
 
   powerplants_filter: false # use pandas query strings here, e.g. Country not in ['Germany']
   custom_powerplants: false # use pandas query strings here, e.g. Country in ['Germany']
-  conventional_carriers: [coal, CCGT] # [nuclear, oil, OCGT, CCGT, coal, lignite, geothermal, biomass]
-  renewable_capacities_from_OPSD: [] # onwind, offwind, solar
+  conventional_carriers: [nuclear, oil, OCGT, CCGT, coal, lignite, geothermal, biomass]
+  renewable_capacities_from_OPSD: [onwind, offwind, solar]
 
 atlite:
   nprocesses: 4
@@ -147,8 +148,8 @@ lines:
 links:
   p_max_pu: 1.0
   p_nom_max: .inf
-  include_tyndp: true
-  under_construction: 'zero' # 'zero': set capacity to zero, 'remove': remove, 'keep': with full capacity
+  include_tyndp: false
+  under_construction: 'remove' # 'zero': set capacity to zero, 'remove': remove, 'keep': with full capacity
 
 transformers:
   x: 0.1
@@ -178,7 +179,7 @@ costs:
 solving:
   options:
     formulation: kirchhoff
-    load_shedding: false
+    load_shedding: true
     noisy_costs: true
     min_iterations: 1
     max_iterations: 1

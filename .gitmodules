@@ -1,5 +1,8 @@
-[submodule "pypsa-eur"]
-	path = pypsa-eur
+[submodule "pypsa-eur-2030"]
+	path = pypsa-eur-2030
 	url = git@github.com:PyPSA/pypsa-eur.git
-	branch= line-rating
-	ignore= dirty
+	branch = line-rating
+[submodule "pypsa-eur-2020"]
+	path = pypsa-eur-2020
+	url = git@github.com:PyPSA/pypsa-eur.git
+	branch = line-rating

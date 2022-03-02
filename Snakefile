@@ -1,76 +1,79 @@
-wildcard_constraints:
-    simpl="[a-zA-Z0-9]*|all",
-    clusters="[0-9]+m?|all",
-    ll="(v|c)([0-9\.]+|opt|all)|all",
-    opts="[-+a-zA-Z0-9\.]*",
+from os.path import normpath
+
+LINERATING = ["slr", "dlr"]
+YEARS = [2020, 2030]
+CLUSTERS = ["all"]
 
 
-import matplotlib.pyplot as plt
-from os.path import normpath, exists
-
-# plt.rc('figure', dpi=300)
+configfile: "configs/config.yaml"
 
 
-configfile: "config.yaml"
+rule test:
+    input:
+        expand(
+            "results/de{year}_{clusters}_nodes_{lr}.nc",
+            year=YEARS,
+            clusters=5,
+            lr=LINERATING,
+        ),
 
 
 rule all:
     input:
-        nolr=expand(
-            "results/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_nolr.nc",
-            **config["scenario"]
-        ),
-        lr=expand(
-            "results/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_lr.nc",
-            **config["scenario"]
-        ),
-        op_nolr=expand(
-            "results/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_nolr_op.nc",
-            **config["scenario"]
-        ),
-        op_lr=expand(
-            "results/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_lr_op.nc",
-            **config["scenario"]
+        expand(
+            "results/de{year}_{clusters}_nodes_{lr}.nc",
+            year=YEARS,
+            clusters=CLUSTERS,
+            lr=LINERATING,
         ),
 
 
-rule plot_parameter_space:
-    output:
-        "figures/parameter-space.pdf",
-    script:
-        "scripts/parameter-space.py"
-
-
-subworkflow pypsaeur:
+subworkflow pypsaeur2020:
     workdir:
-        "pypsa-eur"
+        "pypsa-eur-2020"
     snakefile:
-        "pypsa-eur/Snakefile"
+        "pypsa-eur-2020/Snakefile"
     configfile:
-        "config.yaml"
+        "configs/config.2020.yaml"
 
 
-rule solve_network_nolr:
+subworkflow pypsaeur2030:
+    workdir:
+        "pypsa-eur-2030"
+    snakefile:
+        "pypsa-eur-2030/Snakefile"
+    configfile:
+        "configs/config.2030.yaml"
+
+
+def from_subworkflow(wildcards):
+    if wilcards.year == 2020:
+        return pypsaeur2020("networks/elec_s_{wildcards.clusters}_ec_lv1.0_Co2L.nc")
+    elif wilcards.year == 2030:
+        return pypsaeur2030("networks/elec_s_{wildcards.clusters}_ec_lv1.0_Co2L.nc")
+
+
+rule prepare_networks:
     input:
-        "networks/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_nolr.nc",
+        network=from_subworkflow,
     output:
-        "results/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_nolr.nc",
+        network_dlr="networks/de{year}_{clusters}_nodes_dlr.nc",
+        network_slr="networks/de{year}_{clusters}_nodes_slr.nc",
+    script:
+        "scripts/prepare_networks.py"
+
+
+rule solve_network:
+    input:
+        "networks/de{year}_{clusters}_nodes_{lr}.nc",
+    output:
+        "results/de{year}_{clusters}_nodes_{lr}.nc",
     log:
-        solver=pypsaeur(
-            normpath(
-                "logs/solve_network/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_nolr_solver.log"
-            )
-        ),
-        python=pypsaeur(
-            "logs/solve_network/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_nolr_python.log"
-        ),
-        memory=pypsaeur(
-            "logs/solve_network/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_nolr_memory.log"
-        ),
+        solver="logs/solve_network/de{year}_{clusters}_nodes_{lr}_solver.log",
+        python="logs/solve_network/de{year}_{clusters}_nodes_{lr}_python.log",
+        memory="logs/solve_network/de{year}_{clusters}_nodes_{lr}_memory.log",
     benchmark:
-        pypsaeur(
-            "benchmarks/solve_network/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_nolr"
-        )
+        "benchmarks/solve_network/de{year}_{clusters}_nodes_{lr}"
     threads: 4
     shadow:
         "shallow"
@@ -78,89 +81,56 @@ rule solve_network_nolr:
         pypsaeur("scripts/solve_network.py")
 
 
-rule solve_operations_network:
-    input:
-        unprepared="networks/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_{lr}_unprepared.nc",
-        optimized="results/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_nolr.nc",
-    output:
-        "results/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_{lr}_op.nc",
-    log:
-        solver=pypsaeur(
-            normpath(
-                "logs/solve_operations_network/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_{lr}_op_solver.log"
-            )
-        ),
-        python=pypsaeur(
-            "logs/solve_operations_network/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_{lr}_op_python.log"
-        ),
-        memory=pypsaeur(
-            "logs/solve_operations_network/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_{lr}_op_memory.log"
-        ),
-    benchmark:
-        pypsaeur(
-            "benchmarks/solve_operations_network/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_{lr}"
-        )
-    threads: 4
-    resources:
-        mem=(lambda w: 5000 + 372 * int(w.clusters)),
-    shadow:
-        "shallow"
-    script:
-        pypsaeur("scripts/solve_operations_network.py")
-
-
-rule modify_network:
-    input:
-        prepared=pypsaeur("networks/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}.nc"),
-        unprepared=pypsaeur("networks/elec_s{simpl}_{clusters}_ec.nc"),
-    output:
-        prepared="networks/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_nolr.nc",
-        unprepared_lr="networks/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_lr_unprepared.nc",
-        unprepared_nolr="networks/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_nolr_unprepared.nc",
-    script:
-        "scripts/modify_network.py"
-
-
-rule copy_network_results:
-    input:
-        pypsaeur("results/networks/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}.nc"),
-    output:
-        "results/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_lr.nc",
-    shell:
-        "cp {input} {output}"
+def both_rating_types(wildcards):
+    return expand(
+        "results/de{year}_{clusters}_nodes_{lr}.nc",
+        year=w.year,
+        clusters=w.clusters,
+        lr=LINERATING,
+    )
 
 
 rule plot_flow_wind_expansion:
     input:
-        nolr="results/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_nolr.nc",
-        lr="results/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_lr.nc",
+        both_rating_types,
     output:
-        "figures/flow_wind_expansion_s{simpl}_{clusters}_ec_l{ll}_{opts}.{ext}",
+        "figures/de{year}_{clusters}_nodes_{lr}/flow_wind_expansion.{ext}",
     script:
         "scripts/plot_flow_wind_expansion.py"
 
 
 rule plot_curtailment:
     input:
-        nolr="results/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_nolr_op.nc",
-        lr="results/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_lr_op.nc",
+        both_rating_types,
     output:
-        "figures/curtailment_s{simpl}_{clusters}_ec_l{ll}_{opts}.{ext}",
+        "figures/de{year}_{clusters}_nodes_{lr}/curtailment.{ext}",
     script:
         "scripts/plot_curtailment.py"
 
 
 rule plot_congestion:
     input:
-        nolr="results/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_nolr_op.nc",
-        lr="results/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_lr_op.nc",
+        both_rating_types,
     output:
-        "figures/congestion_s{simpl}_{clusters}_ec_l{ll}_{opts}.{ext}",
+        "figures/de{year}_{clusters}_nodes_{lr}/congestion.{ext}",
     script:
         "scripts/plot_congestion.py"
 
+
 rule test_voltage_angles:
     input:
-        "results/elec_s{simpl}_{clusters}_ec_l{ll}_{opts}_lr.nc",
+        "results/de{year}_{clusters}_nodes_{lr}.nc",
     script:
         "scripts/test_voltage_angles.py"
+
+
+# ==================================================================================
+# Additional plots and analysis without pypsa-eur
+# ==================================================================================
+
+
+rule plot_parameter_space:
+    output:
+        "figures/parameter-space.pdf",
+    script:
+        "scripts/parameter-space.py"
