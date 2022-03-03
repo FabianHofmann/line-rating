@@ -13,6 +13,7 @@ dependencies:
   - mamba # esp for windows build
 
   - pypsa>=0.18
+  - atlite>=0.2.7
 
   # Dependencies of the workflow itself
   - xlrd
@@ -61,5 +62,4 @@ dependencies:
     - gurobipy
     - vresutils==0.3.1
     - tsam>=1.1.0
-    - git+https://github.com/PyPSA/atlite.git
     - git+https://github.com/PyPSA/pypsa.git
