@@ -18,8 +18,9 @@ rule test:
 rule all:
     input:
         expand(
-            "figures/de{year}_{clusters}_nodes_{opts}/operation_map.pdf",
-            **config["scenario"]
+            "figures/de{year}_{clusters}_nodes_{opts}/{map}_map.pdf",
+            **config["scenario"],
+            map=["operation", "capacity"]
         ),
 
 
