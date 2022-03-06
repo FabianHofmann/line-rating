@@ -37,6 +37,7 @@ dependencies:
   - progressbar2
   - pyomo
   - matplotlib
+  - seaborn
   - proj
   - dask
 
