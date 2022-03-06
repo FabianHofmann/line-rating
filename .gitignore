@@ -31,3 +31,4 @@ scripts/__pycache__
 *.run.xml
 *.synctex.gz
 scripts/.ipynb_checkpoints/
+benchmarks

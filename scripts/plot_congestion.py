@@ -71,17 +71,15 @@ if __name__ == "__main__":
 
         snakemake = mock_snakemake(
             "plot_congestion",
-            network="elec",
-            simpl="",
-            clusters="40",
-            ll="v1.0",
+            year="2020",
+            clusters="5",
             opts="Co2L-4H",
             ext="png",
         )
 
     n = {
-        "lr": pypsa.Network(snakemake.input.lr),
-        "nolr": pypsa.Network(snakemake.input.nolr),
+        "lr": pypsa.Network(snakemake.input.network_slr),
+        "nolr": pypsa.Network(snakemake.input.network_dlr),
     }
 
     ### heper functions
@@ -195,4 +193,4 @@ if __name__ == "__main__":
             ax[i].arrow(x, y, dx, dy, color="black", width=0.0, head_width=0.15)
             # ax[i].annotate(line, (x,y))
 
-    fig.savefig(snakemake.output[0], bbox_inches="tight")
+    fig.savefig(snakemake.output.figure, bbox_inches="tight")

@@ -5,7 +5,13 @@
 scenario:
   rating: ['dlr', 'slr']
   clusters: ["all"]
-  opts: ["CO2L"]
+  opts: ["Co2L"]
+  year: [2020, 2030]
+
+test:
+  rating: ['dlr', 'slr']
+  clusters: [5]
+  opts: ["Co2L-4H"]
   year: [2020, 2030]
 
 solving:
@@ -27,3 +33,16 @@ solving:
     AggFill: 0
     PreDual: 0
     GURO_PAR_BARDENSETHRESH: 200
+
+
+plotting:
+  map:
+    boundaries: [5.5, 15.5, 47,  55]
+    capacity:
+      bus_size_factor: 1.e-5
+      line_width_factor: 1.e-3
+      refsize: 1000 # at what capacity should circle be drawn
+    operation:
+      bus_size_factor: 5.e-5
+      line_width_factor: 1.e-2
+      refsize: 1000 # at what capacity should circle be drawn

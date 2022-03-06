@@ -1,13 +1,24 @@
 from os.path import normpath
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# sns.set_style('white', )
+plt.rc("text", usetex=True)
+plt.rc("font", family="sans-serif")
 
 
 configfile: "configs/config.yaml"
 
 
+rule test:
+    input:
+        expand("results/de{year}_{clusters}_nodes_{opts}_{rating}.nc", **config["test"]),
+
+
 rule all:
     input:
         expand(
-            "results/de{year}_{clusters}_nodes_{opts}_{rating}.nc",
+            "figures/de{year}_{clusters}_nodes_{opts}/operation_map.pdf",
             **config["scenario"]
         ),
 
@@ -49,6 +60,24 @@ rule prepare_networks:
         "scripts/prepare_networks.py"
 
 
+def shapes_from_subworkflow(wildcards):
+    if wildcards.year == "2020":
+        return pypsaeur2020("resources/regions_{shore}_elec_s_{clusters}.geojson")
+    elif wildcards.year == "2030":
+        return pypsaeur2030("resources/regions_{shore}_elec_s_{clusters}.geojson")
+    else:
+        raise ValueError("Wildcard 'year' must be 2020 or 2030.")
+
+
+rule get_shapes:
+    input:
+        shapes=shapes_from_subworkflow,
+    output:
+        "resources/regions_{shore}_de{year}_{clusters}_nodes.geojson",
+    shell:
+        "cp {input} {output}"
+
+
 rule solve_network:
     input:
         "networks/de{year}_{clusters}_nodes_{opts}_{rating}.nc",
@@ -67,38 +96,44 @@ rule solve_network:
         pypsaeur2020("scripts/solve_network.py")
 
 
-def both_rating_types(wildcards):
-    return expand(
-        "results/de{year}_{clusters}_nodes_{opts}_{rating}.nc",
-        year=w.year,
-        clusters=w.clusters,
-        lr=LINERATING,
-    )
+rule plot_maps:
+    input:
+        network_dlr="results/de{year}_{clusters}_nodes_{opts}_slr.nc",
+        network_slr="results/de{year}_{clusters}_nodes_{opts}_dlr.nc",
+        shapes="resources/regions_onshore_de{year}_{clusters}_nodes.geojson",
+    output:
+        capacity="figures/de{year}_{clusters}_nodes_{opts}/capacity_map.{ext}",
+        operation="figures/de{year}_{clusters}_nodes_{opts}/operation_map.{ext}",
+    script:
+        "scripts/plot_maps.py"
 
 
 rule plot_flow_wind_expansion:
     input:
-        both_rating_types,
+        network_dlr="results/de{year}_{clusters}_nodes_{opts}_slr.nc",
+        network_slr="results/de{year}_{clusters}_nodes_{opts}_dlr.nc",
     output:
-        "figures/de{year}_{clusters}_nodes_{opts}_{rating}/flow_wind_expansion.{ext}",
+        figure="figures/de{year}_{clusters}_nodes_{opts}/flow_wind_expansion.{ext}",
     script:
         "scripts/plot_flow_wind_expansion.py"
 
 
 rule plot_curtailment:
     input:
-        both_rating_types,
+        network_dlr="results/de{year}_{clusters}_nodes_{opts}_slr.nc",
+        network_slr="results/de{year}_{clusters}_nodes_{opts}_dlr.nc",
     output:
-        "figures/de{year}_{clusters}_nodes_{opts}_{rating}/curtailment.{ext}",
+        figure="figures/de{year}_{clusters}_nodes_{opts}/curtailment.{ext}",
     script:
         "scripts/plot_curtailment.py"
 
 
 rule plot_congestion:
     input:
-        both_rating_types,
+        network_dlr="results/de{year}_{clusters}_nodes_{opts}_slr.nc",
+        network_slr="results/de{year}_{clusters}_nodes_{opts}_dlr.nc",
     output:
-        "figures/de{year}_{clusters}_nodes_{opts}_{rating}/congestion.{ext}",
+        figure="figures/de{year}_{clusters}_nodes_{opts}/congestion.{ext}",
     script:
         "scripts/plot_congestion.py"
 
