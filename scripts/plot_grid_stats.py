@@ -1,6 +1,4 @@
-import matplotlib.pyplot as plt
 import pandas as pd
-import pypsa
 import seaborn as sns
 from common import keys, load_network
 

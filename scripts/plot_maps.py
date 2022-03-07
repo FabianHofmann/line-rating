@@ -12,8 +12,7 @@ import cartopy.crs as ccrs
 import geopandas as gpd
 import matplotlib.pyplot as plt
 import pandas as pd
-import pypsa
-from common import add_carrier_legend, add_load_shedding_color, keys, plot_shapes
+from common import add_carrier_legend, load_network, plot_shapes
 
 
 def plot_operation(ax, n, bus_size_factor, line_width_factor, bounds):
@@ -67,9 +66,9 @@ if __name__ == "__main__":
     config = snakemake.config["plotting"]["map"]
     bounds = config["boundaries"]
 
-    networks = map(pypsa.Network, snakemake.input[:2])
-    networks = list(map(add_load_shedding_color, networks))
-    names = list(snakemake.input.keys())[:2]
+    dlr = load_network(snakemake.input.network_dlr)
+    slr = load_network(snakemake.input.network_slr)
+    networks = dlr, slr
     shapes = gpd.read_file(snakemake.input.shapes)
 
     for output in snakemake.output.keys():
@@ -82,7 +81,7 @@ if __name__ == "__main__":
         line_width_factor = config[output]["line_width_factor"]
         refsize = config[output]["refsize"]
 
-        for (n, name, ax) in zip(networks, names, axes):
+        for (n, ax) in zip(networks, axes):
             plot_func = eval(f"plot_{output}")
             plot_func(ax, n, bus_size_factor, line_width_factor, bounds)
             plot_shapes(ax, shapes)
