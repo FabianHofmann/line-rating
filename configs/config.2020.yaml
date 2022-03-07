@@ -140,7 +140,7 @@ lines:
   dlr_factor: 0.95 # factor compensate overestimation of the wind speed in hourly averaged wind data
   s_nom_max: .inf
   length_factor: 1.25
-  under_construction: 'keep' # 'zero': set capacity to zero, 'remove': remove, 'keep': with full capacity
+  under_construction: 'remove' # 'zero': set capacity to zero, 'remove': remove, 'keep': with full capacity
   cutout: "europe-2013-era5"
   line_clipping: true #if true voltage angle only below 30°
   line_rating: true
