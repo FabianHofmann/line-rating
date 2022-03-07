@@ -109,6 +109,16 @@ rule plot_maps:
         "scripts/plot_maps.py"
 
 
+rule plot_grid_stats:
+    input:
+        network_slr="results/de{year}_{clusters}_nodes_{opts}_slr.nc",
+        network_dlr="results/de{year}_{clusters}_nodes_{opts}_dlr.nc",
+    output:
+        potential_correlation="figures/de{year}_{clusters}_nodes_{opts}/potential_correlation.{ext}",
+    script:
+        "scripts/plot_grid_stats.py"
+
+
 rule plot_flow_wind_expansion:
     input:
         network_dlr="results/de{year}_{clusters}_nodes_{opts}_slr.nc",

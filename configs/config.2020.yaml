@@ -39,6 +39,7 @@ enable:
 
 electricity:
   voltages: [220., 300., 380.]
+  # TODO: USE 2020 CO2 Limit
   co2limit: 225.e+6 # This is the actual value of 2019, see (Corona lead to a strong reduction)
   # https://www.umweltbundesamt.de/sites/default/files/medien/5750/publikationen/2021-05-26_cc-45-2021_strommix_2021.pdf
   #agg_p_nom_limits: ../data/agg_p_nom_minmax.csv

@@ -2,6 +2,7 @@ import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import pypsa
 from matplotlib.legend_handler import HandlerPatch
 from pypsa.plot import projected_area_factor
 
@@ -9,10 +10,36 @@ keys = {"network_dlr": "Dynamic Line Rating", "network_slr": "Static Line Rating
 
 
 def add_load_shedding_color(n):
+    """
+    Needed until https://github.com/PyPSA/pypsa-eur/pull/320 is merged.
+    """
     if "Load" in n.carriers.index:
         n.carriers.loc["load", "color"] = "indianred"
+        n.carriers.loc["load", "co2_emissions"] = 0
         n.carriers.loc["load", "nice_name"] = "Load shedding"
         n.remove("Carrier", "Load")
+    return n
+
+
+def modify_offwind_carrier(n):
+    n.add("Carrier", "offwind", nice_name="Offshore Wind", color="#6895dd")
+    n.mremove("Carrier", ["offwind-ac", "offwind-dc"])
+    n.generators.loc[
+        n.generators.carrier.str.startswith("offwind"), "carrier"
+    ] = "offwind"
+    return n
+
+
+def load_network(path):
+    n = pypsa.Network(path)
+    if "dlr" in path:
+        n.name = "Dynamic Line Rating"
+    elif "slr" in path:
+        n.name = "Static Line Rating"
+    else:
+        raise ValueError("Cannot evaluate network name.")
+    add_load_shedding_color(n)
+    modify_offwind_carrier(n)
     return n
 
 
