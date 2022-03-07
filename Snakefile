@@ -10,11 +10,6 @@ plt.rc("font", family="sans-serif")
 configfile: "configs/config.yaml"
 
 
-rule test:
-    input:
-        expand("results/de{year}_{clusters}_nodes_{opts}_{rating}.nc", **config["test"]),
-
-
 rule all:
     input:
         expand(
@@ -22,6 +17,11 @@ rule all:
             **config["scenario"],
             map=["operation", "capacity"]
         ),
+
+
+rule test:
+    input:
+        expand("results/de{year}_{clusters}_nodes_{opts}_{rating}.nc", **config["test"]),
 
 
 subworkflow pypsaeur2020:
