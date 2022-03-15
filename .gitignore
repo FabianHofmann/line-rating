@@ -32,3 +32,4 @@ scripts/__pycache__
 *.synctex.gz
 scripts/.ipynb_checkpoints/
 benchmarks
+resources

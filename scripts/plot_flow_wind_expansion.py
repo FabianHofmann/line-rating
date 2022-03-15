@@ -79,8 +79,8 @@ if __name__ == "__main__":
         )
 
     n = {
-        "lr": pypsa.Network(snakemake.input.lr),
-        "nolr": pypsa.Network(snakemake.input.nolr),
+        "lr": pypsa.Network(snakemake.input.network_dlr),
+        "nolr": pypsa.Network(snakemake.input.network_slr),
     }
 
     ### Line and Bus Location Data
@@ -238,4 +238,4 @@ if __name__ == "__main__":
             ax[i].arrow(x, y, dx, dy, color="black", width=0.0, head_width=0.15)
             # ax[i].annotate(line, (x,y))
 
-    fig.savefig(snakemake.output[0], bbox_inches="tight")
+    fig.savefig(snakemake.output.figure, bbox_inches="tight")

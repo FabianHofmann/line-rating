@@ -105,6 +105,7 @@ rule plot_maps:
     output:
         capacity="figures/de{year}_{clusters}_nodes_{opts}/capacity_map.{ext}",
         operation="figures/de{year}_{clusters}_nodes_{opts}/operation_map.{ext}",
+        curtailment="figures/de{year}_{clusters}_nodes_{opts}/curtailment_map.{ext}"
     script:
         "scripts/plot_maps.py"
 
