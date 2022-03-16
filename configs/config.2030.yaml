@@ -156,7 +156,7 @@ transformers:
   type: ''
 
 load:
-  power_statistics: True # only for files from <2019; set false in order to get ENTSOE transparency data
+  power_statistics: false # should be false, because recent data from 2020 only is from ENTSO-E Transparency
   interpolate_limit: 3 # data gaps up until this size are interpolated linearly
   time_shift_for_large_gaps: 1w # data gaps up until this size are copied by copying from
   manual_adjustments: true # false
@@ -269,7 +269,7 @@ plotting:
     onwind: "Onshore Wind"
     solar: "Solar"
     PHS: "Pumped Hydro Storage"
-    hydro: "Reservoir & Dam"
+    hydro: "Reservoir and Dam"
     battery: "Battery Storage"
     H2: "Hydrogen Storage"
     lines: "Transmission Lines"
