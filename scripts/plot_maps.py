@@ -115,8 +115,8 @@ if __name__ == "__main__":
         )
 
         refsize = config[output]["refsize"]
-        bus_size_factor = None
-        line_width_factor = None
+        bus_size_factor = config[output].get("bus_size_factor", None)
+        line_width_factor = config[output].get("bus_size_factor", None)
 
         for (n, ax) in zip(networks, axes):
             plot_func = eval(f"plot_{output}")
