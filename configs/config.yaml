@@ -38,6 +38,7 @@ solving:
 plotting:
   map:
     boundaries: [5.5, 15.5, 47,  55]
+    #If None or commented out the plot_main.py automatically calculates the bus and line factor. If factor is given, then the factor is taken.
     capacity:
       #bus_size_factor: 1.e-5
       #line_width_factor: 1.e-3
