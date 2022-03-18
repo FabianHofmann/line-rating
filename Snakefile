@@ -109,6 +109,17 @@ rule plot_maps:
     script:
         "scripts/plot_maps.py"
 
+rule plot_analysis:
+    input:
+        network_dlr="results/de{year}_{clusters}_nodes_{opts}_dlr.nc",
+        network_slr="results/de{year}_{clusters}_nodes_{opts}_slr.nc",
+        shapes="resources/regions_onshore_de{year}_{clusters}_nodes.geojson",
+    output:
+        curtailment_bar="figures/de{year}_{clusters}_nodes_{opts}/curtailment_bar.{ext}",
+        capacity_bar="figures/de{year}_{clusters}_nodes_{opts}/capacity_bar.{ext}",
+    script:
+        "scripts/plot_analysis.py"
+
 
 rule plot_grid_stats:
     input:
