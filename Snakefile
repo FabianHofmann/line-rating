@@ -78,6 +78,24 @@ rule get_shapes:
     shell:
         "cp {input} {output}"
 
+def memory(w):
+    factor = 3.
+    for o in w.opts.split('-'):
+        m = re.match(r'^(\d+)h$', o, re.IGNORECASE)
+        if m is not None:
+            factor /= int(m.group(1))
+            break
+    for o in w.opts.split('-'):
+        m = re.match(r'^(\d+)seg$', o, re.IGNORECASE)
+        if m is not None:
+            factor *= int(m.group(1)) / 8760
+            break
+    if w.clusters.endswith('m'):
+        return int(factor * (18000 + 180 * int(w.clusters[:-1])))
+    elif w.clusters == "all":
+        return int(factor * (18000 + 180 * 4000))
+    else:
+        return int(factor * (10000 + 195 * int(w.clusters)))
 
 rule solve_network:
     input:
@@ -91,6 +109,9 @@ rule solve_network:
     benchmark:
         "benchmarks/solve_network/de{year}_{clusters}_nodes_{opts}_{rating}"
     threads: 4
+    resources: 
+    	mem_mb=memory,
+    	walltime="20:00:00"
     shadow:
         "shallow"
     script:
