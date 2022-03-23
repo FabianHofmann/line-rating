@@ -138,6 +138,7 @@ rule plot_analysis:
     output:
         curtailment_bar="figures/de{year}_{clusters}_nodes_{opts}/curtailment_bar.{ext}",
         capacity_bar="figures/de{year}_{clusters}_nodes_{opts}/capacity_bar.{ext}",
+        historical_curtailment_bar="figures/de{year}_{clusters}_nodes_{opts}/historical_curtailment_bar.{ext}"
     script:
         "scripts/plot_analysis.py"
 

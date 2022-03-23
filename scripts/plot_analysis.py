@@ -7,6 +7,12 @@ import seaborn as sns
 import pandas as pd
 from common import add_carrier_legend, load_network, plot_shapes
 
+def get_curtail_data(n):
+        relevant_generators=n.generators_t.p_max_pu.columns
+        curtailment=(n.generators_t.p_max_pu * n.generators.p_nom_opt.loc[relevant_generators]).subtract(n.generators_t.p.loc[:,relevant_generators], axis="columns").multiply(n.snapshot_weightings["generators"], axis=0).sum()
+        curtailment.index = n.generators.loc[relevant_generators].set_index(['bus','carrier']).index
+        curtailment=curtailment.groupby("carrier").sum().rename(n.name)
+        return curtailment
 
 def plot_capacity_bar(ax, networks):
     capacities=pd.concat([n.generators.groupby("carrier").p_nom_opt.sum().drop("load", errors='ignore').rename(n.name) for n in networks], axis=1)/1000 #in GW
@@ -18,12 +24,6 @@ def plot_capacity_bar(ax, networks):
     
 
 def plot_curtailment_bar(ax, networks):
-    def get_curtail_data(n):
-        relevant_generators=n.generators_t.p_max_pu.columns
-        curtailment=(n.generators_t.p_max_pu * n.generators.p_nom_opt.loc[relevant_generators]).subtract(n.generators_t.p.loc[:,relevant_generators], axis="columns").sum()
-        curtailment.index = n.generators.loc[relevant_generators].set_index(['bus','carrier']).index
-        curtailment=curtailment.groupby("carrier").sum().rename(n.name)
-        return curtailment
     curtailment=pd.concat([get_curtail_data(n) for n in networks], axis=1)
     curtailment.plot(kind='bar', ax=ax)
     ax.set_xticklabels(list(slr.carriers.nice_name.loc[curtailment.index]))
@@ -31,7 +31,15 @@ def plot_curtailment_bar(ax, networks):
     ax.set_xlabel("Generator")
     ax.set_title("Curtailment of energy")
     
-
+def plot_historical_curtailment_bar(ax, networks):
+    historical_curtailment=pd.read_csv("../data/curtailment_carrier.csv", index_col=0)["2019"]
+    curtailment=pd.concat([get_curtail_data(n) for n in networks], axis=1)/1000 # in GWh
+    curtailment=pd.concat([historical_curtailment, curtailment], axis=1, join="inner")
+    curtailment.plot(kind='bar', ax=ax)
+    ax.set_xticklabels(list(slr.carriers.nice_name.loc[curtailment.index]))
+    ax.set_ylabel("Curtailment in GWh")
+    ax.set_xlabel("Generator")
+    ax.set_title("Curtailment of energy")
 
 
 if __name__ == "__main__":
