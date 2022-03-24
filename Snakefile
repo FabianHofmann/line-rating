@@ -10,12 +10,11 @@ plt.rc("font", family="sans-serif")
 configfile: "configs/config.yaml"
 
 
-rule all:
+rule create_figures:
     input:
         expand(
-            "figures/de{year}_{clusters}_nodes_{opts}/{map}_map.pdf",
+            "figures/de{year}_{clusters}_nodes_{opts}/{figure}.pdf",
             **config["scenario"],
-            map=["operation", "capacity"]
         ),
 
 
