@@ -7,6 +7,7 @@ scenario:
   clusters: ["all"]
   opts: ["Co2L"]
   year: [2020, 2030]
+  figure: ["operation_map", "capacity_map", "curtailment_map", "curtailment_bar", "capacity_bar", "historical_curtailment_bar"]
 
 test:
   rating: ['dlr', 'slr']
@@ -48,6 +49,6 @@ plotting:
       #line_width_factor: 1.e-2
       refsize: 1000 # at what capacity should circle be drawn
     curtailment:
-      #bus_size_factor: 5.e-10
-      #line_width_factor: 1.e-3
+      #bus_size_factor: 8.e-10
+      line_width_factor: 1.e-3
       refsize: 1000 # at what capacity should circle be drawn

@@ -53,7 +53,7 @@ def plot_capacity(ax, n, bounds, bus_size_factor=None, line_width_factor=None):
     line_widths = n.lines.s_nom_opt
     line_width_factor=scale_line_widths(line_widths, line_width_factor)
     if not n.lines_t.s_max_pu.empty:
-        line_widths *= n.lines_t.s_max_pu.mean()
+        line_widths.loc[n.lines_t.s_max_pu.mean().index] *= n.lines_t.s_max_pu.mean().loc[:] # had the error that for some lines in dlr method there was no s_max_pu entry which then lead to missing line in line_width
 
     n.plot(
         ax=ax,
@@ -75,7 +75,7 @@ def plot_curtailment(ax, n, bounds, bus_size_factor=None, line_width_factor=None
     line_widths = n.lines.s_nom_opt
     line_width_factor=scale_line_widths(line_widths, line_width_factor)
     if not n.lines_t.s_max_pu.empty:
-        line_widths *= n.lines_t.s_max_pu.mean()
+        line_widths.loc[n.lines_t.s_max_pu.mean().index] *= n.lines_t.s_max_pu.mean() # had the error that for some lines in dlr method there was no s_max_pu entry which then lead to missing line in line_width
 
     n.plot(
         ax=ax,
@@ -95,8 +95,8 @@ if __name__ == "__main__":
         snakemake = mock_snakemake(
             "plot_maps",
             year="2020",
-            clusters="40",
-            opts="Co2L-4H",
+            clusters="all",
+            opts="Co2L",
             ext="png",
         )
 
