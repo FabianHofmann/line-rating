@@ -12,7 +12,12 @@ import cartopy.crs as ccrs
 import geopandas as gpd
 import matplotlib.pyplot as plt
 import pandas as pd
-from common import add_carrier_legend, load_network, plot_shapes
+from common import add_carrier_legend, load_network, plot_shapes, get_line_utilization
+import seaborn as sns
+
+# ---------------------------------------------------------------------------- #
+#    Funktions to automatically scale line width and bus sizes in map plots    #
+# ---------------------------------------------------------------------------- #
 
 
 def scale_bus_sizes(bus_sizes, bus_size_factor):
@@ -113,6 +118,8 @@ if __name__ == "__main__":
             opts="Co2L",
             ext="pdf",
         )
+    plt.style.use('seaborn-colorblind')
+    sns.set_context("paper", rc={"font.size":12,"axes.titlesize":16,"axes.labelsize":14, "xtick.labelsize":12, "ytick.labelsize":12})
 
     config = snakemake.config["plotting"]["map"]
     bounds = config["boundaries"]
@@ -121,6 +128,7 @@ if __name__ == "__main__":
     dlr = load_network(snakemake.input.network_dlr)
     networks = slr, dlr
     shapes = gpd.read_file(snakemake.input.shapes)
+    line_util=get_line_utilization(networks)
 
     for output in snakemake.output.keys():
 

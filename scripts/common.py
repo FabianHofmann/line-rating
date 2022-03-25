@@ -154,3 +154,44 @@ def add_carrier_legend(ax, carriers, size=1, scale=1, **kwargs):
     legend = ax.legend(handles, labels, handler_map=handler_map, **kwargs)
     ax.add_artist(legend)
     return legend
+
+
+def get_line_utilization(networks):
+    """
+    Helper function to normalize the utilization of each transmission line and make them comparable for DLR and SLR.
+    Utilization is the power flow in each line divided by the maximal possible power flow at each timestep.
+    """
+    line_util = dict()
+    line_util_temp = dict()
+    for n in networks:
+        if "Static" in n.name:
+            line_util_temp.update(
+                {
+                    n.name: np.abs(n.lines_t.p0).divide(
+                                n.lines.s_nom_opt * n.lines.s_max_pu, axis=1
+                            )
+                }
+            )
+        elif "Dynamic" in n.name:
+            line_util_temp.update(
+                {
+                    n.name: np.abs((n.lines_t.p0 / n.lines_t.s_max_pu)).divide(
+                                n.lines.s_nom_opt, axis=1
+                            )
+                }
+            )
+
+    line_util_min = np.min([line_util_temp[n.name].mean(axis=0).min() for n in networks])
+    line_util_max = np.max([line_util_temp[n.name].mean(axis=0).max() for n in networks])
+    
+    for n in networks:
+        line_util.update(
+            {
+                n.name
+                + "_mean_nom": line_util_temp[n.name]
+                .mean(axis=0)
+                .apply(lambda x: (x - line_util_min) / (line_util_max - line_util_min))
+            }
+        )
+
+    return line_util
