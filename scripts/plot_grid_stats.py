@@ -27,9 +27,9 @@ if __name__ == "__main__":
 
         snakemake = mock_snakemake(
             "plot_grid_stats",
-            year="2020",
-            clusters="5",
-            opts="Co2L-4H",
+            year="2030",
+            clusters="all",
+            opts="Co2L",
             ext="pdf",
         )
 

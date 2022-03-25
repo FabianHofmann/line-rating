@@ -14,46 +14,50 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from common import add_carrier_legend, load_network, plot_shapes
 
+
 def scale_bus_sizes(bus_sizes, bus_size_factor):
     if bus_size_factor is None:
         max_size_factor = 0.16
-        bus_size_factor = max_size_factor/bus_sizes.groupby("bus").sum().max()
+        bus_size_factor = max_size_factor / bus_sizes.groupby("bus").sum().max()
     return bus_size_factor
+
 
 def scale_line_widths(line_widths, line_width_factor):
     if line_width_factor is None:
         max_line_factor = 5
-        line_width_factor = max_line_factor/line_widths.max()
+        line_width_factor = max_line_factor / line_widths.max()
     return line_width_factor
 
+
 def plot_operation(ax, n, bounds, bus_size_factor=None, line_width_factor=None):
-    #Plots mean power generation over all time steps in MW
+    # Plots mean power generation over all time steps in MW
     g = n.generators_t.p.mean()
     g = g.groupby([n.generators.bus, n.generators.carrier]).sum()
-    bus_size_factor=scale_bus_sizes(g, bus_size_factor)
+    bus_size_factor = scale_bus_sizes(g, bus_size_factor)
     f = pd.concat({c: n.pnl(c).p0.mean() for c in ["Line", "Link"]})
-    line_width_factor=scale_line_widths(f, line_width_factor)
+    line_width_factor = scale_line_widths(f, line_width_factor)
     n.plot(
         ax=ax,
         flow=f * line_width_factor,
         bus_sizes=g * bus_size_factor,
         color_geomap=False,
         boundaries=bounds,
+        line_colors="purple",
     )
     return bus_size_factor, line_width_factor
 
 
 def plot_capacity(ax, n, bounds, bus_size_factor=None, line_width_factor=None):
-    #Plots capacity of all generators in MW, existing and newly built
+    # Plots capacity of all generators in MW, existing and newly built
     g = n.generators.p_nom_opt
     bus_sizes = g.groupby([n.generators.bus, n.generators.carrier]).sum()
     bus_sizes.drop("load", level=1, inplace=True)
-    bus_size_factor=scale_bus_sizes(bus_sizes, bus_size_factor)
+    bus_size_factor = scale_bus_sizes(bus_sizes, bus_size_factor)
     link_widths = n.links.p_nom_opt
     line_widths = n.lines.s_nom_opt
-    line_width_factor=scale_line_widths(line_widths, line_width_factor)
+    line_width_factor = scale_line_widths(line_widths, line_width_factor)
     if not n.lines_t.s_max_pu.empty:
-        line_widths.loc[n.lines_t.s_max_pu.mean().index] *= n.lines_t.s_max_pu.mean().loc[:] # had the error that for some lines in dlr method there was no s_max_pu entry which then lead to missing line in line_width
+        line_widths *= n.lines_t.s_max_pu.mean().reindex(n.lines.index, fill_value=1)
 
     n.plot(
         ax=ax,
@@ -64,18 +68,27 @@ def plot_capacity(ax, n, bounds, bus_size_factor=None, line_width_factor=None):
         boundaries=bounds,
     )
     return bus_size_factor, line_width_factor
+
 
 def plot_curtailment(ax, n, bounds, bus_size_factor=None, line_width_factor=None):
-    #Plots total curtailment in MWh of each generator over each time step
-    curtailment=(n.generators_t.p_max_pu * n.generators.p_nom_opt).subtract(n.generators_t.p, axis="columns").sum()
+    # Plots total curtailment in MWh of each generator over each time step
+    curtailment = (
+        (n.generators_t.p_max_pu * n.generators.p_nom_opt)
+        .subtract(n.generators_t.p, axis="columns")
+        .sum()
+    )
     bus_sizes = curtailment.groupby([n.generators.bus, n.generators.carrier]).sum()
     bus_sizes.drop("load", level=1, inplace=True)
-    bus_size_factor=scale_bus_sizes(bus_sizes, bus_size_factor)
+    bus_size_factor = scale_bus_sizes(bus_sizes, bus_size_factor)
     link_widths = n.links.p_nom_opt
     line_widths = n.lines.s_nom_opt
-    line_width_factor=scale_line_widths(line_widths, line_width_factor)
+    line_width_factor = scale_line_widths(line_widths, line_width_factor)
     if not n.lines_t.s_max_pu.empty:
-        line_widths.loc[n.lines_t.s_max_pu.mean().index] *= n.lines_t.s_max_pu.mean() # had the error that for some lines in dlr method there was no s_max_pu entry which then lead to missing line in line_width
+        line_widths.loc[
+            n.lines_t.s_max_pu.mean().index
+        ] *= (
+            n.lines_t.s_max_pu.mean()
+        )  # had the error that for some lines in dlr method there was no s_max_pu entry which then lead to missing line in line_width
 
     n.plot(
         ax=ax,
@@ -86,6 +99,7 @@ def plot_curtailment(ax, n, bounds, bus_size_factor=None, line_width_factor=None
         boundaries=bounds,
     )
     return bus_size_factor, line_width_factor
+
 
 if __name__ == "__main__":
 
@@ -94,10 +108,10 @@ if __name__ == "__main__":
 
         snakemake = mock_snakemake(
             "plot_maps",
-            year="2020",
+            year="2030",
             clusters="all",
             opts="Co2L",
-            ext="png",
+            ext="pdf",
         )
 
     config = snakemake.config["plotting"]["map"]
@@ -120,20 +134,22 @@ if __name__ == "__main__":
 
         for (n, ax) in zip(networks, axes):
             plot_func = eval(f"plot_{output}")
-            bus_size_factor, line_width_factor = plot_func(ax, n, bounds, bus_size_factor, line_width_factor)
-            plot_shapes(ax, shapes)
-            ax.set_title(n.name)
+            bus_size_factor, line_width_factor = plot_func(
+                ax, n, bounds, bus_size_factor, line_width_factor
+            )
+            plot_shapes(ax, shapes, edgecolor="white", facecolor="#eeeeee")
+            ax.set_title(n.name, fontsize=11)
 
         add_carrier_legend(
             ax,
-            n.carriers,
+            n.carriers.sort_index(),
             size=refsize,
             scale=bus_size_factor,
             bbox_to_anchor=(1, 1),
             loc="upper left",
             frameon=False,
         )
-        
+
         if output != "curtailment":
             unit = "GW"
         else:
