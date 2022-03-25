@@ -15,27 +15,6 @@ test:
   opts: ["Co2L-4H"]
   year: [2020, 2030]
 
-solving:
-  options:
-    formulation: kirchhoff
-    load_shedding: true
-    noisy_costs: true
-    min_iterations: 1
-    max_iterations: 1
-    clip_p_max_pu: 0.01
-    skip_iterations: true
-    track_iterations: false
-  solver:
-    name: gurobi
-    method: 2 # barrier
-    crossover: 0
-    BarConvTol: 1.e-5
-    FeasibilityTol: 1.e-6
-    AggFill: 0
-    PreDual: 0
-    GURO_PAR_BARDENSETHRESH: 200
-
-
 plotting:
   map:
     boundaries: [5.5, 15.5, 47,  55]
@@ -49,5 +28,8 @@ plotting:
       line_width_factor: 5.e-3
       refsize: 1000 # at what capacity should circle be drawn
     curtailment:
-      #bus_size_factor: 8.e-10
+      bus_size_factor: 8.e-10
       line_width_factor: 1.e-3
+      refsize: 1000 # at what capacity should circle be drawn
+    utilization:
+      refsize: 1000 # at what capacity should circle be drawn

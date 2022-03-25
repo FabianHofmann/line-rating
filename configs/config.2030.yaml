@@ -170,7 +170,7 @@ load:
   interpolate_limit: 3 # data gaps up until this size are interpolated linearly
   time_shift_for_large_gaps: 1w # data gaps up until this size are copied by copying from
   manual_adjustments: true # false
-  scaling_factor: 1.3 # load in 2013 is 509TWh and in 2030 658TWh according to https://www.bmwi.de/Redaktion/DE/Downloads/E/prognos-bruttostromverbrauch-2018-2030.pdf?__blob=publicationFile&v=2
+  scaling_factor: 1.09 # load in 2013 is 605TWh https://www.umweltbundesamt.de/daten/energie/stromverbrauch and in 2030 658TWh according to https://www.bmwi.de/Redaktion/DE/Downloads/E/prognos-bruttostromverbrauch-2018-2030.pdf?__blob=publicationFile&v=2
 
 costs:
   year: 2030

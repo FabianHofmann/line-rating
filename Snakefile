@@ -96,17 +96,37 @@ def memory(w):
     else:
         return int(factor * (10000 + 195 * int(w.clusters)))
 
-rule solve_network:
+rule solve_network_2030:
     input:
-        "networks/de{year}_{clusters}_nodes_{opts}_{rating}.nc",
+        "networks/de2030_{clusters}_nodes_{opts}_{rating}.nc",
     output:
-        "results/de{year}_{clusters}_nodes_{opts}_{rating}.nc",
+        "results/de2030_{clusters}_nodes_{opts}_{rating}.nc",
     log:
-        solver="logs/solve_network/de{year}_{clusters}_nodes_{opts}_{rating}_solver.log",
-        python="logs/solve_network/de{year}_{clusters}_nodes_{opts}_{rating}_python.log",
-        memory="logs/solve_network/de{year}_{clusters}_nodes_{opts}_{rating}_memory.log",
+        solver="logs/solve_network/de2030_{clusters}_nodes_{opts}_{rating}_solver.log",
+        python="logs/solve_network/de2030_{clusters}_nodes_{opts}_{rating}_python.log",
+        memory="logs/solve_network/de2030_{clusters}_nodes_{opts}_{rating}_memory.log",
     benchmark:
-        "benchmarks/solve_network/de{year}_{clusters}_nodes_{opts}_{rating}"
+        "benchmarks/solve_network/de2030_{clusters}_nodes_{opts}_{rating}"
+    threads: 4
+    resources: 
+    	mem_mb=memory,
+    	walltime="20:00:00"
+    shadow:
+        "shallow"
+    script:
+        pypsaeur2030("scripts/solve_network.py")
+
+rule solve_network_2020:
+    input:
+        "networks/de2020_{clusters}_nodes_{opts}_{rating}.nc",
+    output:
+        "results/de2020_{clusters}_nodes_{opts}_{rating}.nc",
+    log:
+        solver="logs/solve_network/de2020_{clusters}_nodes_{opts}_{rating}_solver.log",
+        python="logs/solve_network/de2020_{clusters}_nodes_{opts}_{rating}_python.log",
+        memory="logs/solve_network/de2020_{clusters}_nodes_{opts}_{rating}_memory.log",
+    benchmark:
+        "benchmarks/solve_network/de2020_{clusters}_nodes_{opts}_{rating}"
     threads: 4
     resources: 
     	mem_mb=memory,
@@ -125,7 +145,8 @@ rule plot_maps:
     output:
         capacity="figures/de{year}_{clusters}_nodes_{opts}/capacity_map.{ext}",
         operation="figures/de{year}_{clusters}_nodes_{opts}/operation_map.{ext}",
-        curtailment="figures/de{year}_{clusters}_nodes_{opts}/curtailment_map.{ext}"
+        curtailment="figures/de{year}_{clusters}_nodes_{opts}/curtailment_map.{ext}",
+        utilization="figures/de{year}_{clusters}_nodes_{opts}/utilization_map.{ext}"
     script:
         "scripts/plot_maps.py"
 
