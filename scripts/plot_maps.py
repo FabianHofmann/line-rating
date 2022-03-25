@@ -27,6 +27,7 @@ def plot_operation(ax, n, bus_size_factor, line_width_factor, bounds):
         bus_sizes=g * bus_size_factor,
         color_geomap=False,
         boundaries=bounds,
+        line_colors="purple",
     )
 
 
@@ -38,7 +39,7 @@ def plot_capacity(ax, n, bus_size_factor, line_width_factor, bounds):
     link_widths = n.links.p_nom_opt
     line_widths = n.lines.s_nom_opt
     if not n.lines_t.s_max_pu.empty:
-        line_widths *= n.lines_t.s_max_pu.mean()
+        line_widths *= n.lines_t.s_max_pu.mean().reindex(n.lines.index, fill_value=1)
 
     n.plot(
         ax=ax,
@@ -57,9 +58,9 @@ if __name__ == "__main__":
 
         snakemake = mock_snakemake(
             "plot_maps",
-            year="2020",
-            clusters="5",
-            opts="Co2L-4H",
+            year="2030",
+            clusters="all",
+            opts="Co2L",
             ext="pdf",
         )
 
@@ -84,11 +85,12 @@ if __name__ == "__main__":
         for (n, ax) in zip(networks, axes):
             plot_func = eval(f"plot_{output}")
             plot_func(ax, n, bus_size_factor, line_width_factor, bounds)
-            plot_shapes(ax, shapes)
+            plot_shapes(ax, shapes, edgecolor="white", facecolor="#eeeeee")
+            ax.set_title(n.name, fontsize=11)
 
         add_carrier_legend(
             ax,
-            n.carriers,
+            n.carriers.sort_index(),
             size=refsize,
             scale=bus_size_factor,
             bbox_to_anchor=(1, 1),
