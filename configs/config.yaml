@@ -15,6 +15,32 @@ test:
   opts: ["Co2L-4H"]
   year: [2020, 2030]
 
+solving:
+  options:
+    formulation: kirchhoff
+    load_shedding: true
+    noisy_costs: true
+    min_iterations: 1
+    max_iterations: 1
+    clip_p_max_pu: 0.01
+    skip_iterations: true
+    track_iterations: false
+  solver:
+    name: gurobi
+    method: 2 # barrier
+    crossover: 0
+    BarConvTol: 1.e-5
+    FeasibilityTol: 1.e-6
+    AggFill: 0
+    PreDual: 0
+    GURO_PAR_BARDENSETHRESH: 200
+
+electricity:
+  renewable_aim: # installed capacity aim 2030 of BMWi for Germany https://www.bmwi.de/Redaktion/DE/Downloads/Energie/220111_eroeffnungsbilanz_klimaschutz.pdf?__blob=publicationFile&v=22
+    onwind: 100 #GW
+    offwind: 30 #GW
+    solar: 200 #GW
+
 plotting:
   map:
     boundaries: [5.5, 15.5, 47,  55]

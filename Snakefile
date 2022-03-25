@@ -96,37 +96,18 @@ def memory(w):
     else:
         return int(factor * (10000 + 195 * int(w.clusters)))
 
-rule solve_network_2030:
-    input:
-        "networks/de2030_{clusters}_nodes_{opts}_{rating}.nc",
-    output:
-        "results/de2030_{clusters}_nodes_{opts}_{rating}.nc",
-    log:
-        solver="logs/solve_network/de2030_{clusters}_nodes_{opts}_{rating}_solver.log",
-        python="logs/solve_network/de2030_{clusters}_nodes_{opts}_{rating}_python.log",
-        memory="logs/solve_network/de2030_{clusters}_nodes_{opts}_{rating}_memory.log",
-    benchmark:
-        "benchmarks/solve_network/de2030_{clusters}_nodes_{opts}_{rating}"
-    threads: 4
-    resources: 
-    	mem_mb=memory,
-    	walltime="20:00:00"
-    shadow:
-        "shallow"
-    script:
-        pypsaeur2030("scripts/solve_network.py")
 
-rule solve_network_2020:
+rule solve_network:
     input:
-        "networks/de2020_{clusters}_nodes_{opts}_{rating}.nc",
+        "networks/de{year}_{clusters}_nodes_{opts}_{rating}.nc",
     output:
-        "results/de2020_{clusters}_nodes_{opts}_{rating}.nc",
+        "results/de{year}_{clusters}_nodes_{opts}_{rating}.nc",
     log:
-        solver="logs/solve_network/de2020_{clusters}_nodes_{opts}_{rating}_solver.log",
-        python="logs/solve_network/de2020_{clusters}_nodes_{opts}_{rating}_python.log",
-        memory="logs/solve_network/de2020_{clusters}_nodes_{opts}_{rating}_memory.log",
+        solver="logs/solve_network/de{year}_{clusters}_nodes_{opts}_{rating}_solver.log",
+        python="logs/solve_network/de{year}_{clusters}_nodes_{opts}_{rating}_python.log",
+        memory="logs/solve_network/de{year}_{clusters}_nodes_{opts}_{rating}_memory.log",
     benchmark:
-        "benchmarks/solve_network/de2020_{clusters}_nodes_{opts}_{rating}"
+        "benchmarks/solve_network/de{year}_{clusters}_nodes_{opts}_{rating}"
     threads: 4
     resources: 
     	mem_mb=memory,

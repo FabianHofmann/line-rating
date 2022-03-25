@@ -34,6 +34,28 @@ def scale_line_widths(line_widths, line_width_factor):
     return line_width_factor
 
 
+
+# ---------------------------------------------------------------------------- #
+#                              Plotting functions                              #
+# ---------------------------------------------------------------------------- #
+
+
+def plot_utilization(ax, n, bounds, bus_size_factor=None, line_width_factor=None):
+    g = n.generators_t.p.mean()
+    g = g.groupby([n.generators.bus, n.generators.carrier]).sum()
+    bus_size_factor=scale_bus_sizes(g, bus_size_factor)
+    f = pd.concat({"Line":line_util[n.name + "_mean_nom"]})
+    line_width_factor=scale_line_widths(f, line_width_factor)
+    n.plot(
+        ax=ax,
+        flow=f * line_width_factor*2,
+        bus_sizes=g * bus_size_factor,
+        color_geomap=False,
+        boundaries=bounds,
+    )
+    return bus_size_factor, line_width_factor
+
+
 def plot_operation(ax, n, bounds, bus_size_factor=None, line_width_factor=None):
     # Plots mean power generation over all time steps in MW
     g = n.generators_t.p.mean()
@@ -157,7 +179,7 @@ if __name__ == "__main__":
             loc="upper left",
             frameon=False,
         )
-
+        
         if output != "curtailment":
             unit = "GW"
         else:
