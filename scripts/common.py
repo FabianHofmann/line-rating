@@ -14,7 +14,7 @@ def add_load_shedding_color(n):
     Needed until https://github.com/PyPSA/pypsa-eur/pull/320 is merged.
     """
     if "Load" in n.carriers.index:
-        n.carriers.loc["load", "color"] = "indianred"
+        n.carriers.loc["load", "color"] = "purple"
         n.carriers.loc["load", "co2_emissions"] = 0
         n.carriers.loc["load", "nice_name"] = "Load shedding"
         n.remove("Carrier", "Load")
@@ -43,14 +43,11 @@ def load_network(path):
     return n
 
 
-def plot_shapes(ax, shapes):
+def plot_shapes(ax, shapes, **kwargs):
+    kwargs.setdefault("facecolor", "whitesmoke")
+    kwargs.setdefault("edgecolor", "grey")
     shapes.plot(
-        ax=ax,
-        linewidth=0.2,
-        transform=ccrs.PlateCarree(),
-        aspect="equal",
-        facecolor="whitesmoke",
-        edgecolor="grey",
+        ax=ax, linewidth=0.1, transform=ccrs.PlateCarree(), aspect="equal", **kwargs
     )
 
 
