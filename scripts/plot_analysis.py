@@ -28,7 +28,7 @@ def plot_curtailment_bar(ax, networks):
     ax.set_title("Curtailment of energy")
     
 def plot_historical_curtailment_bar(ax, networks):
-    historical_curtailment=pd.read_csv("../data/curtailment_carrier.csv", index_col=0)["2019"]
+    historical_curtailment=pd.read_csv(snakemake.input.curtailment_data, index_col=0)["2019"]
     curtailment=pd.concat([get_curtail_data(n) for n in networks], axis=1)/1000 # in GWh
     curtailment=pd.concat([historical_curtailment, curtailment], axis=1, join="inner")
     curtailment.plot(kind='bar', ax=ax)
