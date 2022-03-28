@@ -166,7 +166,7 @@ transformers:
   type: ''
 
 load:
-  power_statistics: false # should be false, because recent data from 2020 only is from ENTSO-E Transparency
+  power_statistics: true # should be false, because recent data from 2020 only is from ENTSO-E Transparency
   interpolate_limit: 3 # data gaps up until this size are interpolated linearly
   time_shift_for_large_gaps: 1w # data gaps up until this size are copied by copying from
   manual_adjustments: true # false
