@@ -15,12 +15,15 @@ rule create_figures:
         expand(
             "figures/de{year}_{clusters}_nodes_{opts}/{figure}.pdf",
             **config["scenario"],
-        ),
+        )
 
 
-rule test:
+rule create_figures_test:
     input:
-        expand("results/de{year}_{clusters}_nodes_{opts}_{rating}.nc", **config["test"]),
+        expand(
+            "figures/de{year}_{clusters}_nodes_{opts}/{figure}.pdf",
+            **config["test"],
+        )
 
 
 subworkflow pypsaeur2020:

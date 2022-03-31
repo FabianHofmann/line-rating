@@ -1,0 +1,138 @@
+,Bidding Zone,Installed Capacity [MW],Name,Production Type,Voltage Connection Level [kV]
+11WD43VIWXHOILLM,10YDE-ENBW-----N,2142,Vorarlberger Illwerke AG,Hydro Pumped Storage,220
+11WD4HLBR1CS---A,10YDE-ENBW-----N,778,HKW Heilbronn,Fossil Hard coal,380
+11WD4SWSW5HD4--R,10YDE-ENBW-----N,258,Schluchseewerk AG,Hydro Pumped Storage,220
+11WD4KWRHF5-S--Z,10YDE-ENBW-----N,100,KW Rheinfelden DE,Hydro Run-of-river and poundage,220
+11WD4IFFE5G----Z,10YDE-ENBW-----N,146,Rheinkraftwerk Iffezheim,Hydro Run-of-river and poundage,110
+11WD4WALK5G----E,10YDE-ENBW-----N,136,Kraftwerk Walheim,Fossil Oil,110
+11WD4KWLFB5-S--M,10YDE-ENBW-----N,106,KW Laufenburg,Hydro Run-of-river and poundage,220
+11WD4MUST5G----B,10YDE-ENBW-----N,178.9,HKW Stuttgart-Münster,Waste,110
+11WD4GKM-2CD4--J,10YDE-ENBW-----N,1037.3,GKM AG TNG,Fossil Hard coal,220
+11WD4SAEK2HS---S,10YDE-ENBW-----N,180,Schluchseewerk AG,Hydro Pumped Storage,220
+11WD4WEHR1HS---G,10YDE-ENBW-----N,455,Schluchseewerk AG,Hydro Pumped Storage,220
+11WD4AL1KU1-S--E,10YDE-ENBW-----N,595,HKW Altbach/Deizisau,Fossil Hard coal,380
+11WD4GKNK1S----S,10YDE-ENBW-----N,1320,Kernkraftwerk Neckarwestheim,Nuclear,380
+11WD4KKP21N-S--O,10YDE-ENBW-----N,1402,KKW Philippsburg,Nuclear,380
+11WD4DAXLA-S---T,10YDE-ENBW-----N,1347,Rheinhafen-Dampfkraftwerk Karlsruhe,Fossil Hard coal,380
+11WD4GKM-XCD0--3,10YDE-ENBW-----N,254,GKM AG DBEnergie,Fossil Hard coal,110
+11WD7HUCK2G--KWR,10YDE-RWENET---I,600,Huckingen (HKM),Fossil Coal-derived gas,220
+11WD7GARE5XHEKWQ,10YDE-RWENET---I,424,HERDECKE,Fossil Gas,110
+11WD7LUDW5GSUEDE,10YDE-RWENET---I,345,GuD Ludwigshafen Süd,Fossil Gas,110
+11WD7BISC5GKW23O,10YDE-RWENET---I,785,KW Mainz-Wiesbaden,Fossil Gas,110
+11WD7BRAU5G-KW-N,10YDE-RWENET---I,562,GuD Dormagen,Fossil Gas,110
+11WD7UCHT5XROSOK,10YDE-RWENET---I,125,Kraftwerk Römerbrücke,Fossil Gas,110
+11WD7NORF5G--KWG,10YDE-RWENET---I,1145,Kraftwerk Lausward,Fossil Gas,110
+11WD72VIA2H-KW-0,10YDE-RWENET---I,1294,Vianden,Hydro Pumped Storage,220
+11WD4GKM-2CD7--7,10YDE-RWENET---I,691.7,GKM AG Amprion,Fossil Hard coal,220
+11WD7ENSD5SKW3-E,10YDE-RWENET---I,283,Ensdorf,Fossil Hard coal,110
+11WD7GARE5X-PSWB,10YDE-RWENET---I,140,PSW-ROENK-KW,Hydro Pumped Storage,110
+11WD7KWKN1GBL203,10YDE-RWENET---I,426,Knapsack 2,Fossil Gas,380
+11WD7WEIS-B-KW-C,10YDE-RWENET---I,2389,Weisweiler,Fossil Brown coal/Lignite,380
+11WD7KWKN----KW1,10YDE-RWENET---I,784,Knapsack 1,Fossil Gas,380
+11WD7IBBE2S--KW6,10YDE-RWENET---I,791,Ibbenbüren,Fossil Hard coal,380
+11WD7NIED-B-KW-5,10YDE-RWENET---I,2795,Niederaußem,Fossil Brown coal/Lignite,380
+11WD7ELLE5X--KWV,10YDE-RWENET---I,189.1,Kraftwerk Flingern,Waste,110
+11WD7NEUR-B-KW-B,10YDE-RWENET---I,4212,Neurath,Fossil Brown coal/Lignite,380
+11WD7BEEC5XRUKWN,10YDE-RWENET---I,320,RUHRORT-KW,Fossil Coal-derived gas,110
+11WD7GARE5XELKWD,10YDE-RWENET---I,325,Elverlingsen,Fossil Hard coal,110
+11WD7RHAU5G-3--3,10YDE-RWENET---I,274,HKW III,Fossil Gas,110
+11WD7ENSD2SKW1-4,10YDE-RWENET---I,106,Kraftwerk Ensdorf,Fossil Hard coal,220
+11WD7LUDW2GA800M,10YDE-RWENET---I,412,GuD Ludwigshafen Mitte,Fossil Gas,220
+11WD7WEIH2S--KWV,10YDE-RWENET---I,656,Weiher,Fossil Hard coal,220
+11WD7KWHU----KW9,10YDE-RWENET---I,746,KW Lünen,Fossil Hard coal,380
+11WD7BERG1S--KWB,10YDE-RWENET---I,717,Bergkamen,Fossil Hard coal,380
+11WD7BEEC5XHAKW5,10YDE-RWENET---I,385,HAMBORN-KW,Fossil Coal-derived gas,110
+11WD4SWSW5HD7--F,10YDE-RWENET---I,870,Schluchsee,Hydro Pumped Storage,380
+11WD7EMSL-G-KW-T,10YDE-RWENET---I,1820,Emsland,Fossil Gas,380
+11WD7VOLK5S--KWI,10YDE-RWENET---I,390,Voelklingen,Fossil Hard coal,110
+11WD7BOLA--KWNIK,10YDE-RWENET---I,866,HKW Niehl,Fossil Gas,380
+11WD7WALS1S--KW0,10YDE-RWENET---I,1095,Walsum,Fossil Hard coal,380
+11WD7STUM----KW9,10YDE-RWENET---I,850,KW Hamm-Uentrop,Fossil Gas,380
+11WD7FUEH5GMEKW7,10YDE-RWENET---I,110,HKW Merkenich,Fossil Gas,110
+11WD7HERN2S--KWU,10YDE-RWENET---I,740,Herne,Fossil Hard coal,220
+11WD7KRBG1K-KW-V,10YDE-RWENET---I,1288,Gundremmingen,Nuclear,380
+11WD7SCHO-S--KWW,10YDE-RWENET---I,690,Scholven,Fossil Hard coal,380
+11WD7KOEP2P--KWG,10YDE-RWENET---I,162,Koepchenwerk,Hydro Pumped Storage,380
+11WD7KKE-1K--KW5,10YDE-RWENET---I,1336,Emsland,Nuclear,380
+11WD7WEST1S-KW-K,10YDE-RWENET---I,780,Westfalen,Fossil Hard coal,380
+11WD7GERS-X-KW-C,10YDE-RWENET---I,1948,Gersteinwerk,Fossil Gas,380
+11WD7MITB1C----N,10YDE-RWENET---I,726,Bexbach,Fossil Hard coal,380
+11WD2BMIT0002731,10YDE-EON------1,176,KW Mittelsbueren,Fossil Gas,110
+11WD2KUET000160J,10YDE-EON------1,289,KW Kühtai,Hydro Pumped Storage,220
+11WD2ERZH0002682,10YDE-EON------1,220,PSW Erzhausen,Hydro Pumped Storage,220
+11WD2OAMK000342L,10YDE-EON------1,301,Amrumbank West,Wind Offshore,400
+11WD2ODTK000336Y,10YDE-EON------1,288,DanTysk,Wind Offshore,380
+11W0-0000-0029-P,10YDE-EON------1,332,Windpark Nordsee One,Wind Offshore,155
+11WD2HANN5C----0,10YDE-EON------1,272,GKW Hannover (GKH),Fossil Hard coal,110
+11WD2SILT000157E,10YDE-EON------1,500,KW Silz,Hydro Water Reservoir,220
+11WD2ONSO000218S,10YDE-EON------1,288,Offshore Windpark,Wind Offshore,155
+11WD2BHAF000272F,10YDE-EON------1,300,KW Hafen,Fossil Hard coal,110
+11W0-0000-0130-6,10YDE-EON------1,450,Borkum Riffgrund II,Wind Offshore,155
+11WD2PLAT000267Z,10YDE-EON------1,120,Kraftwerk Plattling,Fossil Gas,110
+11WD2GKBB000334V,10YDE-EON------1,450,GKB Mittelsbueren,Fossil Gas,110
+11WD2INGO0001783,10YDE-EON------1,772,Ingolstadt,Fossil Oil,220
+11WD2ZOLL0002880,10YDE-EON------1,472,Kraftwerk Zolling,Fossil Hard coal,380
+11WD2GEBE000177K,10YDE-EON------1,823,Franken I,Fossil Gas,110
+11WD2WBNK000318M,10YDE-EON------1,123,HKW Nord,Fossil Hard coal,110
+11WD2MEHR2CSWH-O,10YDE-EON------1,690,KW Mehrum (KWM),Fossil Hard coal,220
+11WD2BHAS000271O,10YDE-EON------1,119,KW Hastedt,Fossil Hard coal,110
+11WD2WBWK000317H,10YDE-EON------1,277,HKW West,Fossil Hard coal,110
+11WD2ORG-000347Q,10YDE-EON------1,113,Offshore-Windpark RIFFGAT,Wind Offshore,155
+11WD2LIND5G----6,10YDE-EON------1,230,GKW Linden (GKL),Fossil Gas,110
+11WD2BUSC0002637,10YDE-EON------1,352,Kraftwerk Buschhaus,Fossil Brown coal/Lignite,380
+11WD2GHKW000296G,10YDE-EON------1,1360,Grohnde,Nuclear,380
+11WD2BRKW000294C,10YDE-EON------1,1410,Brokdorf,Nuclear,380
+11WD2KIKW000301W,10YDE-EON------1,323,Kiel,Fossil Hard coal,220
+11WD2SUE1000099L,10YDE-EON------1,298,Sued GuD1,Fossil Gas,110
+11WD2OTWB000266P,10YDE-EON------1,200,Windpark Trianel Borkum West,Wind Offshore,380
+11WD2WILK000286V,10YDE-EON------1,726,Kraftwerk Wilhelmshaven,Fossil Hard coal,380
+11WD2HUKW000298J,10YDE-EON------1,321,Huntorf,Fossil Gas,220
+11WD2W2--0002757,10YDE-EON------1,480,Waldeck II,Hydro Pumped Storage,380
+11WD2BUKW000310A,10YDE-EON------1,120,Burghausen_GT,Fossil Gas,110
+11WD2SRKW000345J,10YDE-EON------1,181,HKW-Nürnberg-Sandreuth,Fossil Gas,110
+11WD2FARK000287K,10YDE-EON------1,350,Kraftwerk Farge,Fossil Hard coal,380
+11WD2HERR5GKW--1,10YDE-EON------1,100,KW Herrenhausen (KWH),Fossil Gas,110
+11WD2OGW20003378,10YDE-EON------1,252,Gode Wind II,Wind Offshore,155
+11WD2OWS0000352F,10YDE-EON------1,288,Sandbank,Wind Offshore,380
+11WD2NO2K000308Z,10YDE-EON------1,373,Nord 2,Fossil Hard coal,110
+11WD2ISKW000299Q,10YDE-EON------1,1410,Isar 2,Nuclear,380
+11WD2FFW-000203E,10YDE-EON------1,267,HKW West,Fossil Gas,110
+11WD2OBUT0002657,10YDE-EON------1,288,OWP Butendiek,Wind Offshore,155
+11WD2OGW1000346F,10YDE-EON------1,332,Gode Wind I,Wind Offshore,155
+11WD2WI1K000303F,10YDE-EON------1,757,Wilhelmshaven,Fossil Hard coal,220
+11WD2STAU0001800,10YDE-EON------1,1132,Staudinger,Fossil Gas,380
+11WD2IRSC000179N,10YDE-EON------1,1822,Irsching,Fossil Gas,380
+11WD2OBA1000349Z,10YDE-EON------1,400,WP Bard Offshore 1,Wind Offshore,155
+11WD2HEKW000297X,10YDE-EON------1,875,Heyden,Fossil Hard coal,380
+11WD2SUE2000103B,10YDE-EON------1,400,Sued GuD2,Fossil Gas,110
+11WD2OGTI000264J,10YDE-EON------1,400,Global Tech I,Wind Offshore,380
+11WD2OWVM000355S,10YDE-EON------1,402,Offshore-Windpark Veja Mate,Wind Offshore,155
+11WD2OBR1000278R,10YDE-EON------1,312,Borkum Riffgrund I,Wind Offshore,155
+11WD8REUW1C----4,10YDE-VE-------2,564,HKW Reuter West,Fossil Hard coal,380
+11WD8ROST1C---P5,10YDE-VE-------2,514,Kraftwerk Rostock,Fossil Hard coal,380
+11WD8CHAR5X----K,10YDE-VE-------2,146,Charlottenburg,Fossil Gas,110
+11WD8LEIP5X----6,10YDE-VE-------2,167,HKW Nord,Fossil Gas,110
+11WD8DRES5X---PZ,10YDE-VE-------2,260,GTHKW Nossener Bruecke,Fossil Gas,110
+11WD8SCHK1L----O,10YDE-VE-------2,900,Schkopau,Fossil Brown coal/Lignite,380
+11WD8HAVLXW---PM,10YDE-VE-------2,147,Windpark Havelland,Wind Onshore,380
+11WD8MARK1H----7,10YDE-VE-------2,960,PSW Markersbach,Hydro Pumped Storage,380
+11WD8MOOR1C----G,10YDE-VE-------2,1600,HKW Moorburg,Fossil Hard coal,110
+11WD8MOAB5X----5,10YDE-VE-------2,140,Moabit,Fossil Hard coal,110
+11WD8HOH22H----1,10YDE-VE-------2,320,PSW Hohenwarte II,Hydro Pumped Storage,220
+14W-DRX-WP-KW--S,10YDE-VE-------2,116.7,UW Druxberge,Wind Onshore,110
+11W0-0000-0026-Y,10YDE-VE-------2,350,Wikinger_Prod,Wind Offshore,220
+11WD8TIEF5X----V,10YDE-VE-------2,316,HKW Tiefstack,Fossil Hard coal,110
+11WD8KLIN5X----0,10YDE-VE-------2,164,HKW Klingenberg,Fossil Gas,110
+11WD8MITT5G----0,10YDE-VE-------2,444,HKW Mitte,Fossil Gas,110
+11WD8BALT3W---PS,10YDE-VE-------2,336.3,Windpark Baltic 1 and 2,Wind Offshore,380
+11WD8BOXB1L----J,10YDE-VE-------2,2470,KW Boxberg,Fossil Brown coal/Lignite,380
+11WD8LICH5G----1,10YDE-VE-------2,144,HKW Lichterfelde,Fossil Gas,110
+11WD8REUT5X----M,10YDE-VE-------2,160,HKW Reuter,Fossil Hard coal,110
+11WD8SCHW5X----D,10YDE-VE-------2,359,Industriekraftwerk PCK,Fossil Oil,110
+11WD8SWPU1L----5,10YDE-VE-------2,1510,KW Schwarze Pumpe,Fossil Brown coal/Lignite,380
+11WD8GOLD1H----6,10YDE-VE-------2,1060,PSW Goldisthal,Hydro Pumped Storage,380
+11WD8GEHA5H----R,10YDE-VE-------2,120,PSW Geesthacht,Hydro Pumped Storage,110
+11WD8LIPD1L----P,10YDE-VE-------2,1782,KW Lippendorf,Fossil Brown coal/Lignite,380
+11WD8WED15C----Q,10YDE-VE-------2,250,HKW Wedel,Fossil Hard coal,110
+11WD8JAEN1L----Z,10YDE-VE-------2,2500,KW Jänschwalde,Fossil Brown coal/Lignite,380
+11WD8WILM5O----7,10YDE-VE-------2,276,Wilmersdorf,Fossil Oil,110

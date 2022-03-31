@@ -12,8 +12,9 @@ scenario:
 test:
   rating: ['dlr', 'slr']
   clusters: [5]
-  opts: ["Co2L-4H"]
+  opts: ["Co2L-24H"]
   year: [2020, 2030]
+  figure: ["operation_map", "capacity_map", "curtailment_map", "curtailment_bar", "capacity_bar", "historical_curtailment_bar"]
 
 solving:
   options:
@@ -36,10 +37,15 @@ solving:
     GURO_PAR_BARDENSETHRESH: 200
 
 electricity:
+  # parameters used for the min renewable constraint
   renewable_aim: # installed capacity aim 2030 of BMWi for Germany https://www.bmwi.de/Redaktion/DE/Downloads/Energie/220111_eroeffnungsbilanz_klimaschutz.pdf?__blob=publicationFile&v=22
     onwind: 100 #GW
     offwind: 30 #GW
     solar: 200 #GW
+  # parameters used for the base load constraint
+  base_load:
+    lignite: 0.2 #min_p_pu value for lignite
+    nuclear: 0.354
 
 plotting:
   map:
