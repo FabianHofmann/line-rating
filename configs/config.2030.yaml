@@ -55,11 +55,25 @@ electricity:
   powerplants_filter: "Country in ['DE'] and DateIn <= 2029 and DateOut > 2029" # use pandas query strings here, e.g. Country not in ['Germany']
   custom_powerplants: false # use pandas query strings here, e.g. Country in ['Germany']
   conventional_carriers: [coal, CCGT, lignite, geothermal, biomass]
-  renewable_capacities_from_OPSD: [onwind, offwind, solar] # onwind, offwind, solar
+  renewable_capacities_from_OPSD: [] #[onwind, offwind, solar] estimate_renewable_capacities is used as OPSD data is not really reliable
   renewable_aim: # installed capacity aim 2030 of BMWi for Germany https://www.bmwi.de/Redaktion/DE/Downloads/Energie/220111_eroeffnungsbilanz_klimaschutz.pdf?__blob=publicationFile&v=22
     onwind: 100 #GW
     offwind: 30 #GW
     solar: 200 #GW
+  estimate_renewable_capacities: 
+    # Renewable capacities are based on existing capacities reported by IRENA
+
+    # Reference year, any of 2000 to 2020
+    year: 2019
+    # Artificially limit maximum capacities to factor * (IRENA capacities),
+    # i.e. 110% of <years>'s capacities => expansion_limit: 1.1
+    # false: Use estimated renewable potentials determine by the workflow
+    expansion_limit: false
+    technology_mapping:
+      # Wind is the Fueltype in ppm.data.Capacity_stats, onwind, offwind-{ac,dc} the carrier in PyPSA-Eur
+      Offshore: [offwind-ac, offwind-dc]
+      Onshore: [onwind]
+      PV: [solar]
 
 atlite:
   nprocesses: 4
