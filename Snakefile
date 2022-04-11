@@ -10,11 +10,18 @@ plt.rc("font", family="sans-serif")
 configfile: "configs/config.yaml"
 
 
-rule create_figures:
+rule create_figures_2020:
     input:
         expand(
             "figures/de{year}_{clusters}_nodes_{opts}/{figure}.pdf",
-            **config["scenario"],
+            **config["scenario_2020"]
+        )
+
+rule create_figures_2030:
+    input:
+        expand(
+            "figures/de{year}_{clusters}_nodes_{opts}/{figure}.pdf",
+            **config["scenario_2030"]
         )
 
 
