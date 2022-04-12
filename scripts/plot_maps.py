@@ -12,11 +12,12 @@ import cartopy.crs as ccrs
 import geopandas as gpd
 import matplotlib.pyplot as plt
 import pandas as pd
-from common import add_carrier_legend, load_network, plot_shapes, get_line_utilization
 import seaborn as sns
+from common import add_carrier_legend, get_line_utilization, load_network, plot_shapes
+from pypsa.descriptors import get_switchable_as_dense as get_as_dense
 
 # ---------------------------------------------------------------------------- #
-#    Funktions to automatically scale line width and bus sizes in map plots    #
+#    Functions to automatically scale line width and bus sizes in map plots    #
 # ---------------------------------------------------------------------------- #
 
 
@@ -34,7 +35,6 @@ def scale_line_widths(line_widths, line_width_factor):
     return line_width_factor
 
 
-
 # ---------------------------------------------------------------------------- #
 #                              Plotting functions                              #
 # ---------------------------------------------------------------------------- #
@@ -43,13 +43,41 @@ def scale_line_widths(line_widths, line_width_factor):
 def plot_utilization(ax, n, bounds, bus_size_factor=None, line_width_factor=None):
     g = n.generators_t.p.mean()
     g = g.groupby([n.generators.bus, n.generators.carrier]).sum()
-    bus_size_factor=scale_bus_sizes(g, bus_size_factor)
-    f = pd.concat({"Line":line_util[n.name + "_mean_nom"]})
-    line_width_factor=scale_line_widths(f, line_width_factor)
+    bus_size_factor = scale_bus_sizes(g, bus_size_factor)
+    f = pd.concat({"Line": line_util[n.name + "_mean_nom"]})
+    line_width_factor = scale_line_widths(f, line_width_factor)
     n.plot(
         ax=ax,
-        flow=f * line_width_factor*2,
+        flow=f * line_width_factor * 2,
         bus_sizes=g * bus_size_factor,
+        bus_alpha=0.7,
+        color_geomap=False,
+        boundaries=bounds,
+    )
+    return bus_size_factor, line_width_factor
+
+
+def plot_congestion(ax, n, bounds, bus_size_factor=None, line_width_factor=None):
+    comps = ["Line", "Link"]
+    f = pd.concat(
+        {
+            c: ((n.pnl(c).mu_lower.abs() + n.pnl(c).mu_lower.abs()) != 0).sum()
+            for c in comps
+        }
+    )
+    f = f.where(n.branches().carrier.isin(["AC", "DC"]).reindex_like(f), 0)
+    line_width_factor = scale_line_widths(f, line_width_factor)
+    bus_size_factor = 0.001
+    n.plot(
+        ax=ax,
+        line_widths=line_width_factor,
+        line_colors=f.Line,
+        line_cmap="viridis",
+        link_widths=line_width_factor,
+        link_colors=f.Link,
+        link_cmap="viridis",
+        bus_sizes=bus_size_factor,
+        bus_alpha=0.7,
         color_geomap=False,
         boundaries=bounds,
     )
@@ -67,6 +95,7 @@ def plot_operation(ax, n, bounds, bus_size_factor=None, line_width_factor=None):
         ax=ax,
         flow=f * line_width_factor,
         bus_sizes=g * bus_size_factor,
+        bus_alpha=0.7,
         color_geomap=False,
         boundaries=bounds,
         line_colors="purple",
@@ -91,6 +120,7 @@ def plot_capacity(ax, n, bounds, bus_size_factor=None, line_width_factor=None):
         line_widths=line_widths * line_width_factor,
         link_widths=link_widths * line_width_factor,
         bus_sizes=bus_sizes * bus_size_factor,
+        bus_alpha=0.7,
         color_geomap=False,
         boundaries=bounds,
     )
@@ -110,18 +140,14 @@ def plot_curtailment(ax, n, bounds, bus_size_factor=None, line_width_factor=None
     link_widths = n.links.p_nom_opt
     line_widths = n.lines.s_nom_opt
     line_width_factor = scale_line_widths(line_widths, line_width_factor)
-    if not n.lines_t.s_max_pu.empty:
-        line_widths.loc[
-            n.lines_t.s_max_pu.mean().index
-        ] *= (
-            n.lines_t.s_max_pu.mean()
-        )  # had the error that for some lines in dlr method there was no s_max_pu entry which then lead to missing line in line_width
+    line_widths *= get_as_dense(n, "Line", "s_max_pu").mean()
 
     n.plot(
         ax=ax,
         line_widths=line_widths * line_width_factor,
         link_widths=link_widths * line_width_factor,
         bus_sizes=bus_sizes * bus_size_factor,
+        bus_alpha=0.7,
         color_geomap=False,
         boundaries=bounds,
     )
@@ -140,8 +166,17 @@ if __name__ == "__main__":
             opts="Co2L",
             ext="pdf",
         )
-    plt.style.use('seaborn-colorblind')
-    sns.set_context("paper", rc={"font.size":12,"axes.titlesize":16,"axes.labelsize":14, "xtick.labelsize":12, "ytick.labelsize":12})
+    plt.style.use("seaborn-colorblind")
+    sns.set_context(
+        "paper",
+        rc={
+            "font.size": 12,
+            "axes.titlesize": 16,
+            "axes.labelsize": 14,
+            "xtick.labelsize": 12,
+            "ytick.labelsize": 12,
+        },
+    )
 
     config = snakemake.config["plotting"]["map"]
     bounds = config["boundaries"]
@@ -150,7 +185,9 @@ if __name__ == "__main__":
     dlr = load_network(snakemake.input.network_dlr)
     networks = slr, dlr
     shapes = gpd.read_file(snakemake.input.shapes)
-    line_util=get_line_utilization(networks)
+
+    line_util = get_line_utilization(networks)
+    line_congestion = get_line_congestion(networks)
 
     for output in snakemake.output.keys():
 
@@ -160,7 +197,7 @@ if __name__ == "__main__":
 
         refsize = config[output]["refsize"]
         bus_size_factor = config[output].get("bus_size_factor", None)
-        line_width_factor = config[output].get("bus_size_factor", None)
+        line_width_factor = config[output].get("line_width_factor", None)
 
         for (n, ax) in zip(networks, axes):
             plot_func = eval(f"plot_{output}")
@@ -179,7 +216,7 @@ if __name__ == "__main__":
             loc="upper left",
             frameon=False,
         )
-        
+
         if output != "curtailment":
             unit = "GW"
         else:

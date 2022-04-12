@@ -15,7 +15,7 @@ rule create_figures:
         expand(
             "figures/de{year}_{clusters}_nodes_{opts}/{figure}.pdf",
             **config["scenario"],
-        )
+        ),
 
 
 rule create_figures_test:
@@ -23,7 +23,7 @@ rule create_figures_test:
         expand(
             "figures/de{year}_{clusters}_nodes_{opts}/{figure}.pdf",
             **config["test"],
-        )
+        ),
 
 
 subworkflow pypsaeur2020:
@@ -80,19 +80,20 @@ rule get_shapes:
     shell:
         "cp {input} {output}"
 
+
 def memory(w):
-    factor = 3.
-    for o in w.opts.split('-'):
-        m = re.match(r'^(\d+)h$', o, re.IGNORECASE)
+    factor = 3.0
+    for o in w.opts.split("-"):
+        m = re.match(r"^(\d+)h$", o, re.IGNORECASE)
         if m is not None:
             factor /= int(m.group(1))
             break
-    for o in w.opts.split('-'):
-        m = re.match(r'^(\d+)seg$', o, re.IGNORECASE)
+    for o in w.opts.split("-"):
+        m = re.match(r"^(\d+)seg$", o, re.IGNORECASE)
         if m is not None:
             factor *= int(m.group(1)) / 8760
             break
-    if w.clusters.endswith('m'):
+    if w.clusters.endswith("m"):
         return int(factor * (18000 + 180 * int(w.clusters[:-1])))
     elif w.clusters == "all":
         return int(factor * (18000 + 180 * 4000))
@@ -112,9 +113,9 @@ rule solve_network:
     benchmark:
         "benchmarks/solve_network/de{year}_{clusters}_nodes_{opts}_{rating}"
     threads: 4
-    resources: 
-    	mem_mb=memory,
-    	walltime="20:00:00"
+    resources:
+        mem_mb=memory,
+        walltime="20:00:00",
     shadow:
         "shallow"
     script:
@@ -130,9 +131,11 @@ rule plot_maps:
         capacity="figures/de{year}_{clusters}_nodes_{opts}/capacity_map.{ext}",
         operation="figures/de{year}_{clusters}_nodes_{opts}/operation_map.{ext}",
         curtailment="figures/de{year}_{clusters}_nodes_{opts}/curtailment_map.{ext}",
-        utilization="figures/de{year}_{clusters}_nodes_{opts}/utilization_map.{ext}"
+        utilization="figures/de{year}_{clusters}_nodes_{opts}/utilization_map.{ext}",
+        congestion="figures/de{year}_{clusters}_nodes_{opts}/congestion_map.{ext}",
     script:
         "scripts/plot_maps.py"
+
 
 rule plot_analysis:
     input:
@@ -142,7 +145,7 @@ rule plot_analysis:
     output:
         curtailment_bar="figures/de{year}_{clusters}_nodes_{opts}/curtailment_bar.{ext}",
         capacity_bar="figures/de{year}_{clusters}_nodes_{opts}/capacity_bar.{ext}",
-        historical_curtailment_bar="figures/de{year}_{clusters}_nodes_{opts}/historical_curtailment_bar.{ext}"
+        historical_curtailment_bar="figures/de{year}_{clusters}_nodes_{opts}/historical_curtailment_bar.{ext}",
     script:
         "scripts/plot_analysis.py"
 

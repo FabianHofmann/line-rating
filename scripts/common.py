@@ -158,8 +158,11 @@ def add_carrier_legend(ax, carriers, size=1, scale=1, **kwargs):
 
 def get_line_utilization(networks):
     """
-    Helper function to normalize the utilization of each transmission line and make them comparable for DLR and SLR.
-    Utilization is the power flow in each line divided by the maximal possible power flow at each timestep.
+    Helper function to normalize the utilization of each transmission line and
+    make them comparable for DLR and SLR.
+
+    Utilization is the power flow in each line divided by the maximal
+    possible power flow at each timestep.
     """
     line_util = dict()
     line_util_temp = dict()
@@ -168,22 +171,26 @@ def get_line_utilization(networks):
             line_util_temp.update(
                 {
                     n.name: np.abs(n.lines_t.p0).divide(
-                                n.lines.s_nom_opt * n.lines.s_max_pu, axis=1
-                            )
+                        n.lines.s_nom_opt * n.lines.s_max_pu, axis=1
+                    )
                 }
             )
         elif "Dynamic" in n.name:
             line_util_temp.update(
                 {
                     n.name: np.abs((n.lines_t.p0 / n.lines_t.s_max_pu)).divide(
-                                n.lines.s_nom_opt, axis=1
-                            )
+                        n.lines.s_nom_opt, axis=1
+                    )
                 }
             )
 
-    line_util_min = np.min([line_util_temp[n.name].mean(axis=0).min() for n in networks])
-    line_util_max = np.max([line_util_temp[n.name].mean(axis=0).max() for n in networks])
-    
+    line_util_min = np.min(
+        [line_util_temp[n.name].mean(axis=0).min() for n in networks]
+    )
+    line_util_max = np.max(
+        [line_util_temp[n.name].mean(axis=0).max() for n in networks]
+    )
+
     for n in networks:
         line_util.update(
             {
@@ -195,3 +202,25 @@ def get_line_utilization(networks):
         )
 
     return line_util
+
+
+def get_line_congestion(networks):
+    """
+    Helper function to get the congestion value for a set of and make them
+    comparable for DLR and SLR.
+
+    Utilization is the power flow in each line divided by the maximal
+    possible power flow at each timestep.
+    """
+    comps = ["Line", "Link"]
+    congestion = dict()
+    for n in networks:
+        f = pd.concat(
+            {
+                c: ((n.pnl(c).mu_lower.abs() + n.pnl(c).mu_lower.abs()) != 0).sum()
+                for c in comps
+            }
+        )
+        f = f.where(n.branches().carrier.isin(["AC", "DC"]).reindex_like(f), 0)
+        congestion.update({n.name: f})
+    return congestion
