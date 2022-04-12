@@ -13,7 +13,13 @@ import geopandas as gpd
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
-from common import add_carrier_legend, get_line_utilization, load_network, plot_shapes
+from common import (
+    add_carrier_legend,
+    get_line_congestion,
+    get_line_utilization,
+    load_network,
+    plot_shapes,
+)
 from pypsa.descriptors import get_switchable_as_dense as get_as_dense
 
 # ---------------------------------------------------------------------------- #
