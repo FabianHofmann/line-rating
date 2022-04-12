@@ -31,8 +31,8 @@ snapshots:
 enable:
   prepare_links_p_nom: false
   retrieve_databundle: true
-  build_cutout: true
-  retrieve_cutout: false
+  build_cutout: false
+  retrieve_cutout: true
   build_natura_raster: false
   retrieve_natura_raster: true
   custom_busmap: false
@@ -60,7 +60,7 @@ electricity:
     onwind: 100 #GW
     offwind: 30 #GW
     solar: 200 #GW
-  estimate_renewable_capacities: 
+  estimate_renewable_capacities:
     # Renewable capacities are based on existing capacities reported by IRENA
 
     # Reference year, any of 2000 to 2020
