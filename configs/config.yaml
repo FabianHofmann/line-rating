@@ -2,11 +2,18 @@
 #
 # SPDX-License-Identifier: CC0-1.0
 
-scenario:
+scenario_2020:
   rating: ['dlr', 'slr']
   clusters: ["all"]
-  opts: ["Co2L"]
-  year: [2020, 2030]
+  opts: ["Co2L-BL"]
+  year: [2020]
+  figure: ["operation_map", "capacity_map", "curtailment_map", "curtailment_bar", "capacity_bar", "historical_curtailment_bar"]
+
+scenario_2030:
+  rating: ['dlr', 'slr']
+  clusters: ["all"]
+  opts: ["Co2L-RE"]
+  year: [2030]
   figure: ["operation_map", "capacity_map", "curtailment_map", "curtailment_bar", "capacity_bar", "historical_curtailment_bar"]
 
 test:
