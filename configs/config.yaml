@@ -65,3 +65,6 @@ plotting:
       refsize: 1000 # at what capacity should circle be drawn
     utilization:
       refsize: 1000 # at what capacity should circle be drawn
+    congestion:
+      refsize: 1 # at what capacity should circle be drawn
+      line_width_factor: 1
