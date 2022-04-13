@@ -77,10 +77,10 @@ def plot_congestion(ax, n, bounds, bus_size_factor=None, line_width_factor=None)
     n.plot(
         ax=ax,
         line_widths=line_width_factor,
-        line_colors=f.Line,
+        line_colors=f.get("Line"),
         line_cmap="viridis",
         link_widths=line_width_factor,
-        link_colors=f.Link,
+        link_colors=f.get("Link"),
         link_cmap="viridis",
         bus_sizes=bus_size_factor,
         bus_alpha=0.7,
@@ -167,9 +167,9 @@ if __name__ == "__main__":
 
         snakemake = mock_snakemake(
             "plot_maps",
-            year="2030",
+            year="2020",
             clusters="all",
-            opts="Co2L",
+            opts="Co2L-BL",
             ext="pdf",
         )
     plt.style.use("seaborn-colorblind")

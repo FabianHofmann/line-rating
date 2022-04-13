@@ -3,25 +3,49 @@
 # SPDX-License-Identifier: CC0-1.0
 
 scenario_2020:
-  rating: ['dlr', 'slr']
+  rating: ["dlr", "slr"]
   clusters: ["all"]
   opts: ["Co2L-BL"]
   year: [2020]
-  figure: ["operation_map", "capacity_map", "curtailment_map", "curtailment_bar", "capacity_bar", "historical_curtailment_bar"]
+  figure:
+    [
+      "operation_map",
+      "capacity_map",
+      "curtailment_map",
+      "curtailment_bar",
+      "capacity_bar",
+      "historical_curtailment_bar",
+    ]
 
 scenario_2030:
-  rating: ['dlr', 'slr']
+  rating: ["dlr", "slr"]
   clusters: ["all"]
   opts: ["Co2L-RE"]
   year: [2030]
-  figure: ["operation_map", "capacity_map", "curtailment_map", "curtailment_bar", "capacity_bar", "historical_curtailment_bar"]
+  figure:
+    [
+      "operation_map",
+      "capacity_map",
+      "curtailment_map",
+      "curtailment_bar",
+      "capacity_bar",
+      "historical_curtailment_bar",
+    ]
 
 test:
-  rating: ['dlr', 'slr']
+  rating: ["dlr", "slr"]
   clusters: [5]
   opts: ["Co2L-24H"]
   year: [2020, 2030]
-  figure: ["operation_map", "capacity_map", "curtailment_map", "curtailment_bar", "capacity_bar", "historical_curtailment_bar"]
+  figure:
+    [
+      "operation_map",
+      "capacity_map",
+      "curtailment_map",
+      "curtailment_bar",
+      "capacity_bar",
+      "historical_curtailment_bar",
+    ]
 
 solving:
   options:
@@ -56,7 +80,7 @@ electricity:
 
 plotting:
   map:
-    boundaries: [5.5, 15.5, 47,  55]
+    boundaries: [5.5, 15.5, 47, 55]
     #If None or commented out the plot_main.py automatically calculates the bus and line factor. If factor is given, then the factor is taken.
     capacity:
       bus_size_factor: 1.e-5

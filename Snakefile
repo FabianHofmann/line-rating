@@ -145,17 +145,17 @@ rule plot_maps:
         "scripts/plot_maps.py"
 
 
-rule plot_analysis:
+rule plot_bars:
     input:
         network_dlr="results/de{year}_{clusters}_nodes_{opts}_dlr.nc",
         network_slr="results/de{year}_{clusters}_nodes_{opts}_slr.nc",
         curtailment_data="data/curtailment_carrier.csv",
     output:
-        curtailment_bar="figures/de{year}_{clusters}_nodes_{opts}/curtailment_bar.{ext}",
-        capacity_bar="figures/de{year}_{clusters}_nodes_{opts}/capacity_bar.{ext}",
-        historical_curtailment_bar="figures/de{year}_{clusters}_nodes_{opts}/historical_curtailment_bar.{ext}",
+        curtailment="figures/de{year}_{clusters}_nodes_{opts}/curtailment_bar.{ext}",
+        capacity="figures/de{year}_{clusters}_nodes_{opts}/capacity_bar.{ext}",
+        historical_curtailment="figures/de{year}_{clusters}_nodes_{opts}/historical_curtailment_bar.{ext}",
     script:
-        "scripts/plot_analysis.py"
+        "scripts/plot_bars.py"
 
 
 rule plot_grid_stats:

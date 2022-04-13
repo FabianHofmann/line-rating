@@ -54,7 +54,7 @@ electricity:
     battery: 6
     H2: 168
 
-  powerplants_filter: "Country in ['DE'] and DateIn <= 2018 and DateOut > 2018" # use pandas query strings here, e.g. Country not in ['Germany']
+  powerplants_filter: "Country == 'DE' and (DateIn < 2019 or DateIn != DateIn) and (DateOut >= 2019 or DateOut != DateOut)"
   custom_powerplants: false # use pandas query strings here, e.g. Country in ['Germany']
   conventional_carriers: [nuclear, oil, OCGT, CCGT, coal, lignite, geothermal, biomass]
   renewable_capacities_from_OPSD: [onwind, solar]
