@@ -20,7 +20,7 @@ scenario_2020:
 scenario_2030:
   rating: ["dlr", "slr"]
   clusters: ["all"]
-  opts: ["Co2L-RE"]
+  opts: ["Co2L-RE0.8"]
   year: [2030]
   figure:
     [
@@ -35,7 +35,7 @@ scenario_2030:
 test:
   rating: ["dlr", "slr"]
   clusters: [5]
-  opts: ["Co2L-24H"]
+  opts: ["Co2L-24H-RE0.8"]
   year: [2020, 2030]
   figure:
     [
