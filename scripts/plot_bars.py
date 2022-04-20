@@ -108,6 +108,6 @@ if __name__ == "__main__":
     fig.savefig(snakemake.output["curtailment"], bbox_inches="tight")
 
     fig, ax = plt.subplots(figsize=(8, 5))
-    plot_curtailment(ax, networks)
+    plot_historical_curtailment(ax, networks)
     fig.tight_layout()
     fig.savefig(snakemake.output["historical_curtailment"], bbox_inches="tight")
