@@ -15,7 +15,7 @@ from xarray import DataArray, Dataset
 if "snakemake" not in globals():
     from _helpers import mock_snakemake
 
-    snakemake = mock_snakemake("plot_parameter_space")
+    snakemake = mock_snakemake("plot_parameter_space", kind="reduced")
 
 t = np.arange(-10, 40, 0.5)
 celsius = xr.IndexVariable("Temperature", t, {"units": "°C"})
@@ -25,7 +25,13 @@ w = np.arange(0, 25, 0.1)
 speed = xr.IndexVariable("Wind speed", w, attrs={"units": "m/s"})
 W = DataArray(w, coords={"Wind speed": speed}, dims="Wind speed")
 
-angle = np.arange(0, 100, 10)
+if snakemake.wildcards.kind == "full":
+    angle = np.arange(0, 100, 10)
+    col_wrap = 3
+else:
+    angle = [0, 45, 90]
+    col_wrap = 1
+
 degree = xr.IndexVariable("Wind angle", angle, attrs={"units": "°"})
 degree_str = degree.round(0).astype(int).astype(str).astype(object) + "°"
 A = DataArray(
@@ -59,14 +65,14 @@ F = s.plot.contourf(
     x="Wind speed",
     y="Temperature",
     col="Wind angle",
-    col_wrap=3,
+    col_wrap=col_wrap,
     # robust=True,
     cbar_kwargs={
         "orientation": "horizontal",
         "label": "Line power capacity [MW]",
         "aspect": 20,
-        "shrink": 0.8,
-        "pad": 0.05,
+        "shrink": 1,
+        "pad": 0.07,
     },
 )
-F.fig.savefig(snakemake.output[0], bbox_inches="tight")
+F.fig.savefig(snakemake.output.figure, bbox_inches="tight")

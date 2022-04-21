@@ -212,6 +212,6 @@ rule test_voltage_angles:
 
 rule plot_parameter_space:
     output:
-        "figures/parameter-space.pdf",
+        figure="figures/parameter-space-{kind}.pdf",
     script:
         "scripts/parameter-space.py"
