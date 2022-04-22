@@ -19,23 +19,23 @@ def get_curtail_data(n):
     return curtailment / 1e6  # in TWh
 
 
+def get_capacity(n):
+    gens = n.generators.groupby("carrier").p_nom_opt.sum().drop("load", errors="ignore")
+
+    stos = n.stores.groupby(["carrier"]).e_nom_opt.sum()
+    # buses = n.buses.query("carrier == 'AC'").index
+    # stos = n.links.groupby(["bus1", "carrier"]).p_nom_opt.sum().loc[buses]
+    return pd.concat([gens, stos]).rename(n.name)
+
+
 def plot_capacity(ax, networks):
-    capacities = pd.concat(
-        [
-            n.generators.groupby("carrier")
-            .p_nom_opt.sum()
-            .drop("load", errors="ignore")
-            .rename(n.name)
-            for n in networks
-        ],
-        axis=1,
-    )
-    capacities /= 1000  # in GW
+    capacities = pd.concat((get_capacity(n) for n in networks), axis=1)
+    capacities /= 1000  # in GW(h)
     capacities.sort_values(networks[0].name, ascending=False, inplace=True)
     capacities.plot(kind="barh", ax=ax, zorder=4)
     ax.grid(linestyle="--", linewidth=0.5, alpha=0.5, zorder=2)
     ax.set_yticklabels(slr.carriers.nice_name[capacities.index])
-    ax.set_xlabel("Capacity in GW")
+    ax.set_xlabel("Capacity in GW/GWh")
     ax.set_ylabel("")
     ax.set_title("Capacity of generators")
 
