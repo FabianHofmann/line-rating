@@ -1,46 +1,97 @@
-\documentclass[
-10pt, % Main document font size
-a4paper, % Paper type, use 'letterpaper' for US Letter paper
-oneside, % One page layout (no page indentation)
-%twoside, % Two page layout (page indentation for binding and different headers)
-headinclude,footinclude, % Extra spacing for the header and footer
-BCOR5mm, % Binding correction
-left=1.5in,right=1in,top=1in,bottom=1in,
-]{scrartcl}
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 
-\input{structure.tex}
-\graphicspath{{../figures/}}
-\addbibresource{main.bib}
-\hyphenation{Fortran hy-phen-ation}
 
-\title{\normalfont\spacedallcaps{Dynamic Line Rating}} % The article title
-%\subtitle{Subtitle} % Uncomment to display a subtitle
-\author{\spacedlowsmallcaps{Philipp Glaum \& Fabian Hofmann}} % The article author(s) - author affiliations need to be specified in the AUTHOR AFFILIATIONS block
-\date{} % An optional date to appear under the author(s)
-
+% Template from https://de.overleaf.com/latex/templates/ieee-conference-template/grfzhhncsfqn
 
 \begin{document}
 
+\title{Enhancing the German Transmission Grid through Dynamic Line Rating*\\
+{\footnotesize \textsuperscript{*}Note: Sub-titles are not captured in Xplore and
+should not be used}
+\thanks{Identify applicable funding agency here. If none, delete this.}
+}
+
+\author{\IEEEauthorblockN{1\textsuperscript{st} Philipp Glaum}
+    \IEEEauthorblockA{\textit{Institute of Energy Technology} \\
+        \textit{Technical University Berlin}\\
+        Belin, Germany \\
+        p.glaum@tu-berlin.de}
+    \and
+    \IEEEauthorblockN{2\textsuperscript{nd} Fabian Hofmann}
+    \IEEEauthorblockA{\textit{Institute of Energy Technology} \\
+        \textit{Technical University Berlin}\\
+        Berlin, Germany \\
+        m.hofmann@tu-berlin.de}
+}
+
 \maketitle
 
-% \setcounter{tocdepth}{2} % Set the depth of the table of contents to show sections and subsections only
-% \tableofcontents % Print the table of contents
-% \listoffigures % Print the list of figures
-% \listoftables % Print the list of tables
+\begin{abstract}
+    According to recently announced plans of the German Federal Government, the German power system is facing an ongoing transition from conventional to renewable power generation, which should supply 80\% of the total demand by 2030. One key task lays in reorganizing the transmission system such that power can be transported from sites with good renewable potentials to the load centers. As the literature shows a system-wide implementation of Dynamic Line Rating (DLR), a dynamic calculation of the transmission line capacities based on prevailing weather conditions,  can act as an important complement to building new transmission lines. On behalf of a detailed power system model including all of today’s extra high voltage transmission lines and substations, we show how synergies between DLR and an increased wind power generation leverage, leading to an overall cost-benefit of XX\% for the 2030 goals compared to a system without DLR.
+\end{abstract}
 
-
-\section*{Abstract}
+\begin{IEEEkeywords}
+    power system analysis computing, power system management, power system planning, renewable energy source
+\end{IEEEkeywords}
 
 \section{Introduction}
+The deployment of new renewable energy sources far from load centers is leading to an increasing need for grid capacity. A notable example can be found in Germany, where most of the wind energy is generated in the North while there is significant industrial demand in the South [1]. Whereas the current federal government plans to add ~70 GW wind power capacity until 2030, only a few grid expansion projects have been realized [2], [3]. Moreover, most of these projects have been delayed due to administrative problems and protest activities [4], [5]. This trend will likely exacerbate transmission system congestion, which may lead to more grid instability and curtailment [6]. There is therefore a strong incentive to exploit existing grid infrastructure more fully.
 
-%\begin{figure}
-%    \includegraphics[width=\linewidth]{parameter-space.pdf}
-%    \caption{...}
-%\end{figure}
+To overcome the mismatch between slow installation of transmission lines and rapid installation of renewable generation, several, complementing measures can be taken that must be reconciled:  (1) large scale implementation of storage facilities to flatten power feed-ins and power demands [7]; (2) usage of alternative energy carrier networks to relieve the electricity grid [8]; (3) leveraging the existing grid infrastructure to increase the operating capacity. In the following, we will focus on point (3), which in comparison to (1) and (2) sticks out through a straight-forward, cost-efficient and non-invasiv implementation and does not require conversion technologies which (yet) encounter high prices and comparably low round-trip efficiencies [9], [10].
+Traditionally, transmission line capacity is calculated assuming unfavorable, static weather conditions such as 40$^\circ$C  ambient temperature and 0.6m/s wind speed [11]. This is referred to as Static Line Rating (SLR). By design, SLR underestimates the capacity of a transmission line and, when implemented in practice, leads to an overestimated transmission capacity. In contrast, Dynamic Line Rating (DLR) calculates the line capacity taking into account the prevailing weather conditions. Cold weather and wind cool overheated transmission lines, enabling the thermal rating to be raised. This results in key benefits in cost-efficiency, congestion reduction and better wind power integration [12]. So far, the literature provides case studies considering DLR in small scale Energy System Optimization Models (ESOMs) [13]–[15]. However, it is lacking of an extensive evaluation and assessment of DLR being applied to a higher scale ESOM considering capacity expansion and a CO$_2$ target.
+This paper addresses this gap. We model and analyze the impact of DLR on the optimal dispatch and deployment of power generators in the German electricity sector. The underlying model is created from the PyPSA-Eur framework [16], and for Germany consists of XX representative nodes and considers a time horizon of one year with an hourly resolution. To model the effect of DLR on the power system, we use the IEEE standard [17] with highly resolved historical weather data implemented in the Atlite software [18]. The advantages of the DLR are illustrated by comparison with an SLR-based system. Therefore, we analyze and compare curtailment, grid congestion as well as the optimal generator deployment.
 
-\renewcommand{\refname}{\spacedlowsmallcaps{References}} % For modifying the bibliography heading
+\section{Methodology}
+
+\subsection{Dynamic Line Rating}
+
+For simulating the effect of DLR, we follow the IEEE standard documented in [17], [19]. The methodology was integrated into the Atlite software [18], a Python package used for converting weather data into time-series and energy potential for renewable power systems.
+The key concept of DLR is based on a dynamic estimation of the maximally allowed electrical current  for the conducting material [20]. It is set such that the conductor does not surpass the maximally allowed temperature  after which impermissible sag of the line or hardware damage can be expected. For each conductor, the heat balance equation
+\begin{align}
+    q_c +q_r = q_s + I^2 \cdot R(T)
+    \label{eq:heat_balance}
+\end{align}
+
+relates the heat losses on the left hand side to the heat gains on the right hand side. Convective heat loss $q_c$, which represents cooling by ambient air, depends on ambient temperature, wind speed and angle, and conductor material and geometry. The radiated heat loss $q_r$ is the net energy loss through black body radiation. Solar heat gain $q_s$ is caused by solar heat radiating  onto the conductor. Finally, the resistive heat gain $I^2 \cdot R(T)$ is given for an electrical current $I$ and temperature dependent resistance $R(T)$.  The latter can be approximated by linearly extrapolating from reference resistance $R_{ref} = R(T_{ref})$ using a material specific temperature coefficient $\alpha$, i.e.
+\begin{align}
+    R(T) = R_{ref} \cdot (1 + \alpha \cdot (T - T_{ref}))
+\end{align}
+
+Solving \eqref{eq:heat_balance} for the electrical current and setting the temperature to its maximal allowed limit yields the maximally allowed current
+\begin{align}
+    I_{max} = \sqrt{\frac{q_c +q_r-q_s}{R(T_{max})}}
+\end{align}
+which for three-phase electric power transmission operating at voltage level $V$ directly leads to the maximally power transfer
+\begin{align}
+    P_{max} = \sqrt{3} \cdot I_{max} \cdot V
+\end{align}
+Fig. 1 shows the maximally allowed power transmission $P_{max}$ for different environmental conditions. As the strongest cooling is to be expected from convective heat loss $q_c$.
+
+\subsection{Power System Modelling}
+
+\section{Use Cases}
+
+\section{Results}
 
 
-\printbibliography % The file containing the bibliography
+\section{Limitations}
+
+\section{Discussion}
+
+\section*{References}
+
+
+\appendix
+
 
 \end{document}
