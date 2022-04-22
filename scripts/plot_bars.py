@@ -22,9 +22,10 @@ def get_curtail_data(n):
 def get_capacity(n):
     gens = n.generators.groupby("carrier").p_nom_opt.sum().drop("load", errors="ignore")
 
-    stos = n.stores.groupby(["carrier"]).e_nom_opt.sum()
-    # buses = n.buses.query("carrier == 'AC'").index
-    # stos = n.links.groupby(["bus1", "carrier"]).p_nom_opt.sum().loc[buses]
+    #stos = n.stores.groupby(["carrier"]).e_nom_opt.sum()
+    buses = n.buses.query("carrier == 'AC'").index
+    stos = n.links.groupby(["bus1", "carrier"]).p_nom_opt.sum().loc[buses].groupby("carrier").sum().drop("DC")
+    stos.rename(index={"H2 fuel cell":"H2","battery discharger":"battery"}, inplace=True)
     return pd.concat([gens, stos]).rename(n.name)
 
 
@@ -76,10 +77,10 @@ if __name__ == "__main__":
 
         snakemake = mock_snakemake(
             "plot_bars",
-            year="2020",
+            year="2030",
             clusters="all",
-            opts="Co2L-BL",
-            ext="png",
+            opts="Co2L-RE0.8",
+            ext="pdf",
         )
 
     plt.style.use("seaborn-colorblind")

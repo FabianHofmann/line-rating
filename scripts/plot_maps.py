@@ -40,6 +40,17 @@ def scale_line_widths(line_widths, line_width_factor):
         line_width_factor = max_line_factor / line_widths.max()
     return line_width_factor
 
+# ---------------------------------------------------------------------------- #
+#                               Helper functions                               #
+# ---------------------------------------------------------------------------- #
+# def get_line_utilization(n):
+#     if n.name=="Static Line Rating":
+#         f=np.abs(n.lines_t.p0).divide(n.lines.s_nom_opt * n.lines.s_max_pu, axis=1).mean()  
+#     elif n.name=="Dynamic Line Rating":
+#         f=np.abs((n.lines_t.p0 / n.lines_t.s_max_pu)).divide(n.lines.s_nom_opt, axis=1).mean()
+#     f=(f-f.min())/(f.max()-f.min())
+#     return             
+
 
 # ---------------------------------------------------------------------------- #
 #                              Plotting functions                              #
@@ -67,14 +78,14 @@ def plot_congestion(ax, n, bounds, bus_size_factor=None, line_width_factor=None)
     comps = ["Line", "Link"]
     f = pd.concat(
         {
-            c: ((n.pnl(c).mu_lower.abs() + n.pnl(c).mu_lower.abs()) != 0).sum()
+            c: ((n.pnl(c).mu_lower.abs() + n.pnl(c).mu_upper.abs()).round(3) != 0).sum()
             for c in comps
         }
     )
     f = f.where(n.branches().carrier.isin(["AC", "DC"]).reindex_like(f), 0)
     line_width_factor = scale_line_widths(f, line_width_factor)
     bus_size_factor = 0.001
-    n.plot(
+    collection=n.plot(
         ax=ax,
         line_widths=line_width_factor,
         line_colors=f.get("Line"),
@@ -87,6 +98,7 @@ def plot_congestion(ax, n, bounds, bus_size_factor=None, line_width_factor=None)
         color_geomap=False,
         boundaries=bounds,
     )
+    plt.colorbar(collection[1], ax=ax, fraction=0.046, pad=0.004)
     return bus_size_factor, line_width_factor
 
 
@@ -167,7 +179,7 @@ if __name__ == "__main__":
 
         snakemake = mock_snakemake(
             "plot_maps",
-            year="2020",
+            year="2030",
             clusters="all",
             opts="Co2L-BL",
             ext="pdf",
@@ -212,7 +224,6 @@ if __name__ == "__main__":
             )
             plot_shapes(ax, shapes, edgecolor="white", facecolor="#eeeeee")
             ax.set_title(n.name, fontsize=11)
-
         add_carrier_legend(
             ax,
             n.carriers.sort_index(),
