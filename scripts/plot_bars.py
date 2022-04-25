@@ -22,23 +22,51 @@ def get_curtail_data(n):
 def get_capacity(n):
     gens = n.generators.groupby("carrier").p_nom_opt.sum().drop("load", errors="ignore")
 
-    #stos = n.stores.groupby(["carrier"]).e_nom_opt.sum()
+    # stos = n.stores.groupby(["carrier"]).e_nom_opt.sum()
     buses = n.buses.query("carrier == 'AC'").index
     stos = n.links.groupby(["bus1", "carrier"]).p_nom_opt.sum()
     if not stos.empty:
-        stos=stos.loc[buses].groupby("carrier").sum().drop("DC")
-        stos.rename(index={"H2 fuel cell":"H2","battery discharger":"battery"}, inplace=True)
+        stos = stos.loc[buses].groupby("carrier").sum().drop("DC")
     return pd.concat([gens, stos]).rename(n.name)
+
+
+def get_costs(n):
+    gopex = n.generators_t.p.sum() * n.generators.marginal_cost
+    gopex = gopex.groupby(n.generators.carrier).sum().drop("load")
+    lopex = n.links_t.p0.sum() * n.links.marginal_cost
+    lopex = lopex.groupby(n.links.carrier).sum().drop("DC")
+    sopex = n.stores_t.e.sum() * n.stores.marginal_cost
+    sopex = sopex.groupby(n.stores.carrier).sum()
+
+    opex = pd.concat([gopex, lopex, sopex])
+
+    gcapex = n.generators.p_nom_opt * n.generators.capital_cost
+    gcapex = gcapex.groupby(n.generators.carrier).sum().drop("load")
+    lcapex = n.links.p_nom_opt * n.links.capital_cost
+    lcapex = lcapex.groupby(n.links.carrier).sum().drop("DC")
+    scapex = n.stores.e_nom_opt * n.stores.capital_cost
+    scapex = scapex.groupby(n.stores.carrier).sum()
+
+    capex = pd.concat([gcapex, lcapex, scapex])
+
+    costs = pd.concat({"OPEX": opex, "CAPEX": capex}, axis=1)
+    costs = costs.groupby(n.carriers.group).sum()
+
+    order = n.carriers.groupby("group").co2_emissions.mean().sort_values()
+    costs = costs.reindex(order.index)
+    costs = costs[costs.abs().sum(1) >= 5e6][::-1]
+
+    return costs
 
 
 def plot_capacity(ax, networks):
     capacities = pd.concat((get_capacity(n) for n in networks), axis=1)
-    capacities /= 1000  # in GW(h)
+    capacities /= 1000  # in GW
     capacities.sort_values(networks[0].name, ascending=False, inplace=True)
     capacities.plot(kind="barh", ax=ax, zorder=4)
     ax.grid(linestyle="--", linewidth=0.5, alpha=0.5, zorder=2)
     ax.set_yticklabels(slr.carriers.nice_name[capacities.index])
-    ax.set_xlabel("Capacity in GW/GWh")
+    ax.set_xlabel("Capacity in GW")
     ax.set_ylabel("")
     ax.set_title("Capacity of generators")
 
@@ -52,13 +80,16 @@ def plot_curtailment(ax, networks):
     ax.set_xlabel("")
     ax.set_title("Curtailment of energy")
 
+
 def plot_cost(ax, networks):
-    cost=pd.DataFrame({n.name:[n.objective] for n in networks})
-    cost.plot(kind="bar", ax=ax)
-    ax.set_ylabel("Cost in mil. Euro")
-    ax.set_xlabel("")
-    ax.axes.xaxis.set_ticks([])
-    ax.set_title("Total system cost")
+    costs = get_costs(networks[0]) - get_costs(networks[1])
+    costs /= 1e6
+    costs.plot.barh(stacked=True, ax=ax, zorder=4)
+    ax.grid(linestyle="--", linewidth=0.5, alpha=0.5, zorder=2)
+    ax.set_ylabel("")
+    ax.set_xlabel("Cost [Million €]")
+    # ax.axes.xaxis.set_ticks([])
+    ax.set_title("Total Cost Savings")
 
 
 def plot_historical_curtailment(ax, networks):

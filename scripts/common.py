@@ -9,6 +9,32 @@ from pypsa.plot import projected_area_factor
 keys = {"network_dlr": "Dynamic Line Rating", "network_slr": "Static Line Rating"}
 
 
+super_carrier = {
+    "coal": "Fossil Carriers",
+    "CCGT": "Fossil Carriers",
+    "lignite": "Fossil Carriers",
+    "geothermal": "Other Renewables",
+    "biomass": "Other Renewables",
+    "onwind": "Onshore Wind",
+    "offwind": "Offshore Wind",
+    "offwind": "Offshore Wind",
+    "solar": "Solar",
+    "PHS": "Other Renewables",
+    "hydro": "Other Renewables",
+    "ror": "Other Renewables",
+    "OCGT": "Fossil Carriers",
+    "battery": "Battery Infrastructure",
+    "battery discharger": "Battery Infrastructure",
+    "battery charger": "Battery Infrastructure",
+    "H2": "Hydrogen Infrastructure",
+    "H2 fuel cell": "Hydrogen Infrastructure",
+    "H2 electrolysis": "Hydrogen Infrastructure",
+    "Load": "",
+    "AC": "Transmission System",
+    "DC": "Transmission System",
+}
+
+
 def add_load_shedding_color(n):
     """
     Needed until https://github.com/PyPSA/pypsa-eur/pull/320 is merged.
@@ -30,6 +56,20 @@ def modify_offwind_carrier(n):
     return n
 
 
+def add_carrier_nice_names(n):
+    n.add("Carrier", "AC", nice_name="AC Transmission")
+    n.add("Carrier", "DC", nice_name="DC Transmission")
+    n.add("Carrier", "battery discharger", nice_name="Battery Discharging")
+    n.add("Carrier", "battery charger", nice_name="Battery Charging")
+    n.add("Carrier", "H2 fuel cell", nice_name="Hydrogen Fuel Cell")
+    n.add("Carrier", "H2 electrolysis", nice_name="Hydrogen Electrolysis")
+    return n
+
+
+def add_carrier_groups(n):
+    n.carriers["group"] = n.carriers.index.map(super_carrier)
+
+
 def load_network(path):
     n = pypsa.Network(path)
     if "dlr" in path:
@@ -40,6 +80,9 @@ def load_network(path):
         raise ValueError("Cannot evaluate network name.")
     add_load_shedding_color(n)
     modify_offwind_carrier(n)
+    add_carrier_nice_names(n)
+    add_carrier_groups(n)
+    n.carriers = n.carriers.sort_values(["co2_emissions", "group"])
     return n
 
 
