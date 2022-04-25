@@ -154,6 +154,7 @@ rule plot_bars:
         curtailment="figures/de{year}_{clusters}_nodes_{opts}/curtailment_bar.{ext}",
         capacity="figures/de{year}_{clusters}_nodes_{opts}/capacity_bar.{ext}",
         historical_curtailment="figures/de{year}_{clusters}_nodes_{opts}/historical_curtailment_bar.{ext}",
+        cost="figures/de{year}_{clusters}_nodes_{opts}/cost_bar.{ext}",
     script:
         "scripts/plot_bars.py"
 

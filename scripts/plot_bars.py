@@ -24,8 +24,10 @@ def get_capacity(n):
 
     #stos = n.stores.groupby(["carrier"]).e_nom_opt.sum()
     buses = n.buses.query("carrier == 'AC'").index
-    stos = n.links.groupby(["bus1", "carrier"]).p_nom_opt.sum().loc[buses].groupby("carrier").sum().drop("DC")
-    stos.rename(index={"H2 fuel cell":"H2","battery discharger":"battery"}, inplace=True)
+    stos = n.links.groupby(["bus1", "carrier"]).p_nom_opt.sum()
+    if not stos.empty:
+        stos=stos.loc[buses].groupby("carrier").sum().drop("DC")
+        stos.rename(index={"H2 fuel cell":"H2","battery discharger":"battery"}, inplace=True)
     return pd.concat([gens, stos]).rename(n.name)
 
 
@@ -49,6 +51,14 @@ def plot_curtailment(ax, networks):
     ax.set_ylabel("Curtailment in TWh")
     ax.set_xlabel("")
     ax.set_title("Curtailment of energy")
+
+def plot_cost(ax, networks):
+    cost=pd.DataFrame({n.name:[n.objective] for n in networks})
+    cost.plot(kind="bar", ax=ax)
+    ax.set_ylabel("Cost in mil. Euro")
+    ax.set_xlabel("")
+    ax.axes.xaxis.set_ticks([])
+    ax.set_title("Total system cost")
 
 
 def plot_historical_curtailment(ax, networks):
@@ -107,6 +117,11 @@ if __name__ == "__main__":
     plot_curtailment(ax, networks)
     fig.tight_layout()
     fig.savefig(snakemake.output["curtailment"], bbox_inches="tight")
+
+    fig, ax = plt.subplots(figsize=(8, 5))
+    plot_cost(ax, networks)
+    fig.tight_layout()
+    fig.savefig(snakemake.output["cost"], bbox_inches="tight")
 
     fig, ax = plt.subplots(figsize=(8, 5))
     plot_historical_curtailment(ax, networks)

@@ -11,6 +11,9 @@ from importlib import reload
 import cartopy.crs as ccrs
 import geopandas as gpd
 import matplotlib.pyplot as plt
+import matplotlib.colors as colors
+import matplotlib.cm as cm
+import numpy as np
 import pandas as pd
 import seaborn as sns
 from common import (
@@ -49,7 +52,13 @@ def scale_line_widths(line_widths, line_width_factor):
 #     elif n.name=="Dynamic Line Rating":
 #         f=np.abs((n.lines_t.p0 / n.lines_t.s_max_pu)).divide(n.lines.s_nom_opt, axis=1).mean()
 #     f=(f-f.min())/(f.max()-f.min())
-#     return             
+#     return
+# 
+def truncate_colormap(cmap, minval=0.0, maxval=1.0, n=100):
+    new_cmap = colors.LinearSegmentedColormap.from_list(
+        'trunc({n},{a:.2f},{b:.2f})'.format(n=cmap.name, a=minval, b=maxval),
+        cmap(np.linspace(minval, maxval, n)))
+    return new_cmap            
 
 
 # ---------------------------------------------------------------------------- #
@@ -84,21 +93,36 @@ def plot_congestion(ax, n, bounds, bus_size_factor=None, line_width_factor=None)
     )
     f = f.where(n.branches().carrier.isin(["AC", "DC"]).reindex_like(f), 0)
     line_width_factor = scale_line_widths(f, line_width_factor)
-    bus_size_factor = 0.001
+    
+    curtailment = (
+        (n.generators_t.p_max_pu * n.generators.p_nom_opt)
+        .subtract(n.generators_t.p, axis="columns")
+        .sum()
+    )
+    bus_sizes = curtailment.groupby([n.generators.bus, n.generators.carrier]).sum()
+    bus_sizes.drop("load", level=1, inplace=True)
+    bus_size_factor = scale_bus_sizes(bus_sizes, bus_size_factor)
+    
+    # Scale colorbar
+    cmap = cm.get_cmap('viridis', 256)
+    vmin=0  #minimum value to show on colobar
+    vmax =5000 #maximum value to show on colobar
+    norm = colors.Normalize(vmin=vmin, vmax =vmax)
+ 
     collection=n.plot(
         ax=ax,
         line_widths=line_width_factor,
         line_colors=f.get("Line"),
-        line_cmap="viridis",
+        line_cmap=cmap,
         link_widths=line_width_factor,
-        link_colors=f.get("Link"),
-        link_cmap="viridis",
-        bus_sizes=bus_size_factor,
+        bus_sizes=bus_sizes * bus_size_factor,
         bus_alpha=0.7,
         color_geomap=False,
         boundaries=bounds,
     )
-    plt.colorbar(collection[1], ax=ax, fraction=0.046, pad=0.004)
+    collection[1].set(norm=norm)
+    if "Static" in n.name:
+        plt.colorbar(collection[1], ax=ax, fraction=0.046, pad=0.004)
     return bus_size_factor, line_width_factor
 
 
@@ -234,7 +258,7 @@ if __name__ == "__main__":
             frameon=False,
         )
 
-        if output != "curtailment":
+        if output != "curtailment" and output != "congestion":
             unit = "GW"
         else:
             unit = "GWh"
