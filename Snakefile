@@ -158,6 +158,15 @@ rule plot_bars:
     script:
         "scripts/plot_bars.py"
 
+rule plot_analysis:
+    input:
+        network_dlr="results/de{year}_{clusters}_nodes_{opts}_dlr.nc",
+        network_slr="results/de{year}_{clusters}_nodes_{opts}_slr.nc",
+    output:
+        congestion_correlation="figures/de{year}_{clusters}_nodes_{opts}/congestion_correlation.{ext}",
+    script:
+        "scripts/plot_analysis.py"
+
 
 rule plot_grid_stats:
     input:
