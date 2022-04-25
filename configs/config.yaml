@@ -99,3 +99,6 @@ plotting:
     congestion:
       refsize: 1.e+6 # at what capacity should circle be drawn
       line_width_factor: 1
+  bar:
+    capacity:
+      figsize: [5,8]

@@ -139,22 +139,13 @@ if __name__ == "__main__":
     dlr = load_network(snakemake.input.network_dlr)
     networks = slr, dlr
 
-    fig, ax = plt.subplots(figsize=(5, 8))
-    plot_capacity(ax, networks)
-    fig.tight_layout()
-    fig.savefig(snakemake.output["capacity"], bbox_inches="tight")
+    config = snakemake.config["plotting"]["bar"]
 
-    fig, ax = plt.subplots(figsize=(8, 5))
-    plot_curtailment(ax, networks)
-    fig.tight_layout()
-    fig.savefig(snakemake.output["curtailment"], bbox_inches="tight")
+    for output in snakemake.output.keys():
+        figconfig = config.get(output, {})
 
-    fig, ax = plt.subplots(figsize=(8, 5))
-    plot_cost(ax, networks)
-    fig.tight_layout()
-    fig.savefig(snakemake.output["cost"], bbox_inches="tight")
-
-    fig, ax = plt.subplots(figsize=(8, 5))
-    plot_historical_curtailment(ax, networks)
-    fig.tight_layout()
-    fig.savefig(snakemake.output["historical_curtailment"], bbox_inches="tight")
+        fig, ax = plt.subplots(figsize=figconfig.get("figsize", (8, 5)))
+        plot_func = eval(f"plot_{output}")
+        plot_func(ax, networks)
+        fig.tight_layout()
+        fig.savefig(snakemake.output[output], bbox_inches="tight")
