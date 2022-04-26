@@ -1,7 +1,6 @@
 \documentclass[conference]{IEEEtran}
 \IEEEoverridecommandlockouts
 % The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
-\usepackage{cite}
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{algorithmic}
 \usepackage{graphicx}
@@ -21,6 +20,9 @@ natbib=true % natbib compatibility mode (\citep and \citet still work)
 ]{biblatex}
 \bibliography{main.bib}
 % Template from https://de.overleaf.com/latex/templates/ieee-conference-template/grfzhhncsfqn
+
+\graphicspath{{../figures/}}
+
 
 \begin{document}
 
@@ -57,8 +59,8 @@ should not be used}
 The deployment of new renewable energy sources far from load centers is leading to an increasing need for grid capacity. A notable example can be found in Germany, where most of the wind energy is generated in the North while there is significant industrial demand in the South \cite{kuhneConflictsNegotiationProcesses2018}. Whereas the current federal government plans to add ~70 GW wind power capacity until 2030, only a few grid expansion projects have been realized \cite{federalministryofeconomicaffairsandclimateactionGermanyCurrentClimate2022}, [3]\todo{source}. Moreover, most of these projects have been delayed due to administrative problems and protest activities \cite{neukirchProtestsGermanElectricity2016}, \cite{fernandezReviewDynamicLine2016}. This trend will likely exacerbate transmission system congestion, which may lead to more grid instability and curtailment \cite{erdincComprehensiveOverviewDynamic2020}. There is therefore a strong incentive to exploit existing grid infrastructure more fully.
 
 To overcome the mismatch between slow installation of transmission lines and rapid installation of renewable generation, several, complementing measures can be taken that must be reconciled:  (1) large scale implementation of storage facilities to flatten power feed-ins and power demands [7] \todo{sources}; (2) usage of alternative energy carrier networks to relieve the electricity grid {8}\todo{sources}; (3) leveraging the existing grid infrastructure to increase the operating capacity. In the following, we will focus on point (3), which in comparison to (1) and (2) sticks out through a straight-forward, cost-efficient and non-invasive implementation and does not require conversion technologies which (yet) encounter high prices and comparably low round-trip efficiencies [9], [10]\todo{sources}.
-Traditionally, transmission line capacity is calculated assuming unfavorable, static weather conditions such as 40$^\circ$C  ambient temperature and 0.6m/s wind speed \cite{fernandezReviewDynamicLine2016}. This is referred to as Static Line Rating (SLR). By design, SLR underestimates the capacity of a transmission line and, when implemented in practice, leads to an overestimated transmission capacity. In contrast, Dynamic Line Rating (DLR) calculates the line capacity taking into account the prevailing weather conditions. Cold weather and wind cool overheated transmission lines, enabling the thermal rating to be raised. This results in key benefits in cost-efficiency, congestion reduction and better wind power integration \cite{erdincComprehensiveOverviewDynamic2020}. So far, the literature provides case studies considering DLR in small scale Energy System Optimization Models (ESOMs) \cite{liDayAheadSchedulingPower2019,dabbaghjamaneshEffectiveSchedulingReconfigurable2019,viaforaDayaheadDispatchOptimization2019}. However, it is lacking of an extensive evaluation and assessment of DLR being applied to a higher scale ESOM considering capacity expansion and a CO$_2$ target.
-This paper addresses this gap. We model and analyze the impact of DLR on the optimal dispatch and deployment of power generators in the German electricity sector. The underlying model is created from the PyPSA-Eur framework [16], and for Germany consists of XX representative nodes and considers a time horizon of one year with an hourly resolution. To model the effect of DLR on the power system, we use the IEEE standard \cite{IEEEStandardCalculating2012} with highly resolved historical weather data implemented in the Atlite software \cite{hofmannAtliteLightweightPython2021}. The advantages of the DLR are illustrated by comparison with an SLR-based system. Therefore, we analyze and compare curtailment, grid congestion as well as the optimal generator deployment.
+Traditionally, transmission line capacity is calculated assuming unfavorable, static weather conditions such as 40~$^\circ$C  ambient temperature and 0.6~m/s wind speed \cite{fernandezReviewDynamicLine2016}. This is referred to as Static Line Rating (SLR). By design, SLR underestimates the capacity of a transmission line and, when implemented in practice, leads to an overestimated transmission capacity. In contrast, Dynamic Line Rating (DLR) calculates the line capacity taking into account the prevailing weather conditions. Cold weather and wind cool overheated transmission lines, enabling the thermal rating to be raised. This results in key benefits in cost-efficiency, congestion reduction and better wind power integration \cite{erdincComprehensiveOverviewDynamic2020}. So far, the literature provides case studies considering DLR in small scale Energy System Optimization Models (ESOMs) \cite{liDayAheadSchedulingPower2019,dabbaghjamaneshEffectiveSchedulingReconfigurable2019,viaforaDayaheadDispatchOptimization2019}. However, it is lacking of an extensive evaluation and assessment of DLR being applied to a higher scale ESOM considering capacity expansion and a CO$_2$ target.
+This paper addresses this gap. We model and analyze the impact of DLR on the optimal dispatch and deployment of power generators in the German electricity sector. The underlying model is created from the PyPSA-Eur framework [16], and for Germany consists of 256 representative nodes and considers a time horizon of one year with an hourly resolution. To model the effect of DLR on the power system, we use the IEEE standard \cite{IEEEStandardCalculating2012} with highly resolved historical weather data implemented in the Atlite software \cite{hofmannAtliteLightweightPython2021}. The advantages of the DLR are illustrated by comparison with an SLR-based system. Therefore, we analyze and compare curtailment, grid congestion as well as the optimal generator deployment.
 
 \section{Methodology}
 
@@ -80,14 +82,21 @@ Solving \eqref{eq:heat_balance} for the electrical current and setting the tempe
 \begin{align}
     I_{max} = \sqrt{\frac{q_c +q_r-q_s}{R(T_{max})}}
 \end{align}
-which for three-phase electric power transmission operating at voltage level $V$ directly leads to the maximally power transfer
+which for three-phase electric power transmission operating at voltage level $V$ leads to a maximally allowed, constant power transfer of
 \begin{align}
     P_{max} = \sqrt{3} \cdot I_{max} \cdot V
 \end{align}
-Fig. 1 shows the maximally allowed power transmission $P_{max}$ for different environmental conditions. As the strongest cooling is to be expected from convective heat loss $q_c$.
+Figure \ref{fig:parameter-space-reduced} shows $P_{max}$ for a typical 3-phase transmission line with $R(T_{max}) = 9.39\cdot10^{-5}\,\Omega/\text{m}$ and $V$~=~380~kV, dependent as a function of temperature and wind speed for three different wind incidence angles, 0$^\circ$C, 45$^\circ$C and 90$^\circ$C. The cooling effect at cold temperature with strong perpendicular wind leads to transmission capacity increase of factor 4-6 compared to conservative conditions with 40~$^\circ$C and low wind.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{parameter-space-reduced.pdf}
+    \caption{Transmission capacity for different environmental conditions.}
+    \label{fig:parameter-space-reduced}
+\end{figure}
 
 \subsection{Power System Modeling}
-To build the ESOM, we use the Python framework PyPSA-Eur. It expands the Python toolbox Python for Power System Analysis (PyPSA) \cite{brownPyPSAPythonPower2018}, which can be used to optimize electrical power systems. The model is based on a network where nodes represent energy sources and sinks, and the edges represent the energy links between the nodes. Each node can have an energy demand and different  generators, such as wind turbines or nuclear power plants. With the PyPSA-Eur framework, we can allocate existing power plant capacities and renewable energy resources to the corresponding nodes in the  model. The model is formulated as a linear problem considering linear AC power flow equations for the AC transmission between nodes. The objective function of the ESOM minimizes the total system cost such that it complies with a given Co2 budget and other technical constraints. 
+To build the ESOM, we use the Python framework PyPSA-Eur. It expands the Python toolbox Python for Power System Analysis (PyPSA) \cite{brownPyPSAPythonPower2018}, which can be used to optimize electrical power systems. The model is based on a network where nodes represent energy sources and sinks, and the edges represent the energy links between the nodes. Each node can have an energy demand and different  generators, such as wind turbines or nuclear power plants. With the PyPSA-Eur framework, we can allocate existing power plant capacities and renewable energy resources to the corresponding nodes in the  model. The model is formulated as a linear problem considering linear AC power flow equations for the AC transmission between nodes. The objective function of the ESOM minimizes the total system cost such that it complies with a given Co2 budget and other technical constraints.
 In our ESOM, we further integrate the hourly DLR data, namely the maximally allowed transmission line capacity for each line  in the network as given in Section~\ref{dlr}. Therefore, the maximal power transmission of each line $l$ and at each snapshot $t$  has to fulfill
 \begin{align}
 	P_{l,t} \le P^{max}_{l,t} \quad \forall l \in L ,  \forall t \in  T
@@ -105,7 +114,7 @@ In this section we introduce the two study cases used to analyze the effect of D
 In this study case we study the effect of DLR on the existing power system without generator capacity expansion. We choose the pre-pandemic year 2019 as base year, as we want to model the system under relatively normal circumstances. Hence, this study case consists the German transmission and generator infrastructure of 2019 and considers the weather year 2019. Furthermore, we use the electrical load data for Germany in 2019. To better approximate the operation of conventional power plants running mostly at base load, namely nuclear and lignite, we enforce a minimal running condition. The running condition is based on historical operation data from the ENTSO-E Transparency Platform  \cite{ENTSOETransparencyPlatform}. With this study case we want to analyze the effect of DLR on the current German power system.
 
 \subsection{Optimal Investment and Operation of the 2030 Power System }
-In the second study case we model the German power system for 2030. In contrast to the fist 2019 study case, in this study case we allow generator capacity expansion. Therefore, the model optimizes the investment and the operation of the German power system. The grid infrastructure for this study case comprises the current infrastructure as well as permitted grid expansion projects from the TYNDP \cite{entsoeTYNDP2018Project2018}, which will be build until 2030. Regarding the generators we include existing generator capacities remaining in operation until at least 2030. Furthermore, we align the deployment of new generators with the goal of the federal ministry that 80\% of the generated electricity in 2030 is from renewables \cite{federalministryofeconomicaffairsandclimateactionGermanyCurrentClimate2022}. The electrical load is scaled up to meet the predicted demand of the federal ministry \cite{kemmlerEntwicklungBruttostromverbrauchsBis2021}. 
+In the second study case we model the German power system for 2030. In contrast to the fist 2019 study case, in this study case we allow generator capacity expansion. Therefore, the model optimizes the investment and the operation of the German power system. The grid infrastructure for this study case comprises the current infrastructure as well as permitted grid expansion projects from the TYNDP \cite{entsoeTYNDP2018Project2018}, which will be build until 2030. Regarding the generators we include existing generator capacities remaining in operation until at least 2030. Furthermore, we align the deployment of new generators with the goal of the federal ministry that 80\% of the generated electricity in 2030 is from renewables \cite{federalministryofeconomicaffairsandclimateactionGermanyCurrentClimate2022}. The electrical load is scaled up to meet the predicted demand of the federal ministry \cite{kemmlerEntwicklungBruttostromverbrauchsBis2021}.
 
 
 \section{Results}
@@ -119,9 +128,9 @@ In the second study case we model the German power system for 2030. In contrast 
 
 \section{Discussion}
 
-Given an adequate size ratio, wind farms together with hydrogen stores can provide a base load preventing high pressure on the transmission system. However, the economic feasibility for a large scale implementation of hydrogen stores is not yet fully given, mainly due to relatively low round-trip efficiencies and (yet) high prices of conversion and storage components. 
+Given an adequate size ratio, wind farms together with hydrogen stores can provide a base load preventing high pressure on the transmission system. However, the economic feasibility for a large scale implementation of hydrogen stores is not yet fully given, mainly due to relatively low round-trip efficiencies and (yet) high prices of conversion and storage components.
 
-By converting renewable energy to Methane, Hydrogen of synthetic fuels, the energy can be transported through the existing or new built transport system, as for example planned by the European Hydrogen Backbone initiative (Citation). Again, this requires high investments as well as a long planning phase, thus cannot be considered as a short term measure. 
+By converting renewable energy to Methane, Hydrogen of synthetic fuels, the energy can be transported through the existing or new built transport system, as for example planned by the European Hydrogen Backbone initiative (Citation). Again, this requires high investments as well as a long planning phase, thus cannot be considered as a short term measure.
 
 \section*{References}
 \printbibliography
