@@ -164,6 +164,7 @@ rule plot_analysis:
         network_slr="results/de{year}_{clusters}_nodes_{opts}_slr.nc",
     output:
         congestion_correlation="figures/de{year}_{clusters}_nodes_{opts}/congestion_correlation.{ext}",
+        congestion_wind_correlation="figures/de{year}_{clusters}_nodes_{opts}/congestion_wind_correlation.{ext}",
     script:
         "scripts/plot_analysis.py"
 
