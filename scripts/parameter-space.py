@@ -21,7 +21,7 @@ t = np.arange(-10, 40, 0.5)
 celsius = xr.IndexVariable("Temperature", t, {"units": "°C"})
 T = DataArray(t + 273.15, coords={"Temperature": celsius}, dims="Temperature")
 
-w = np.arange(0, 25, 0.1)
+w = np.arange(0, 25, 0.1).round(2)
 speed = xr.IndexVariable("Wind speed", w, attrs={"units": "m/s"})
 W = DataArray(w, coords={"Wind speed": speed}, dims="Wind speed")
 
