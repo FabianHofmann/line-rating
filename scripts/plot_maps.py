@@ -10,9 +10,9 @@ from importlib import reload
 
 import cartopy.crs as ccrs
 import geopandas as gpd
-import matplotlib.pyplot as plt
-import matplotlib.colors as colors
 import matplotlib.cm as cm
+import matplotlib.colors as colors
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
@@ -43,22 +43,24 @@ def scale_line_widths(line_widths, line_width_factor):
         line_width_factor = max_line_factor / line_widths.max()
     return line_width_factor
 
+
 # ---------------------------------------------------------------------------- #
 #                               Helper functions                               #
 # ---------------------------------------------------------------------------- #
 # def get_line_utilization(n):
 #     if n.name=="Static Line Rating":
-#         f=np.abs(n.lines_t.p0).divide(n.lines.s_nom_opt * n.lines.s_max_pu, axis=1).mean()  
+#         f=np.abs(n.lines_t.p0).divide(n.lines.s_nom_opt * n.lines.s_max_pu, axis=1).mean()
 #     elif n.name=="Dynamic Line Rating":
 #         f=np.abs((n.lines_t.p0 / n.lines_t.s_max_pu)).divide(n.lines.s_nom_opt, axis=1).mean()
 #     f=(f-f.min())/(f.max()-f.min())
 #     return
-# 
+#
 def truncate_colormap(cmap, minval=0.0, maxval=1.0, n=100):
     new_cmap = colors.LinearSegmentedColormap.from_list(
-        'trunc({n},{a:.2f},{b:.2f})'.format(n=cmap.name, a=minval, b=maxval),
-        cmap(np.linspace(minval, maxval, n)))
-    return new_cmap            
+        "trunc({n},{a:.2f},{b:.2f})".format(n=cmap.name, a=minval, b=maxval),
+        cmap(np.linspace(minval, maxval, n)),
+    )
+    return new_cmap
 
 
 # ---------------------------------------------------------------------------- #
@@ -93,7 +95,7 @@ def plot_congestion(ax, n, bounds, bus_size_factor=None, line_width_factor=None)
     )
     f = f.where(n.branches().carrier.isin(["AC", "DC"]).reindex_like(f), 0)
     line_width_factor = scale_line_widths(f, line_width_factor)
-    
+
     curtailment = (
         (n.generators_t.p_max_pu * n.generators.p_nom_opt)
         .subtract(n.generators_t.p, axis="columns")
@@ -102,14 +104,14 @@ def plot_congestion(ax, n, bounds, bus_size_factor=None, line_width_factor=None)
     bus_sizes = curtailment.groupby([n.generators.bus, n.generators.carrier]).sum()
     bus_sizes.drop("load", level=1, inplace=True)
     bus_size_factor = scale_bus_sizes(bus_sizes, bus_size_factor)
-    
+
     # Scale colorbar
-    cmap = cm.get_cmap('viridis', 256)
-    vmin=0  #minimum value to show on colobar
-    vmax =5000 #maximum value to show on colobar
-    norm = colors.Normalize(vmin=vmin, vmax =vmax)
- 
-    collection=n.plot(
+    cmap = cm.get_cmap("viridis", 256)
+    vmin = 0  # minimum value to show on colobar
+    vmax = 5000  # maximum value to show on colobar
+    norm = colors.Normalize(vmin=vmin, vmax=vmax)
+
+    collection = n.plot(
         ax=ax,
         line_widths=line_width_factor,
         line_colors=f.get("Line"),
@@ -250,7 +252,7 @@ if __name__ == "__main__":
             ax.set_title(n.name, fontsize=11)
         add_carrier_legend(
             ax,
-            n.carriers.sort_index(),
+            n.carriers.query('color != ""').sort_index(),
             size=refsize,
             scale=bus_size_factor,
             bbox_to_anchor=(1, 1),
