@@ -14,6 +14,7 @@ scenario_2020:
       "curtailment_map",
       "curtailment_bar",
       "capacity_bar",
+      "relative_curtailment_bar",
       "historical_curtailment_bar",
     ]
 
@@ -29,7 +30,9 @@ scenario_2030:
       "curtailment_map",
       "curtailment_bar",
       "capacity_bar",
+      "relative_curtailment_bar",
       "historical_curtailment_bar",
+      "potential_correlation"
     ]
 
 test:
@@ -44,7 +47,9 @@ test:
       "curtailment_map",
       "curtailment_bar",
       "capacity_bar",
+      "relative_curtailment_bar",
       "historical_curtailment_bar",
+      "potential_correlation"
     ]
 
 solving:
@@ -102,3 +107,7 @@ plotting:
   bar:
     capacity:
       figsize: [5,8]
+    relative_curtailment:
+      figsize: [6,4]
+    curtailment:
+      figsize: [6,4]

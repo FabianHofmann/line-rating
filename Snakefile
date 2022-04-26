@@ -151,8 +151,9 @@ rule plot_bars:
         network_slr="results/de{year}_{clusters}_nodes_{opts}_slr.nc",
         curtailment_data="data/curtailment_carrier.csv",
     output:
-        curtailment="figures/de{year}_{clusters}_nodes_{opts}/curtailment_bar.{ext}",
         capacity="figures/de{year}_{clusters}_nodes_{opts}/capacity_bar.{ext}",
+        curtailment="figures/de{year}_{clusters}_nodes_{opts}/curtailment_bar.{ext}",
+        relative_curtailment="figures/de{year}_{clusters}_nodes_{opts}/relative_curtailment_bar.{ext}",
         historical_curtailment="figures/de{year}_{clusters}_nodes_{opts}/historical_curtailment_bar.{ext}",
         cost="figures/de{year}_{clusters}_nodes_{opts}/cost_bar.{ext}",
     script:

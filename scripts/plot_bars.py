@@ -4,19 +4,32 @@ import seaborn as sns
 from common import load_network
 
 
-def get_curtail_data(n):
-    variables = n.generators_t.p_max_pu.columns
+def get_curtailment(n):
+    renewables = n.generators[n.generators.carrier.str.contains(r"solar|wind")].index
     curtailment = (
-        (n.generators_t.p_max_pu * n.generators.p_nom_opt[variables])
-        .subtract(n.generators_t.p[variables], axis="columns")
+        (n.generators_t.p_max_pu[renewables] * n.generators.p_nom_opt[renewables])
+        .subtract(n.generators_t.p[renewables], axis="columns")
         .multiply(n.snapshot_weightings["generators"], axis=0)
         .sum()
     )
-    # curtailment.index = (
-    #     n.generators.loc[variables].set_index(["bus", "carrier"]).index
-    # )
     curtailment = curtailment.groupby(n.generators.carrier).sum().rename(n.name)
+
     return curtailment / 1e6  # in TWh
+
+
+def get_relative_curtailment(n):
+    renewables = n.generators[n.generators.carrier.str.contains(r"solar|wind")].index
+    curtailment = (
+        (n.generators_t.p_max_pu[renewables] * n.generators.p_nom_opt[renewables])
+        .subtract(n.generators_t.p[renewables], axis="columns")
+        .multiply(n.snapshot_weightings["generators"], axis=0)
+        .mean()
+    )
+    curtailment = curtailment / n.generators.p_nom_opt[renewables]
+
+    curtailment = curtailment.groupby(n.generators.carrier).mean().rename(n.name)
+
+    return curtailment * 100  # in %
 
 
 def get_capacity(n):
@@ -72,7 +85,36 @@ def plot_capacity(ax, networks):
 
 
 def plot_curtailment(ax, networks):
-    curtailment = pd.concat([get_curtail_data(n) for n in networks], axis=1)
+    curtailment = pd.concat([get_curtailment(n) for n in networks], axis=1)
+    curtailment.plot(kind="bar", ax=ax, zorder=4)
+    ax.grid(linestyle="--", linewidth=0.5, alpha=0.5, zorder=2)
+    ax.set_xticklabels(slr.carriers.nice_name[curtailment.index], rotation="horizontal")
+    ax.set_ylabel("Curtailment in TWh")
+    ax.set_xlabel("")
+    ax.set_title("Curtailment of Renewable Energy")
+
+
+def plot_relative_curtailment(ax, networks):
+    curtailment = pd.concat([get_relative_curtailment(n) for n in networks], axis=1)
+    curtailment.plot(kind="bar", ax=ax, zorder=4)
+    ax.grid(linestyle="--", linewidth=0.5, alpha=0.5, zorder=2)
+    ax.set_xticklabels(slr.carriers.nice_name[curtailment.index], rotation="horizontal")
+    ax.set_ylabel("Average Relative Curtailment in %")
+    ax.set_xlabel("")
+    ax.set_title("Relative Curtailment")
+
+
+def plot_historical_curtailment(ax, networks):
+    historical_curtailment = pd.read_csv(snakemake.input.curtailment_data, index_col=0)
+    historical_curtailment = historical_curtailment["2019"]
+    historical_curtailment = historical_curtailment.rename("Historical curtailment")
+    historical_curtailment /= 1000  # in TWh
+
+    modeled_curtailment = pd.concat([get_curtailment(n) for n in networks], axis=1)
+
+    curtailment = pd.concat(
+        [historical_curtailment, modeled_curtailment], axis=1, join="inner"
+    )
     curtailment.plot(kind="bar", ax=ax, zorder=4)
     ax.grid(linestyle="--", linewidth=0.5, alpha=0.5, zorder=2)
     ax.set_xticklabels(slr.carriers.nice_name[curtailment.index], rotation="horizontal")
@@ -88,27 +130,7 @@ def plot_cost(ax, networks):
     ax.grid(linestyle="--", linewidth=0.5, alpha=0.5, zorder=2)
     ax.set_ylabel("")
     ax.set_xlabel("Cost [Million €]")
-    # ax.axes.xaxis.set_ticks([])
     ax.set_title("Total Cost Savings")
-
-
-def plot_historical_curtailment(ax, networks):
-    historical_curtailment = pd.read_csv(snakemake.input.curtailment_data, index_col=0)
-    historical_curtailment = historical_curtailment["2019"]
-    historical_curtailment = historical_curtailment.rename("Historical curtailment")
-    historical_curtailment /= 1000  # in TWh
-
-    modeled_curtailment = pd.concat([get_curtail_data(n) for n in networks], axis=1)
-
-    curtailment = pd.concat(
-        [historical_curtailment, modeled_curtailment], axis=1, join="inner"
-    )
-    curtailment.plot(kind="bar", ax=ax, zorder=4)
-    ax.grid(linestyle="--", linewidth=0.5, alpha=0.5, zorder=2)
-    ax.set_xticklabels(slr.carriers.nice_name[curtailment.index], rotation="horizontal")
-    ax.set_ylabel("Curtailment in TWh")
-    ax.set_xlabel("")
-    ax.set_title("Curtailment of energy")
 
 
 if __name__ == "__main__":
@@ -129,6 +151,7 @@ if __name__ == "__main__":
         "paper",
         rc={
             "font.size": 12,
+            "legend.fontsize": 11,
             "axes.titlesize": 12,
             "axes.labelsize": 12,
             "xtick.labelsize": 12,
