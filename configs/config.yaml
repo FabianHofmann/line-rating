@@ -5,7 +5,7 @@
 scenario_2020:
   rating: ["dlr", "slr"]
   clusters: ["all"]
-  opts: ["Co2L-BL"]
+  opts: ["Co2L-BL-Ep"]
   year: [2020]
   figure:
     [
@@ -21,7 +21,7 @@ scenario_2020:
 scenario_2030:
   rating: ["dlr", "slr"]
   clusters: ["all"]
-  opts: ["Co2L-RE0.8"]
+  opts: ["Co2L-Ep-RE0.8"]
   year: [2030]
   figure:
     [
@@ -38,7 +38,7 @@ scenario_2030:
 test:
   rating: ["dlr", "slr"]
   clusters: [5]
-  opts: ["Co2L-24H-RE0.8"]
+  opts: ["Co2L-24H-Ep-RE0.8"]
   year: [2020, 2030]
   figure:
     [
@@ -85,6 +85,7 @@ electricity:
 
 plotting:
   map:
+    figsize: [8, 4]
     boundaries: [5.5, 15.5, 47, 55]
     #If None or commented out the plot_main.py automatically calculates the bus and line factor. If factor is given, then the factor is taken.
     capacity:
@@ -105,6 +106,8 @@ plotting:
       refsize: 1.e+6 # at what capacity should circle be drawn
       line_width_factor: 1
   bar:
+    operation:
+      figsize: [5,8]
     capacity:
       figsize: [5,8]
     relative_curtailment:
