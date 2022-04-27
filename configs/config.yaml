@@ -5,7 +5,7 @@
 scenario_2020:
   rating: ["dlr", "slr"]
   clusters: ["all"]
-  opts: ["Co2L-BL-Ep"]
+  opts: ["Co2L-BL"]
   year: [2020]
   figure:
     [
@@ -16,12 +16,14 @@ scenario_2020:
       "capacity_bar",
       "relative_curtailment_bar",
       "historical_curtailment_bar",
+      "congestion_correlation",
+      "potential_correlation",
     ]
 
 scenario_2030:
   rating: ["dlr", "slr"]
   clusters: ["all"]
-  opts: ["Co2L-Ep-RE0.8"]
+  opts: ["Co2L-RE0.8"]
   year: [2030]
   figure:
     [
@@ -32,7 +34,9 @@ scenario_2030:
       "capacity_bar",
       "relative_curtailment_bar",
       "historical_curtailment_bar",
-      "potential_correlation"
+      "potential_correlation",
+      "congestion_correlation",
+      "potential_correlation",
     ]
 
 test:
@@ -107,9 +111,11 @@ plotting:
       line_width_factor: 1
   bar:
     operation:
-      figsize: [5,8]
+      figsize: [4.5, 5]
+    cost:
+      figsize: [4.5, 5]
     capacity:
-      figsize: [5,8]
+      figsize: [4.5, 8]
     relative_curtailment:
       figsize: [6,4]
     curtailment:

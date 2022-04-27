@@ -3,35 +3,17 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 # sns.set_style('white', )
-plt.rc("text", usetex=True)
-plt.rc("font", family="sans-serif")
-plt.style.use("seaborn-colorblind")
-sns.set_context(
-    "paper",
-    rc={
-        "font.size": 12,
-        "legend.fontsize": 11,
-        "axes.titlesize": 12,
-        "axes.labelsize": 12,
-        "xtick.labelsize": 12,
-        "ytick.labelsize": 12,
-    },
-)
 
 
 configfile: "configs/config.yaml"
 
 
-rule create_figures_2020:
+rule create_figures:
     input:
         expand(
             "figures/de{year}_{clusters}_nodes_{opts}/{figure}.pdf",
             **config["scenario_2020"]
         ),
-
-
-rule create_figures_2030:
-    input:
         expand(
             "figures/de{year}_{clusters}_nodes_{opts}/{figure}.pdf",
             **config["scenario_2030"]

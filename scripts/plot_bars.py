@@ -12,7 +12,7 @@ def get_operation(n):
         .drop("load", errors="ignore")
     )
     s = n.storage_units_t.p.sum().groupby(n.storage_units.carrier).sum()
-    p = pd.concat([pg, s])  # .groupby(n.carriers.group).sum()
+    p = pd.concat([pg, s]).groupby(n.carriers.group).sum()
     return p.rename(n.name)
 
 
@@ -88,29 +88,30 @@ def plot_operation(ax, networks):
     operation = pd.concat((get_operation(n) for n in networks), axis=1)
     operation /= 1e6  # in TWh
     operation.sort_values(networks[0].name, ascending=False, inplace=True)
-    operation.plot(kind="barh", ax=ax, zorder=4)
+    operation.plot(kind="barh", ax=ax, zorder=4, legend="reverse")
+    # ax.legend(loc="lower center", bbox_to_anchor=(0.5, 1.02), frameon=False)
     ax.grid(linestyle="--", linewidth=0.5, alpha=0.5, zorder=2)
-    ax.set_yticklabels(slr.carriers.nice_name[operation.index])
-    ax.set_xlabel("Energy [TWh]")
+    # ax.set_yticklabels(slr.carriers.nice_name[operation.index])
+    ax.set_xlabel("Total generation [TWh]")
     ax.set_ylabel("")
-    ax.set_title("Total generation")
+    # ax.set_title("Total generation")
 
 
 def plot_capacity(ax, networks):
     capacities = pd.concat((get_capacity(n) for n in networks), axis=1)
     capacities /= 1000  # in GW
     capacities.sort_values(networks[0].name, ascending=False, inplace=True)
-    capacities.plot(kind="barh", ax=ax, zorder=4)
+    capacities.plot(kind="barh", ax=ax, zorder=4, legend="reverse")
     ax.grid(linestyle="--", linewidth=0.5, alpha=0.5, zorder=2)
     ax.set_yticklabels(slr.carriers.nice_name[capacities.index])
     ax.set_xlabel("Capacity [GW]")
     ax.set_ylabel("")
-    ax.set_title("Capacity of generators")
+    ax.set_title("Installed Generation Capacities")
 
 
 def plot_curtailment(ax, networks):
     curtailment = pd.concat([get_curtailment(n) for n in networks], axis=1)
-    curtailment.plot(kind="bar", ax=ax, zorder=4)
+    curtailment.plot(kind="bar", ax=ax, zorder=4, legend="reverse")
     ax.grid(linestyle="--", linewidth=0.5, alpha=0.5, zorder=2)
     ax.set_xticklabels(slr.carriers.nice_name[curtailment.index], rotation="horizontal")
     ax.set_ylabel("Curtailment in TWh")
@@ -120,7 +121,7 @@ def plot_curtailment(ax, networks):
 
 def plot_relative_curtailment(ax, networks):
     curtailment = pd.concat([get_relative_curtailment(n) for n in networks], axis=1)
-    curtailment.plot(kind="bar", ax=ax, zorder=4)
+    curtailment.plot(kind="bar", ax=ax, zorder=4, legend="reverse")
     ax.grid(linestyle="--", linewidth=0.5, alpha=0.5, zorder=2)
     ax.set_xticklabels(slr.carriers.nice_name[curtailment.index], rotation="horizontal")
     ax.set_ylabel("Average Relative Curtailment in %")
@@ -149,11 +150,11 @@ def plot_historical_curtailment(ax, networks):
 
 def plot_cost(ax, networks):
     costs = get_costs(networks[0]) - get_costs(networks[1])
-    costs /= 1e6
-    costs.plot.barh(stacked=True, ax=ax, zorder=4)
+    costs /= 1e9
+    costs.plot.barh(stacked=True, ax=ax, zorder=4, legend="reverse")
     ax.grid(linestyle="--", linewidth=0.5, alpha=0.5, zorder=2)
     ax.set_ylabel("")
-    ax.set_xlabel("Cost [Million €]")
+    ax.set_xlabel("Cost [bn€]")
     ax.set_title("Total Cost Savings")
 
 

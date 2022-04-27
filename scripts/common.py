@@ -3,11 +3,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import pypsa
+import seaborn as sns
 from matplotlib.legend_handler import HandlerPatch
 from pypsa.plot import projected_area_factor
 
 keys = {"network_dlr": "Dynamic Line Rating", "network_slr": "Static Line Rating"}
-
 
 super_carrier = {
     "coal": "Fossil Carriers",
@@ -34,6 +34,22 @@ super_carrier = {
     "AC": "Transmission System",
     "DC": "Transmission System",
 }
+
+plt.rc("text", usetex=True)
+plt.rc("font", family="sans-serif")
+plt.style.use("seaborn-colorblind")
+sns.set_context(
+    "paper",
+    rc={
+        "font.size": 13,
+        "figure.titlesize": "normal",
+        "legend.fontsize": 11,
+        "axes.titlesize": 12,
+        "axes.labelsize": 12,
+        "xtick.labelsize": 12,
+        "ytick.labelsize": 12,
+    },
+)
 
 
 def add_load_shedding_color(n):

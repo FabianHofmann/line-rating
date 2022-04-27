@@ -4,9 +4,9 @@ from common import keys, load_network
 
 
 def absolute_potential(n):
-    renewables = n.generators_t.p_max_pu.columns
+    renewables = n.generators[n.generators.carrier.str.contains(r"solar|wind")].index
     potential = (
-        n.generators.p_nom_opt[renewables] * n.generators_t.p_max_pu
+        n.generators.p_nom_opt[renewables] * n.generators_t.p_max_pu[renewables]
     ) / 1e3  # in GW
     potential = potential.groupby(n.generators.carrier, axis=1).sum(1)
     potential = potential.reset_index().melt(
@@ -43,9 +43,18 @@ if __name__ == "__main__":
     carriers = n.carriers.loc[potential.carrier.unique()]
     potential.replace(dict(carrier=n.carriers.nice_name), inplace=True)
     g = sns.FacetGrid(
-        potential, col="carrier", hue="carrier", palette=carriers.color, sharex=False
+        potential,
+        col="carrier",
+        hue="carrier",
+        palette=carriers.color,
+        sharex=False,
     )
-    g.map(sns.scatterplot, "generation", "transmission")
+    g.map(
+        sns.scatterplot,
+        "generation",
+        "transmission",
+        size=0.5,
+    )
     g.set_titles("{col_name}")
     g.set_xlabels("Generation potential [GW]")
     g.set_ylabels("Total DLR / Total SLR")
