@@ -92,9 +92,9 @@ def plot_operation(ax, networks):
     # ax.legend(loc="lower center", bbox_to_anchor=(0.5, 1.02), frameon=False)
     ax.grid(linestyle="--", linewidth=0.5, alpha=0.5, zorder=2)
     # ax.set_yticklabels(slr.carriers.nice_name[operation.index])
-    ax.set_xlabel("Total generation [TWh]")
+    ax.set_xlabel("Energy [TWh]")
     ax.set_ylabel("")
-    # ax.set_title("Total generation")
+    ax.set_title("Total generation")
 
 
 def plot_capacity(ax, networks):

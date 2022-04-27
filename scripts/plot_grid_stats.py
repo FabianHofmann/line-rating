@@ -48,12 +48,14 @@ if __name__ == "__main__":
         hue="carrier",
         palette=carriers.color,
         sharex=False,
+        height=3,
+        aspect=1,
     )
     g.map(
         sns.scatterplot,
         "generation",
         "transmission",
-        size=0.5,
+        size=0.4,
     )
     g.set_titles("{col_name}")
     g.set_xlabels("Generation potential [GW]")

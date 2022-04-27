@@ -98,7 +98,7 @@ plotting:
       refsize: 2000 # at what capacity should circle be drawn
     operation:
       bus_size_factor: 5.e-5
-      line_width_factor: 5.e-3
+      line_width_factor: 7.e-3
       refsize: 1000 # at what capacity should circle be drawn
     curtailment:
       bus_size_factor: 8.e-10

@@ -117,12 +117,47 @@ In contrast to the 2019 scenario, the 2030 scenario of the German power system a
 
 \section{Results}
 
+\subsection{Results of the 2019 scenario}
+
 \begin{figure*}[htpb]
     \centering
-    \includegraphics[width=\linewidth]{de2020_all_nodes_Co2L-BL/operation_map.pdf}
-    \caption{Results of the 2019 scenario.}
+    \includegraphics[width=\linewidth]{de2020_all_nodes_Co2L-BL/potential_correlation.pdf}
+    \caption{Total generation per generation type.}
+    \label{fig:potential-correlation-2019}
+\end{figure*}
+
+
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=\linewidth]{de2020_all_nodes_Co2L-BL/operation_bar.pdf}
+    \caption{Total generation per generation type.}
+    \label{fig:operation-bar-2019}
+\end{figure}
+
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=\linewidth]{de2020_all_nodes_Co2L-BL/congestion_correlation.pdf}
+    \caption{Congestion Correlation, TODO: Make plot with seaborn, colorbar below.}
+    \label{fig:congestion-correlation-2019}
+\end{figure}
+
+
+\subsection{Results of the 2030 scenario}
+
+\begin{figure*}[htpb]
+    \centering
+    \includegraphics[width=\linewidth]{de2030_all_nodes_Co2L-RE0.8/operation_map.pdf}
+    \caption{Results of the 2030 scenario.}
     \label{fig:results-2019}
 \end{figure*}
+
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=\linewidth]{de2030_all_nodes_Co2L-RE0.8/cost_bar.pdf}
+    \caption{Total generation per generation type.}
+    \label{fig:cost-bar-2030}
+\end{figure}
+
 
 \section{Limitations}
 \begin{itemize}
@@ -135,6 +170,8 @@ In contrast to the 2019 scenario, the 2030 scenario of the German power system a
 Given an adequate size ratio, wind farms together with hydrogen stores can provide a base load preventing high pressure on the transmission system. However, the economic feasibility for a large scale implementation of hydrogen stores is not yet fully given, mainly due to relatively low round-trip efficiencies and (yet) high prices of conversion and storage components.
 
 By converting renewable energy to Methane, Hydrogen of synthetic fuels, the energy can be transported through the existing or new built transport system, as for example planned by the European Hydrogen Backbone initiative (Citation). Again, this requires high investments as well as a long planning phase, thus cannot be considered as a short term measure.
+
+\newpage
 
 \printbibliography
 

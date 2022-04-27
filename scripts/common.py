@@ -43,7 +43,7 @@ sns.set_context(
     rc={
         "font.size": 13,
         "figure.titlesize": "normal",
-        "legend.fontsize": 11,
+        "legend.fontsize": 12,
         "axes.titlesize": 12,
         "axes.labelsize": 12,
         "xtick.labelsize": 12,
