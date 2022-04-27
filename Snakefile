@@ -5,6 +5,18 @@ import matplotlib.pyplot as plt
 # sns.set_style('white', )
 plt.rc("text", usetex=True)
 plt.rc("font", family="sans-serif")
+plt.style.use("seaborn-colorblind")
+sns.set_context(
+    "paper",
+    rc={
+        "font.size": 12,
+        "legend.fontsize": 11,
+        "axes.titlesize": 12,
+        "axes.labelsize": 12,
+        "xtick.labelsize": 12,
+        "ytick.labelsize": 12,
+    },
+)
 
 
 configfile: "configs/config.yaml"
@@ -151,6 +163,7 @@ rule plot_bars:
         network_slr="results/de{year}_{clusters}_nodes_{opts}_slr.nc",
         curtailment_data="data/curtailment_carrier.csv",
     output:
+        operation="figures/de{year}_{clusters}_nodes_{opts}/operation_bar.{ext}",
         capacity="figures/de{year}_{clusters}_nodes_{opts}/capacity_bar.{ext}",
         curtailment="figures/de{year}_{clusters}_nodes_{opts}/curtailment_bar.{ext}",
         relative_curtailment="figures/de{year}_{clusters}_nodes_{opts}/relative_curtailment_bar.{ext}",
@@ -158,6 +171,7 @@ rule plot_bars:
         cost="figures/de{year}_{clusters}_nodes_{opts}/cost_bar.{ext}",
     script:
         "scripts/plot_bars.py"
+
 
 rule plot_analysis:
     input:

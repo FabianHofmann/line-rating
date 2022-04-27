@@ -4,6 +4,29 @@ import seaborn as sns
 from common import load_network
 
 
+def get_operation(n):
+    pg = (
+        n.generators_t.p.sum()
+        .groupby(n.generators.carrier)
+        .sum()
+        .drop("load", errors="ignore")
+    )
+    s = n.storage_units_t.p.sum().groupby(n.storage_units.carrier).sum()
+    p = pd.concat([pg, s])  # .groupby(n.carriers.group).sum()
+    return p.rename(n.name)
+
+
+def get_capacity(n):
+    gens = n.generators.groupby("carrier").p_nom_opt.sum().drop("load", errors="ignore")
+
+    # stos = n.stores.groupby(["carrier"]).e_nom_opt.sum()
+    buses = n.buses.query("carrier == 'AC'").index
+    stos = n.links.groupby(["bus1", "carrier"]).p_nom_opt.sum()
+    if not stos.empty:
+        stos = stos.loc[buses].groupby("carrier").sum().drop("DC")
+    return pd.concat([gens, stos]).rename(n.name)
+
+
 def get_curtailment(n):
     renewables = n.generators[n.generators.carrier.str.contains(r"solar|wind")].index
     curtailment = (
@@ -32,31 +55,20 @@ def get_relative_curtailment(n):
     return curtailment * 100  # in %
 
 
-def get_capacity(n):
-    gens = n.generators.groupby("carrier").p_nom_opt.sum().drop("load", errors="ignore")
-
-    # stos = n.stores.groupby(["carrier"]).e_nom_opt.sum()
-    buses = n.buses.query("carrier == 'AC'").index
-    stos = n.links.groupby(["bus1", "carrier"]).p_nom_opt.sum()
-    if not stos.empty:
-        stos = stos.loc[buses].groupby("carrier").sum().drop("DC")
-    return pd.concat([gens, stos]).rename(n.name)
-
-
 def get_costs(n):
     gopex = n.generators_t.p.sum() * n.generators.marginal_cost
-    gopex = gopex.groupby(n.generators.carrier).sum().drop("load")
+    gopex = gopex.groupby(n.generators.carrier).sum().drop("load", errors="ignore")
     lopex = n.links_t.p0.sum() * n.links.marginal_cost
-    lopex = lopex.groupby(n.links.carrier).sum().drop("DC")
+    lopex = lopex.groupby(n.links.carrier).sum().drop("DC", errors="ignore")
     sopex = n.stores_t.e.sum() * n.stores.marginal_cost
     sopex = sopex.groupby(n.stores.carrier).sum()
 
     opex = pd.concat([gopex, lopex, sopex])
 
     gcapex = n.generators.p_nom_opt * n.generators.capital_cost
-    gcapex = gcapex.groupby(n.generators.carrier).sum().drop("load")
+    gcapex = gcapex.groupby(n.generators.carrier).sum().drop("load", errors="ignore")
     lcapex = n.links.p_nom_opt * n.links.capital_cost
-    lcapex = lcapex.groupby(n.links.carrier).sum().drop("DC")
+    lcapex = lcapex.groupby(n.links.carrier).sum().drop("DC", errors="ignore")
     scapex = n.stores.e_nom_opt * n.stores.capital_cost
     scapex = scapex.groupby(n.stores.carrier).sum()
 
@@ -72,6 +84,18 @@ def get_costs(n):
     return costs
 
 
+def plot_operation(ax, networks):
+    operation = pd.concat((get_operation(n) for n in networks), axis=1)
+    operation /= 1e6  # in TWh
+    operation.sort_values(networks[0].name, ascending=False, inplace=True)
+    operation.plot(kind="barh", ax=ax, zorder=4)
+    ax.grid(linestyle="--", linewidth=0.5, alpha=0.5, zorder=2)
+    ax.set_yticklabels(slr.carriers.nice_name[operation.index])
+    ax.set_xlabel("Energy [TWh]")
+    ax.set_ylabel("")
+    ax.set_title("Total generation")
+
+
 def plot_capacity(ax, networks):
     capacities = pd.concat((get_capacity(n) for n in networks), axis=1)
     capacities /= 1000  # in GW
@@ -79,7 +103,7 @@ def plot_capacity(ax, networks):
     capacities.plot(kind="barh", ax=ax, zorder=4)
     ax.grid(linestyle="--", linewidth=0.5, alpha=0.5, zorder=2)
     ax.set_yticklabels(slr.carriers.nice_name[capacities.index])
-    ax.set_xlabel("Capacity in GW")
+    ax.set_xlabel("Capacity [GW]")
     ax.set_ylabel("")
     ax.set_title("Capacity of generators")
 
@@ -146,18 +170,6 @@ if __name__ == "__main__":
             ext="pdf",
         )
 
-    plt.style.use("seaborn-colorblind")
-    sns.set_context(
-        "paper",
-        rc={
-            "font.size": 12,
-            "legend.fontsize": 11,
-            "axes.titlesize": 12,
-            "axes.labelsize": 12,
-            "xtick.labelsize": 12,
-            "ytick.labelsize": 12,
-        },
-    )
     slr = load_network(snakemake.input.network_slr)
     dlr = load_network(snakemake.input.network_dlr)
     networks = slr, dlr
