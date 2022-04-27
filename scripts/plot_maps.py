@@ -210,17 +210,6 @@ if __name__ == "__main__":
             opts="Co2L-BL",
             ext="pdf",
         )
-    plt.style.use("seaborn-colorblind")
-    sns.set_context(
-        "paper",
-        rc={
-            "font.size": 12,
-            "axes.titlesize": 16,
-            "axes.labelsize": 14,
-            "xtick.labelsize": 12,
-            "ytick.labelsize": 12,
-        },
-    )
 
     config = snakemake.config["plotting"]["map"]
     bounds = config["boundaries"]
@@ -236,7 +225,10 @@ if __name__ == "__main__":
     for output in snakemake.output.keys():
 
         fig, axes = plt.subplots(
-            1, 2, figsize=(10, 6), subplot_kw={"projection": ccrs.EqualEarth()}
+            1,
+            2,
+            figsize=config["figsize"],
+            subplot_kw={"projection": ccrs.EqualEarth()},
         )
 
         refsize = config[output]["refsize"]
@@ -254,8 +246,9 @@ if __name__ == "__main__":
             ax,
             n.carriers.query('color != ""').sort_index(),
             size=refsize,
+            ncol=4,
             scale=bus_size_factor,
-            bbox_to_anchor=(1, 1),
+            bbox_to_anchor=(0, 0),
             loc="upper left",
             frameon=False,
         )
@@ -272,9 +265,11 @@ if __name__ == "__main__":
             size=refsize,
             scale=bus_size_factor,
             bbox_to_anchor=(1, 0),
-            loc="lower left",
+            loc="lower right",
             frameon=False,
+            framealpha=0.2,
+            edgecolor="grey",
         )
 
-        fig.tight_layout()
+        fig.tight_layout(pad=0)
         fig.savefig(snakemake.output[output], bbox_inches="tight")

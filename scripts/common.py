@@ -19,6 +19,7 @@ super_carrier = {
     "offwind": "Offshore Wind",
     "offwind": "Offshore Wind",
     "solar": "Solar",
+    "nuclear": "Nuclear",
     "PHS": "Other Renewables",
     "hydro": "Other Renewables",
     "ror": "Other Renewables",
@@ -194,8 +195,8 @@ def add_carrier_legend(ax, carriers, size=1, scale=1, **kwargs):
 
     handler_map = {plt.Circle: HandlerCircle()}
 
-    legend = ax.legend(handles, labels, handler_map=handler_map, **kwargs)
-    ax.add_artist(legend)
+    legend = fig.legend(handles, labels, handler_map=handler_map, **kwargs)
+    fig.add_artist(legend)
     return legend
 
 
