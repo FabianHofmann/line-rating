@@ -43,7 +43,7 @@ electricity:
   #agg_p_nom_limits: ../data/agg_p_nom_minmax.csv
 
   extendable_carriers:
-    Generator: [OCGT]
+    Generator: [OCGT, CCGT]
     StorageUnit: [] #battery, H2
     Store: [battery, H2]
     Link: []
