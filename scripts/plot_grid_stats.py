@@ -3,6 +3,8 @@ import pandas as pd
 import seaborn as sns
 from common import keys, load_network
 from matplotlib.style import available
+from plot_maps import scale_line_widths,scale_bus_sizes
+import cartopy.crs as ccrs
 
 
 def get_absolute_potential(n):
@@ -20,7 +22,6 @@ def get_absolute_potential(n):
     ) / n.lines.s_nom_opt.sum()
     potential["transmission"] = potential.snapshot.map(line_potential)
     return potential
-
 
 def get_congestion_correlation(n):
     """
@@ -43,34 +44,65 @@ def get_congestion_correlation(n):
     congestion = (n.pnl(c).mu_lower.abs() + n.pnl(c).mu_upper.abs()).round(3) != 0
     cogestion = congestion.sum(axis=1)
 
-    # print(f"The correlation is {curtailment.corr(congestion.sum(axis=1))}")
-    # curtailment_norm = curtailment.to_frame().apply(
-    #     lambda x: (x - x.min()) / (x.max() - x.min())
-    # )
-
     keys = ["Potential / Load", "Number of congested lines", "Curtailment [GW]"]
     df = pd.concat([over_capacity, cogestion, curtailment / 1e3], axis=1, keys=keys)
     return df.reset_index()
 
+def get_congestion_hours_price(n):
+    c = "Line"
+    congestion_price=(n.pnl(c).mu_lower.abs() + n.pnl(c).mu_upper.abs()).sum(axis=1)
+    number_lines_congested = (n.pnl(c).mu_lower.abs() + n.pnl(c).mu_upper.abs()).round(3) != 0
+    number_lines_congested = number_lines_congested.sum(axis=1)
+    congestion=pd.concat([number_lines_congested, congestion_price], keys=["number_lines", "price"], axis=1)
+    congestion=congestion.sort_values("number_lines", ascending=False).reset_index(drop=True)
+    return congestion.reset_index()
+    
 
-if __name__ == "__main__":
+def plot_line_overlay(networks, line_width_factor=None, bus_size_factor=None):
+    config =  snakemake.config["plotting"]["map"]
+    line_width_factor=config["capacity"]["line_width_factor"]
 
-    if "snakemake" not in globals():
-        from _helpers import mock_snakemake
-
-        snakemake = mock_snakemake(
-            "plot_grid_stats",
-            year="2020",
-            clusters="all",
-            opts="Co2L-BL",
-            ext="pdf",
+    bounds=config["boundaries"]
+    fig, ax = plt.subplots(
+            1,
+            1,
+            figsize=config["figsize"],
+            subplot_kw={"projection": ccrs.EqualEarth()},
         )
+    
+    
+    
+    for n in networks[::-1]:
+        link_widths = n.links.p_nom_opt
+        line_widths = n.lines.s_nom_opt
+        line_widths *= n.get_switchable_as_dense("Line", 's_max_pu').mean()
 
-    slr = load_network(snakemake.input.network_slr)
-    dlr = load_network(snakemake.input.network_dlr)
-    networks = [slr, dlr]
 
-    # %% Potential Correlation
+        if "Static" in n.name:
+            alpha=1
+            line_color="orange"
+            g = n.generators.p_nom_opt
+            bus_sizes = g.groupby([n.generators.bus, n.generators.carrier]).sum()
+            bus_sizes.drop("load", level=1, inplace=True)
+            bus_sizes=0.002
+        else:
+            alpha=1
+            line_color="purple"
+            bus_sizes=0
+        
+        collection=n.plot(
+            ax=ax,
+            line_widths=line_widths * line_width_factor,
+            link_widths=link_widths * line_width_factor,
+            bus_alpha=0.3,
+            bus_sizes=bus_sizes,
+            line_colors=line_color,
+            boundaries=bounds,
+        )
+        collection[1].set_alpha(alpha)
+    return fig
+
+def plot_potential_correlation(dlr):
     n = dlr
     potential = get_absolute_potential(n)
 
@@ -83,7 +115,6 @@ if __name__ == "__main__":
 
     color = carriers.set_index("nice_name").color.to_dict()
 
-    # %%
     fig, ax = plt.subplots(figsize=(4.5, 3.5))
     sns.lineplot(
         data=potential,
@@ -100,10 +131,9 @@ if __name__ == "__main__":
     ax.set_xlabel("Weighted-Average Capacity Factor")
     ax.set_ylabel("Total DLR / Total SLR")
     ax.grid(True, linestyle="--", linewidth=0.5)
-    fig.tight_layout()
-    fig.savefig(snakemake.output.potential_correlation, bbox_inches="tight")
+    return fig
 
-    # %%
+def plot_potential_correlation(n):
     df = pd.concat(
         [get_congestion_correlation(n).assign(Scenario=n.name) for n in networks],
         ignore_index=True,
@@ -132,4 +162,45 @@ if __name__ == "__main__":
     fig.colorbar(
         sm, ax=axes, orientation="horizontal", label="Curtailment [GW]", fraction=0.1
     )
+    return fig
+
+def plot_congestion_duration_curve(networks):
+    fig, ax = plt.subplots(figsize=(4.5, 3.5))
+    data = pd.concat([get_congestion_hours_price(n).assign(Scenario=n.name) for n in networks],ignore_index=True,)
+    sns.scatterplot(data=data, x="index", y="number_lines", style="Scenario", hue="price", ax=ax, estimator="sum")
+    return fig
+
+
+
+if __name__ == "__main__":
+
+    if "snakemake" not in globals():
+        from _helpers import mock_snakemake
+
+        snakemake = mock_snakemake(
+            "plot_grid_stats",
+            year="2020",
+            clusters="all",
+            opts="Co2L-BL",
+            ext="pdf",
+        )
+
+    slr = load_network(snakemake.input.network_slr)
+    dlr = load_network(snakemake.input.network_dlr)
+    networks = [slr, dlr]
+
+    fig=plot_potential_correlation(dlr)
+    fig.tight_layout()
+    fig.savefig(snakemake.output.potential_correlation, bbox_inches="tight")
+
+    fig=plot_potential_correlation(networks)
+    fig.tight_layout()
     fig.savefig(snakemake.output.congestion_correlation, bbox_inches="tight")
+
+    fig = plot_line_overlay(networks)
+    fig.tight_layout()
+    fig.savefig(snakemake.output["line_capacity_overlay"], bbox_inches="tight")
+
+    fig = plot_congestion_duration_curve(networks)
+    fig.tight_layout()
+    fig.savefig(snakemake.output["congestion_duration_curve"], bbox_inches="tight")
