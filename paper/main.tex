@@ -106,14 +106,14 @@ which for three-phase electric power transmission operating at voltage level $V$
     P_{max} = \sqrt{3} \cdot I_{max} \cdot V
 \end{align}
 Figure \ref{fig:parameter-space-reduced} shows $P_{max}$ for a typical 3-phase transmission line with $R(T_{max}) = 9.39\cdot10^{-5}\,\Omega/\text{m}$ and $V$~=~380~kV, dependent as a function of temperature and wind speed for three different wind incidence angles, 0$^\circ$C, 45$^\circ$C and 90$^\circ$C. The cooling effect at cold temperature with strong perpendicular wind leads to transmission capacity increase of factor 4-6 compared to conservative conditions with 40~$^\circ$C and low wind.
-
+%
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{parameter-space-reduced.pdf}
     \caption{Transmission capacity for different environmental conditions.}
     \label{fig:parameter-space-reduced}
 \end{figure}
-
+%
 \subsection{Power System Modeling}
 Using the Python package \textit{Python for Power System Analysis} (PyPSA) \cite{brownPyPSAPythonPower2018,browntomPyPSAPythonPower2022}, each of the studied ESOMs is represented by a set of buses which are interconnected via transmission lines and complemented by loads, generators and storage facilities. Further, time-dependent electric demand per bus and generation potentials per generator are included for one year with hourly resolution. The generator dispatch and deployment is determined by linearly minimizing the total system cost, where the optimization uses the linearized power flow approximation \cite{purchalaUsefulnessDCPower2005,brownLinearOptimalPower2016} and may be subject to systemic constraints (CO$_2$ budget, limited capacity expansion, etc.)
 
@@ -148,7 +148,7 @@ In particular, this accounts for short lines in the north and west of Germany.
 \end{figure}
 %
 In addition to location, it is of particular interest in what time periods the improvements occur. Fig. \ref{fig:potential-correlation-2019} shows the total relative increase in transmission capacity as a function of the capacity-weighted capacity factors. For each of the weather-dependent technologies, solar, onshore and offshore wind, a line together with a confidence interval derived from XX is drawn, showing the average value when collecting capacity-weighted capacity factors into bins of size 0.01. The capacity increase strongly correlates with the availability of onshore wind power in the system (green line). In times when onshore wind power availability is at its maximum, i.e. close to 1, the transmission capacity increases by 55\% in average. For low offshore wind power potentials, the increase in transmission capacity weakly correlates with the availability (blue line). However, after a significant positive trend, 35\% transmission capacity increase is observed for times with high offshore wind availability. For solar power, the trend is roughly the opposite. In time periods with low solar potentials, the increase in transmission capacity averages to 23\%, while for a higher potential, the transmission increase declines. Only at the very end, a strong positive trend is observed \todo[inline]{Is this due to cold sunny days?}.
-These findings concretize the general statement that DLR potentials harmonize with wind power potentials for the German power system case.
+% These findings concretize the general statement that DLR potentials harmonize with wind power potentials for the German power system case.
 %
 \begin{figure}[htpb]
     \centering
@@ -157,14 +157,6 @@ These findings concretize the general statement that DLR potentials harmonize wi
     \label{fig:potential-correlation-2019}
 \end{figure}
 
-When comparing the optimal dispatch of the SLR and DLR setup for the 2019 scenario, it stands out how this effect it stand
-
-\begin{figure}[htpb]
-    \centering
-    \includegraphics[width=\linewidth]{de2020_all_nodes_Co2L-BL/operation_bar.pdf}
-    \caption{Total generation per generation type 2019.}
-    \label{fig:operation-bar-2019}
-\end{figure}
 
 \begin{figure}[htpb]
     \centering
@@ -172,6 +164,16 @@ When comparing the optimal dispatch of the SLR and DLR setup for the 2019 scenar
     \caption{Congestion Correlation, \todo[inline]{Convetinoal share as colormap}}
     \label{fig:congestion-correlation-2019}
 \end{figure}
+
+When running the optimization for the 2019 scenario, these effects proof themselves to be quiet impactful. Of the 600~TWh total load throughout the year, XX\% (XX~TWh) are supplied by fossil power generation (hard coal, lignite and gas) in the SLR scenario. This share drops to XX\% (XX~TWh) in the DLR scenario, while the share of onshore wind power increases from XX\% (XX~TWh) to XX\% (XX~TWh) and of offshore wind power from from XX\% (XX~TWh) to XX\% (XX~TWh). The total generation of the other carriers remain unchanged. We recall that the installed generation capacities are the same for both scenarios. As we show in the following, the reason for this shift in generation lays in an improved exploitation of the wind and transmission infrastructure.
+
+Figure \ref{fig:congestion-correlation-2019} shows the number of congested lines as a function of the total renewable potential normalized by the total load for each time step. The color and size of the dots indicate the absolute renewable curtailment. It stands out that DLR (right panel) leads to a significant decrease in transmission congestion as well as curtailment. While the SLR scenario reveals up to 16 congested lines, the DLR scenario hardly hits more than 9 lines. In particular, at times with a shortage of renewable energy (Potential / Load $<$ 1) the SLR system still has to curtail a lot of power due to transmission congestion. This does not hold for the DLR scenario. The same accounts for times with renewable excess power (Potential / Load $>$ 1), where in DLR scenario, power is mainly curtailed due to the excess generation, whereas, for the SLR scenario, also due to congestion.
+
+Solely, from the change in operation, the system saves around XX million Euro throughout the whole simulation year. This translates to roughly XX~\% of the total operational expenditure (OPEX). The impact of DLR on the system is not only on the operational costs, but also on the carbon emissions of the system. These reduce from roughly XX~GT to XX~GT when implementing DLR.
+
+
+
+
 
 
 
