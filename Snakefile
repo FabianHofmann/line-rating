@@ -2,8 +2,6 @@ from os.path import normpath
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-# sns.set_style('white', )
-
 
 configfile: "configs/config.yaml"
 
@@ -165,47 +163,6 @@ rule plot_grid_stats:
         congestion_duration_curve="figures/de{year}_{clusters}_nodes_{opts}/congestion_duration_curve.{ext}",
     script:
         "scripts/plot_grid_stats.py"
-
-
-# rule plot_analysis:
-#     input:
-#         network_dlr="results/de{year}_{clusters}_nodes_{opts}_dlr.nc",
-#         network_slr="results/de{year}_{clusters}_nodes_{opts}_slr.nc",
-#     output:
-#         congestion_correlation="figures/de{year}_{clusters}_nodes_{opts}/congestion_correlation.{ext}",
-#         congestion_wind_correlation="figures/de{year}_{clusters}_nodes_{opts}/congestion_wind_correlation.{ext}",
-#     script:
-#         "scripts/plot_analysis.py"
-
-
-rule plot_flow_wind_expansion:
-    input:
-        network_dlr="results/de{year}_{clusters}_nodes_{opts}_slr.nc",
-        network_slr="results/de{year}_{clusters}_nodes_{opts}_dlr.nc",
-    output:
-        figure="figures/de{year}_{clusters}_nodes_{opts}/flow_wind_expansion.{ext}",
-    script:
-        "scripts/plot_flow_wind_expansion.py"
-
-
-rule plot_curtailment:
-    input:
-        network_dlr="results/de{year}_{clusters}_nodes_{opts}_slr.nc",
-        network_slr="results/de{year}_{clusters}_nodes_{opts}_dlr.nc",
-    output:
-        figure="figures/de{year}_{clusters}_nodes_{opts}/curtailment.{ext}",
-    script:
-        "scripts/plot_curtailment.py"
-
-
-rule plot_congestion:
-    input:
-        network_dlr="results/de{year}_{clusters}_nodes_{opts}_slr.nc",
-        network_slr="results/de{year}_{clusters}_nodes_{opts}_dlr.nc",
-    output:
-        figure="figures/de{year}_{clusters}_nodes_{opts}/congestion.{ext}",
-    script:
-        "scripts/plot_congestion.py"
 
 
 rule test_voltage_angles:
