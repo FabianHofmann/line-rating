@@ -7,6 +7,11 @@
 \usepackage{textcomp}
 \usepackage{xcolor}
 \usepackage{todonotes}
+% \usepackage{cleveref}
+
+% \crefname{align}{}{}
+% \Crefname{align}{Equation}{Equations}
+
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \usepackage[%
@@ -113,9 +118,10 @@ Figure \ref{fig:parameter-space-reduced} shows $P_{max}$ for a typical 3-phase t
 Using the Python package \textit{Python for Power System Analysis} (PyPSA) \cite{brownPyPSAPythonPower2018,browntomPyPSAPythonPower2022}, each of the studied ESOMs is represented by a set of buses which are interconnected via transmission lines and complemented by loads, generators and storage facilities. Further, time-dependent electric demand per bus and generation potentials per generator are included for one year with hourly resolution. The generator dispatch and deployment is determined by linearly minimizing the total system cost, where the optimization uses the linearized power flow approximation \cite{purchalaUsefulnessDCPower2005,brownLinearOptimalPower2016} and may be subject to systemic constraints (CO$_2$ budget, limited capacity expansion, etc.)
 
 Data on the transmission grid, power plants, renewable potentials and demand are created with the workflow \textit{PyPSA-EUR} \cite{horschPyPSAEurOpenOptimisation2018,horschjonasPyPSAEurOpenOptimisation2022}. The representative network of Germany comprises all 256~substations and 333~transmission lines operating at 220~kV and above. Electrical parameters of transmission lines are derived by mapping voltage level of the lines to standard line types given in \cite{oedingElektrischeKraftwerkeUnd2011}.
-For DLR scenarios, the transmission capacity per line and time step is given by the formulation in Section \ref{sec:dlr}, for SLR scenarios by the reported static transmission capacities. As the DLR scenario is calculated with averaged hourly wind speed data, inner-hourly wind speed fluctuation is neglected. Therefore, Equation \ref{ampacity} overestimates the ampacity $I_{max}$, which leads to an overestimation of $P_{max}$ as shown in \ref{dlr_factor}. To account for this error, we scale the DLR transmission line capacity by an empirically derived factor of $0.95$. Furthermore, we account for N-1 network security in both SLR and DLR scenarios. Hence, the power transmission $P$ per line must respect a 30\% capacity buffer, i.e. is bound to $-0.7\,P_{max} \le P \le 0.7\,P_{max}$. Since the error of the DC power flow approximation increases with the voltage angle differences in the system \cite{dvijothamErrorBoundsDC2016}, we restrict the voltage angle difference $\Delta\theta$ across a line to maximally 30$^\circ$ by introducing the constraint
+For DLR scenarios, the transmission capacity per line and time step is given by the formulation in Section \ref{sec:dlr}, for SLR scenarios by the reported static transmission capacities. As the DLR scenario is calculated with averaged hourly wind speed data, inner-hourly wind speed fluctuation is neglected. To account for the resulting overestimation of $P_{max}$, we scale the DLR transmission line capacity by an empirically derived factor of $0.95$, see Appendix \ref{dlr_factor} for details. Furthermore, we account for N-1 network security in both SLR and DLR scenarios. Hence, the power transmission $P$ per line must respect a 30\% capacity buffer, i.e. is bound to $-0.7\,P_{max} \le P \le 0.7\,P_{max}$. Since the error of the DC power flow approximation increases with the voltage angle differences in the system \cite{dvijothamErrorBoundsDC2016}, we restrict the voltage angle difference $\Delta\theta$ across a line to maximally 30$^\circ$ by introducing the constraint
 \begin{align}
 	P \le \frac{\Delta\theta}{x}=\frac{\pi}{6\,x}
+    \label{eq:angle_difference_constraint}
 \end{align}
 for every time step and line, where $x$ is the series reactance.
 
@@ -131,18 +137,18 @@ In contrast to the 2019 scenario, the 2030 scenario of the German power system a
 
 \section{Results}
 
-At first, we present to what extent the DLR implementation alternates the starting point for operating the existent power system. Fig. \todo{Add Figure} shows the geographical layout of existing generation and transmission capacities for the 2019 scenario. The latter is shown for SLR in \todo{color} and average DLR and \todo{color} capacities per line. Note that most of the lines going from north to south connecting the strong wind production sites with the high demand benefit from DLR.
-
-Fig. \ref{fig:potential-correlation-2019} shows the ratio between total DLR and SLR transmission capacity as a function of the capacity-weighted capacity factors for the 2019 scenario.
-
+At first, we present to what extent the DLR implementation alternates the starting point for operating the existent power system. Fig. \ref{fig:capacity-map-2019} shows the geographical layout of existing generation and transmission capacities for the 2019 scenario. The circles with its subdivisions show the installed power generation capacity per site and technology with their area being proportional to the capacity. The widths of the transmission lines indicate the installed SLR capacities, their colors show the relative average change in capacity when applying DLR. Note that due to the voltage angle constraint introduced in \eqref{eq:angle_difference_constraint}, no relative improvement is obtained for some of the long transmission lines as these appear to have high reactances. For most of the others, a strong improvement in the average capacity up to a factor 2 is observed.
+In particular, this accounts for short lines in the north and west of Germany.
+%
 \begin{figure}[htpb]
     \centering
     \includegraphics[width=\linewidth]{de2020_all_nodes_Co2L-BL/capacity_map_dlr.pdf}
     \caption{capacities.}
     \label{fig:capacity-map-2019}
 \end{figure}
-
-
+%
+In addition to location, it is of particular interest in what time periods the improvements occur. Fig. \ref{fig:potential-correlation-2019} shows the total relative increase in transmission capacity as a function of the capacity-weighted capacity factors. For each of the weather-dependent technologies, solar, onshore and offshore wind, a line together with a confidence interval derived from XX is drawn, showing the average value when collecting capacity-weighted capacity factors into bins of size 0.01. The capacity increase strongly correlates with the availability of onshore wind power in the system (green line). In times when onshore wind power availability is at its maximum, i.e. close to 1, the transmission capacity increases by 55\% in average. For low offshore wind power potentials, the increase in transmission capacity weakly correlates with the availability (blue line). However, after a significant positive trend, 35\% transmission capacity increase is observed for times with high offshore wind availability.
+%
 \begin{figure}[htpb]
     \centering
     \includegraphics[width=\linewidth]{de2020_all_nodes_Co2L-BL/potential_correlation.pdf}
@@ -170,6 +176,13 @@ Fig. \ref{fig:potential-correlation-2019} shows the ratio between total DLR and 
 \begin{figure}[htpb]
     \centering
     \includegraphics[width=\linewidth]{de2030_all_nodes_Co2L-RE0.8/cost_bar.pdf}
+    \caption{Total generation per generation type.}
+    \label{fig:cost-bar-2030}
+\end{figure}
+
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=\linewidth]{de2030_all_nodes_Co2L-RE0.8/congestion_duration_curve.pdf}
     \caption{Total generation per generation type.}
     \label{fig:cost-bar-2030}
 \end{figure}
