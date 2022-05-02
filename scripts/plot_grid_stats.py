@@ -59,10 +59,10 @@ def get_congestion_hours_price(n):
     number_lines_congested = number_lines_congested.sum(axis=1)
     congestion = pd.concat(
         [number_lines_congested, congestion_price],
-        keys=["number_lines", "price"],
+        keys=["Number of congested lines", "Shadow price"],
         axis=1,
     )
-    congestion = congestion.sort_values("number_lines", ascending=False).reset_index(
+    congestion = congestion.sort_values("Number of congested lines", ascending=False).reset_index(
         drop=True
     )
     return congestion.reset_index()
@@ -182,13 +182,13 @@ def plot_congestion_duration_curve(networks):
     data = pd.concat(
         [get_congestion_hours_price(n).assign(Scenario=n.name) for n in networks],
         ignore_index=True,
-    )
-    sns.scatterplot(
+    ).rename({"index":"Hour"}, axis=1)
+    sns.lineplot(
         data=data,
-        x="index",
-        y="number_lines",
+        x="Hour",
+        y="Number of congested lines",
         style="Scenario",
-        hue="price",
+        #hue="Shadow price",
         ax=ax,
         estimator="sum",
     )
