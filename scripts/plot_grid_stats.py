@@ -43,11 +43,6 @@ def get_congestion_correlation(n):
     congestion = (n.pnl(c).mu_lower.abs() + n.pnl(c).mu_upper.abs()).round(3) != 0
     cogestion = congestion.sum(axis=1)
 
-    # print(f"The correlation is {curtailment.corr(congestion.sum(axis=1))}")
-    # curtailment_norm = curtailment.to_frame().apply(
-    #     lambda x: (x - x.min()) / (x.max() - x.min())
-    # )
-
     keys = ["Potential / Load", "Number of congested lines", "Curtailment [GW]"]
     df = pd.concat([over_capacity, cogestion, curtailment / 1e3], axis=1, keys=keys)
     return df.reset_index()
@@ -84,7 +79,7 @@ if __name__ == "__main__":
     color = carriers.set_index("nice_name").color.to_dict()
 
     # %%
-    fig, ax = plt.subplots(figsize=(4.5, 3.5))
+    fig, ax = plt.subplots(figsize=(5, 3.5))
     sns.lineplot(
         data=potential,
         x="normed_rounded",
@@ -97,6 +92,7 @@ if __name__ == "__main__":
         ax=ax,
     )
     ax.legend(title="")
+    ax.set_xlim(0, 1)
     ax.set_xlabel("Weighted-Average Capacity Factor")
     ax.set_ylabel("Total DLR / Total SLR")
     ax.grid(True, linestyle="--", linewidth=0.5)
@@ -129,7 +125,11 @@ if __name__ == "__main__":
         )
         ax.grid(True, axis="both", linestyle="--", linewidth=0.5, zorder=0)
         ax.set_xlim(left=0)
+    fig.tight_layout()
     fig.colorbar(
         sm, ax=axes, orientation="horizontal", label="Curtailment [GW]", fraction=0.1
     )
     fig.savefig(snakemake.output.congestion_correlation, bbox_inches="tight")
+
+
+# %%

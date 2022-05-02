@@ -35,15 +35,13 @@ super_carrier = {
     "DC": "Transmission System",
 }
 
-plt.rc("text", usetex=True)
-plt.rc("font", family="sans-serif")
 plt.style.use("seaborn-colorblind")
 sns.set_context(
     "paper",
     rc={
-        "font.size": 13,
+        "font.size": 12,
         "figure.titlesize": "normal",
-        "legend.fontsize": 12,
+        "legend.fontsize": 11,
         "axes.titlesize": 12,
         "axes.labelsize": 12,
         "xtick.labelsize": 12,

@@ -11,7 +11,7 @@ scenario_2020:
     [
       "operation_map",
       "capacity_map",
-      "curtailment_map",
+      "congestion_map",
       "curtailment_bar",
       "capacity_bar",
       "relative_curtailment_bar",
@@ -29,7 +29,7 @@ scenario_2030:
     [
       "operation_map",
       "capacity_map",
-      "curtailment_map",
+      "congestion_map",
       "curtailment_bar",
       "capacity_bar",
       "relative_curtailment_bar",
@@ -42,7 +42,7 @@ scenario_2030:
 test:
   rating: ["dlr", "slr"]
   clusters: [5]
-  opts: ["Co2L-24H-Ep-RE0.8"]
+  opts: ["Co2L-24H-RE0.8"]
   year: [2020, 2030]
   figure:
     [
@@ -93,9 +93,9 @@ plotting:
     boundaries: [5.5, 15.5, 47, 55]
     #If None or commented out the plot_main.py automatically calculates the bus and line factor. If factor is given, then the factor is taken.
     capacity:
-      bus_size_factor: 1.e-5
-      line_width_factor: 5.e-4
-      refsize: 2000 # at what capacity should circle be drawn
+      bus_size_factor: 1.2e-5
+      line_width_factor: 3.e-4
+      refsize: 5000 # at what capacity should circle be drawn
     operation:
       bus_size_factor: 5.e-5
       line_width_factor: 7.e-3
@@ -111,12 +111,12 @@ plotting:
       line_width_factor: 1
   bar:
     operation:
-      figsize: [4.5, 5]
+      figsize: [5, 5]
     cost:
-      figsize: [4.5, 5]
+      figsize: [5, 5]
     capacity:
-      figsize: [4.5, 8]
+      figsize: [5, 8]
     relative_curtailment:
-      figsize: [6,4]
+      figsize: [6, 4]
     curtailment:
       figsize: [6,4]

@@ -132,7 +132,6 @@ rule plot_maps:
     output:
         capacity="figures/de{year}_{clusters}_nodes_{opts}/capacity_map.{ext}",
         operation="figures/de{year}_{clusters}_nodes_{opts}/operation_map.{ext}",
-        curtailment="figures/de{year}_{clusters}_nodes_{opts}/curtailment_map.{ext}",
         utilization="figures/de{year}_{clusters}_nodes_{opts}/utilization_map.{ext}",
         congestion="figures/de{year}_{clusters}_nodes_{opts}/congestion_map.{ext}",
     script:

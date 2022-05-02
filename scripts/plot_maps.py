@@ -123,8 +123,10 @@ def plot_congestion(ax, n, bounds, bus_size_factor=None, line_width_factor=None)
         boundaries=bounds,
     )
     collection[1].set(norm=norm)
-    if "Static" in n.name:
+
+    if "Dynamic" in n.name:
         plt.colorbar(collection[1], ax=ax, fraction=0.046, pad=0.004)
+
     return bus_size_factor, line_width_factor
 
 
@@ -147,7 +149,9 @@ def plot_operation(ax, n, bounds, bus_size_factor=None, line_width_factor=None):
     return bus_size_factor, line_width_factor
 
 
-def plot_capacity(ax, n, bounds, bus_size_factor=None, line_width_factor=None):
+def plot_capacity(
+    ax, n, bounds, bus_size_factor=None, line_width_factor=None, with_colormap=False
+):
     # Plots capacity of all generators in MW, existing and newly built
     g = n.generators.p_nom_opt
     bus_sizes = g.groupby([n.generators.bus, n.generators.carrier]).sum()
@@ -156,45 +160,31 @@ def plot_capacity(ax, n, bounds, bus_size_factor=None, line_width_factor=None):
     link_widths = n.links.p_nom_opt
     line_widths = n.lines.s_nom_opt
     line_width_factor = scale_line_widths(line_widths, line_width_factor)
-    if not n.lines_t.s_max_pu.empty:
-        line_widths *= n.lines_t.s_max_pu.mean().reindex(n.lines.index, fill_value=1)
+    if with_colormap:
+        cmap = cm.get_cmap("viridis", 256)
+        line_colors = n.get_switchable_as_dense("Line", "s_max_pu").mean()
+        norm = colors.Normalize(vmin=line_colors.min(), vmax=line_colors.max())
+    else:
+        cmap = None
+        line_colors = "purple"
+        line_widths *= n.get_switchable_as_dense("Line", "s_max_pu").mean() / 0.7
 
-    n.plot(
+    collection = n.plot(
         ax=ax,
         line_widths=line_widths * line_width_factor,
         link_widths=link_widths * line_width_factor,
+        line_colors=line_colors,
+        line_cmap=cmap,
         bus_sizes=bus_sizes * bus_size_factor,
         bus_alpha=0.7,
         color_geomap=False,
         boundaries=bounds,
     )
-    return bus_size_factor, line_width_factor
 
+    if with_colormap:
+        collection[1].set(norm=norm)
+        plt.colorbar(collection[1], ax=ax, fraction=0.04, pad=0.004, label="DLR / SLR")
 
-def plot_curtailment(ax, n, bounds, bus_size_factor=None, line_width_factor=None):
-    # Plots total curtailment in MWh of each generator over each time step
-    curtailment = (
-        (n.generators_t.p_max_pu * n.generators.p_nom_opt)
-        .subtract(n.generators_t.p, axis="columns")
-        .sum()
-    )
-    bus_sizes = curtailment.groupby([n.generators.bus, n.generators.carrier]).sum()
-    bus_sizes.drop("load", level=1, inplace=True)
-    bus_size_factor = scale_bus_sizes(bus_sizes, bus_size_factor)
-    link_widths = n.links.p_nom_opt
-    line_widths = n.lines.s_nom_opt
-    line_width_factor = scale_line_widths(line_widths, line_width_factor)
-    line_widths *= get_as_dense(n, "Line", "s_max_pu").mean()
-
-    n.plot(
-        ax=ax,
-        line_widths=line_widths * line_width_factor,
-        link_widths=link_widths * line_width_factor,
-        bus_sizes=bus_sizes * bus_size_factor,
-        bus_alpha=0.7,
-        color_geomap=False,
-        boundaries=bounds,
-    )
     return bus_size_factor, line_width_factor
 
 
@@ -205,7 +195,7 @@ if __name__ == "__main__":
 
         snakemake = mock_snakemake(
             "plot_maps",
-            year="2030",
+            year="2020",
             clusters="all",
             opts="Co2L-BL",
             ext="pdf",
@@ -273,3 +263,46 @@ if __name__ == "__main__":
 
         fig.tight_layout(pad=0)
         fig.savefig(snakemake.output[output], bbox_inches="tight")
+
+        if output == "capacity":
+
+            n = dlr
+            fig, ax = plt.subplots(
+                figsize=(4.5, 4), subplot_kw={"projection": ccrs.EqualEarth()}
+            )
+            bus_size_factor, line_width_factor = plot_capacity(
+                ax, n, bounds, bus_size_factor, line_width_factor, with_colormap=True
+            )
+            plot_shapes(ax, shapes, edgecolor="white", facecolor="#eeeeee")
+            # ax.set_title(n.name, fontsize=11)
+            add_carrier_legend(
+                ax,
+                n.carriers.query('color != ""').sort_index(),
+                fontsize=12,
+                size=refsize,
+                ncol=2,
+                scale=bus_size_factor,
+                bbox_to_anchor=(0, 0.03),
+                loc="upper left",
+                frameon=False,
+            )
+
+            refcirc = pd.Series(["white", "k"], index=["color", "edgecolor"])
+            refcirc = refcirc.to_frame(f"{round(refsize/1000)} {unit}").T
+            add_carrier_legend(
+                ax,
+                refcirc,
+                fontsize=12,
+                size=refsize,
+                scale=bus_size_factor,
+                bbox_to_anchor=(0, 0),
+                loc="lower left",
+                frameon=False,
+                framealpha=0.2,
+                edgecolor="grey",
+            )
+
+            fig.tight_layout(pad=0)
+            path = snakemake.output[output].rsplit(".", 1)
+            path = path[0] + f"_dlr." + path[1]
+            fig.savefig(path, bbox_inches="tight")
