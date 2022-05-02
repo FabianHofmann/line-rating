@@ -62,9 +62,9 @@ def get_congestion_hours_price(n):
         keys=["Number of congested lines", "Shadow price"],
         axis=1,
     )
-    congestion = congestion.sort_values("Number of congested lines", ascending=False).reset_index(
-        drop=True
-    )
+    congestion = congestion.sort_values(
+        "Number of congested lines", ascending=False
+    ).reset_index(drop=True)
     return congestion.reset_index()
 
 
@@ -168,6 +168,7 @@ def plot_congestion_correlation(n):
             legend=False,
             zorder=3,
         )
+        ax.set_title(key)
         ax.grid(True, axis="both", linestyle="--", linewidth=0.5, zorder=0)
         ax.set_xlim(left=0)
     fig.tight_layout()
@@ -182,13 +183,13 @@ def plot_congestion_duration_curve(networks):
     data = pd.concat(
         [get_congestion_hours_price(n).assign(Scenario=n.name) for n in networks],
         ignore_index=True,
-    ).rename({"index":"Hour"}, axis=1)
+    ).rename({"index": "Hour"}, axis=1)
     sns.lineplot(
         data=data,
         x="Hour",
         y="Number of congested lines",
         style="Scenario",
-        #hue="Shadow price",
+        # hue="Shadow price",
         ax=ax,
         estimator="sum",
     )
