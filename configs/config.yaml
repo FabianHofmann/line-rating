@@ -18,6 +18,7 @@ scenario_2020:
       "historical_curtailment_bar",
       "congestion_correlation",
       "potential_correlation",
+      "congestion_duration_curve",
     ]
 
 scenario_2030:
@@ -37,6 +38,7 @@ scenario_2030:
       "potential_correlation",
       "congestion_correlation",
       "potential_correlation",
+      "congestion_duration_curve",
     ]
 
 test:
