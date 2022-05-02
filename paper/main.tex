@@ -7,6 +7,11 @@
 \usepackage{textcomp}
 \usepackage{xcolor}
 \usepackage{todonotes}
+% \usepackage{cleveref}
+
+% \crefname{align}{}{}
+% \Crefname{align}{Equation}{Equations}
+
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \usepackage[%
@@ -21,7 +26,7 @@ natbib=true % natbib compatibility mode (\citep and \citet still work)
 \bibliography{main.bib}
 % Template from https://de.overleaf.com/latex/templates/ieee-conference-template/grfzhhncsfqn
 
-%define approx proporatinal
+%define approx proportional
 \def\app#1#2{%
   \mathrel{%
     \setbox0=\hbox{$#1\sim$}%
@@ -61,7 +66,7 @@ should not be used}
 \maketitle
 
 \begin{abstract}
-    According to recently announced plans of the German Federal Government, the German power system is facing an ongoing transition from conventional to renewable power generation, which should supply 80\% of the total demand by 2030. One key task lays in reorganizing the transmission system such that power can be transported from sites with good renewable potentials to the load centers. As the literature shows a system-wide implementation of Dynamic Line Rating (DLR), a dynamic calculation of the transmission line capacities based on prevailing weather conditions,  can act as an important complement to building new transmission lines. On behalf of a detailed power system model including all of today’s extra high voltage transmission lines and substations, we show how synergies between DLR and an increased wind power generation leverage, leading to an overall cost-benefit of 5\% for the 2030 goals compared to a system without DLR.
+    According to recently announced plans of the German Federal Government, the German power system is facing an ongoing transition from conventional to renewable power generation, which should supply 80\% of the total demand by 2030. One key task lays in reorganizing the transmission system such that power can be transported from sites with good renewable potentials to the load centers. As the literature shows a system-wide implementation of Dynamic Line Rating (DLR), a dynamic calculation of the transmission line capacities based on prevailing weather conditions,  can act as an important complement to building new transmission lines. In this paper, we analyze the effect of DLR on behalf of a detailed power system model of Germany including all of toady's extra high voltage transmission lines and substations. The evolving synergies between DLR and an increased wind power generation lead to an overall cost-benefit of 5\% for the 2030 goals compared to a system without DLR.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -71,8 +76,8 @@ should not be used}
 \section{Introduction}
 The deployment of new renewable energy sources far from load centers is leading to an increasing need for grid capacity. A notable example can be found in Germany, where most of the wind energy is generated in the North while there is significant industrial demand in the South \cite{kuhneConflictsNegotiationProcesses2018}. Whereas the current federal government plans to add ~70 GW wind power capacity until 2030, only a few grid expansion projects have been realized \cite{federalministryofeconomicaffairsandclimateactionGermanyCurrentClimate2022,burgerEnergyCharts2022}. Moreover, most of these projects have been delayed due to administrative problems and protest activities \cite{neukirchProtestsGermanElectricity2016}, \cite{fernandezReviewDynamicLine2016}. This trend will likely exacerbate transmission system congestion, which may lead to more grid instability and curtailment \cite{erdincComprehensiveOverviewDynamic2020}. There is therefore a strong incentive to exploit existing grid infrastructure more fully.
 
-To overcome the mismatch between slow installation of transmission lines and rapid installation of renewable generation, several, complementing measures can be taken that must be reconciled:  (1) large scale implementation of storage facilities to flatten power feed-ins and power demands \cite{caoPreventPromoteGrid2021}; (2) usage of alternative energy carrier networks to relieve the electricity grid \cite{welderDesignEvaluationHydrogen2019}; (3) leveraging the existing grid infrastructure to increase the operating capacity. In the following, we will focus on point (3), which in comparison to (1) and (2) sticks out through a straight-forward, cost-efficient and non-invasive implementation and does not require conversion technologies which (yet) encounter high prices and comparably low round-trip efficiencies \cite{deutscheenergie-agenturgmbhdenaErgebnispapierDenaStakeholderprozessHohere, minguezApplicationDigitalElevation2022}.
-Traditionally, transmission line capacity is calculated assuming unfavorable, static weather conditions such as 40~$^\circ$C  ambient temperature and 0.6~m/s wind speed \cite{fernandezReviewDynamicLine2016}. This is referred to as Static Line Rating (SLR). By design, SLR underestimates the capacity of a transmission line and, when implemented in practice, leads to an overestimated transmission capacity. In contrast, Dynamic Line Rating (DLR) calculates the line capacity taking into account the prevailing weather conditions. Cold weather and wind cool overheated transmission lines, enabling the thermal rating to be raised. This results in key benefits in cost-efficiency, congestion reduction and better wind power integration \cite{erdincComprehensiveOverviewDynamic2020}. So far, the literature provides case studies considering DLR in small scale Energy System Optimization Models (ESOMs) \cite{liDayAheadSchedulingPower2019,dabbaghjamaneshEffectiveSchedulingReconfigurable2019,viaforaDayaheadDispatchOptimization2019}. However, it is lacking of an extensive evaluation and assessment of DLR being applied to a higher scale ESOM considering capacity expansion and a CO$_2$ target.
+To overcome the mismatch between slow installation of transmission lines and rapid installation of renewable generation, several, complementing measures can be taken that must be reconciled:  (1) large scale implementation of storage facilities to flatten power feed-ins and power demands \cite{caoPreventPromoteGrid2021}; (2) usage of alternative energy carrier networks to relieve the electricity grid \cite{welderDesignEvaluationHydrogen2019}; (3) leveraging the existing grid infrastructure to increase the operating capacity. In the following, we will focus on point (3), which in comparison to (1) and (2) sticks out through a straight-forward, cost-efficient and non-invasive implementation and does not require technologies which (yet) encounter high prices and/or comparably low round-trip efficiencies, e.g. batteries, fuel cells etc. \cite{deutscheenergie-agenturgmbhdenaErgebnispapierDenaStakeholderprozessHohere, minguezApplicationDigitalElevation2022}.
+Traditionally, transmission line capacity is calculated assuming unfavorable, static weather conditions such as 40~$^\circ$C  ambient temperature and 0.6~m/s wind speed \cite{fernandezReviewDynamicLine2016}. This is referred to as Static Line Rating (SLR). By design, SLR underestimates the capacity of a transmission line and, when implemented in practice, leads to an underutilization of the transmission infrastructure. In contrast, Dynamic Line Rating (DLR) calculates the line capacity taking into account the prevailing weather conditions. Cold weather and wind cool overheated transmission lines, enabling the thermal rating to be raised. This results in key benefits in cost-efficiency, congestion reduction and better wind power integration \cite{erdincComprehensiveOverviewDynamic2020}. So far, the literature provides case studies considering DLR in small scale Energy System Optimization Models (ESOMs) \cite{liDayAheadSchedulingPower2019,dabbaghjamaneshEffectiveSchedulingReconfigurable2019,viaforaDayaheadDispatchOptimization2019}. However, it is lacking of an extensive evaluation and assessment of DLR being applied to a higher scale ESOM considering capacity expansion and a CO$_2$ target.
 This paper addresses this gap. We model and analyze the impact of DLR on the optimal dispatch and deployment of power generators in the German electricity sector. The underlying model is created from the PyPSA-Eur framework [16], and for Germany consists of 256 representative nodes and considers a time horizon of one year with an hourly resolution. To model the effect of DLR on the power system, we use the IEEE standard \cite{IEEEStandardCalculating2012} with highly resolved historical weather data implemented in the Atlite software \cite{hofmannAtliteLightweightPython2021}. The advantages of the DLR are illustrated by comparison with an SLR-based system. Therefore, we analyze and compare curtailment, grid congestion as well as the optimal generator deployment.
 
 \section{Methodology}
@@ -113,9 +118,14 @@ Figure \ref{fig:parameter-space-reduced} shows $P_{max}$ for a typical 3-phase t
 Using the Python package \textit{Python for Power System Analysis} (PyPSA) \cite{brownPyPSAPythonPower2018,browntomPyPSAPythonPower2022}, each of the studied ESOMs is represented by a set of buses which are interconnected via transmission lines and complemented by loads, generators and storage facilities. Further, time-dependent electric demand per bus and generation potentials per generator are included for one year with hourly resolution. The generator dispatch and deployment is determined by linearly minimizing the total system cost, where the optimization uses the linearized power flow approximation \cite{purchalaUsefulnessDCPower2005,brownLinearOptimalPower2016} and may be subject to systemic constraints (CO$_2$ budget, limited capacity expansion, etc.).
 
 Data on the transmission grid, power plants, renewable potentials and demand are created with the workflow \textit{PyPSA-EUR} \cite{horschPyPSAEurOpenOptimisation2018,horschjonasPyPSAEurOpenOptimisation2022}. The representative network of Germany comprises all 256~substations and 333~transmission lines operating at 220~kV and above. Electrical parameters of transmission lines are derived by mapping voltage level of the lines to standard line types given in \cite{oedingElektrischeKraftwerkeUnd2011}.
+<<<<<<< HEAD
 For DLR scenarios, the transmission capacity per line and time step is given by the formulation in Section \ref{sec:dlr}, for SLR scenarios by the reported static transmission capacities. As the DLR scenario is calculated with averaged hourly wind speed data, inner-hourly wind speed fluctuation is neglected. Therefore, Equation \ref{ampacity} overestimates the ampacity $I_{max}$, which leads to an overestimation of $P_{max}$ as shown in the Appendix \ref{dlr_factor}. To account for this error, we scale the DLR transmission line capacity by an empirically derived factor of $0.95$. Furthermore, we account for N-1 network security in both SLR and DLR scenarios. Hence, the power transmission $P$ per line must respect a 30\% capacity buffer, i.e. is bound to $-0.7\,P_{max} \le P \le 0.7\,P_{max}$. Since the error of the DC power flow approximation increases with the voltage angle differences in the system \cite{dvijothamErrorBoundsDC2016}, we restrict the voltage angle difference $\Delta\theta$ across a line to maximally 30$^\circ$ by introducing the constraint
+=======
+For DLR scenarios, the transmission capacity per line and time step is given by the formulation in Section \ref{sec:dlr}, for SLR scenarios by the reported static transmission capacities. As the DLR scenario is calculated with averaged hourly wind speed data, inner-hourly wind speed fluctuation is neglected. To account for the resulting overestimation of $P_{max}$, we scale the DLR transmission line capacity by an empirically derived factor of $0.95$, see Appendix \ref{dlr_factor} for details. Furthermore, we account for N-1 network security in both SLR and DLR scenarios. Hence, the power transmission $P$ per line must respect a 30\% capacity buffer, i.e. is bound to $-0.7\,P_{max} \le P \le 0.7\,P_{max}$. Since the error of the DC power flow approximation increases with the voltage angle differences in the system \cite{dvijothamErrorBoundsDC2016}, we restrict the voltage angle difference $\Delta\theta$ across a line to maximally 30$^\circ$ by introducing the constraint
+>>>>>>> refs/remotes/origin/main
 \begin{align}
 	P \le \frac{\Delta\theta}{x}=\frac{\pi}{6\,x}
+    \label{eq:angle_difference_constraint}
 \end{align}
 for every time step and line, where $x$ is the series reactance.
 
@@ -126,23 +136,28 @@ In the following, we present the two study cases simulating the year 2019 and 20
 To quantify the effect of DLR on the existing power system, we choose the pre-pandemic year 2019 in which the system operated under relatively normal circumstances. Electrical load and renewable potentials are derived from historical data of the year 2019, transmission and generator infrastructure are aligned to the state of 2019, using and filtering data from \cite{hofmannFRESNAPowerplantmatchingV02022,openpowersystemdataDataPackageNational2017,wiegmansGridkitExtractEntsoE2016}. To approximate the operation of nuclear and lignite power plants mostly running at base load, we enforce a minimal requirement of operation, based on historical data from the ENTSO-E Transparency Platform  \cite{entso-eENTSOETransparencyPlatform2020}.
 
 \subsection{Optimal Investment and Operation of the 2030 Power System }
+<<<<<<< HEAD
 In contrast to the 2019 scenario, the 2030 scenario of the German power system allows capacities expansion of renewable power plants, gas turbines and battery and hydrogen infrastructure. From the existing power plant fleet, only those with a decommissioning date later than 2030 are included. Further, grid expansion projects from the TYNDP \cite{entsoeTYNDP2018Project2018}, which are reported to be built by 2030, are added to the grid infrastructure. In order to align the scenario with the goal of the federal government, 80\% of the electricity supply has to come from wind, solar and hydro power plants \cite{federalministryofeconomicaffairsandclimateactionGermanyCurrentClimate2022}. The electrical load time series, originally representing the year 2013, is scaled up to meet the total predicted demand for 2030 \cite{kemmlerEntwicklungBruttostromverbrauchsBis2021}.
+=======
+In contrast to the 2019 scenario, the 2030 scenario of the German power system allows capacity expansion of renewable power plants, gas turbines and battery and hydrogen infrastructure. From the existing power plant fleet, only those with a decommissioning date later than 2030 are included. Further, grid expansion projects from the TYNDP \cite{entsoeTYNDP2018Project2018}, which are reported to be built by 2030, are added to the grid infrastructure. In order to align the scenario with the goal of the federal government, 80\% of the electricity supply has to come from wind, solar and hydro power plants \cite{federalministryofeconomicaffairsandclimateactionGermanyCurrentClimate2022}. The electrical load time series, originally representing the year 2013, is scaled up to meet the total predicted demand for 2030 \cite{kemmlerEntwicklungBruttostromverbrauchsBis2021}.
+>>>>>>> refs/remotes/origin/main
 
 
 \section{Results}
 
-At first, we present to what extent the DLR implementation alternates the starting point for operating the existent power system. Fig. \todo{Add Figure} shows the geographical layout of existing generation and transmission capacities for the 2019 scenario. The latter is shown for SLR in \todo{color} and average DLR and \todo{color} capacities per line. Note that most of the lines going from north to south connecting the strong wind production sites with the high demand benefit from DLR.
-
-Fig. \ref{fig:potential-correlation-2019} shows the ratio between total DLR and SLR transmission capacity as a function of the capacity-weighted capacity factors for the 2019 scenario.
-
+At first, we present to what extent the DLR implementation alternates the starting point for operating the existent power system. Fig. \ref{fig:capacity-map-2019} shows the geographical layout of existing generation and transmission capacities for the 2019 scenario. The circles with its subdivisions show the installed power generation capacity per site and technology with their area being proportional to the capacity. The widths of the transmission lines indicate the installed SLR capacities, their colors show the relative average change in capacity when applying DLR. Note that due to the voltage angle constraint introduced in \eqref{eq:angle_difference_constraint}, no relative improvement is obtained for some of the long transmission lines as these appear to have high reactances. For most of the others, a strong improvement in the average capacity up to a factor 2 is observed.
+In particular, this accounts for short lines in the north and west of Germany.
+%
 \begin{figure}[htpb]
     \centering
     \includegraphics[width=\linewidth]{de2020_all_nodes_Co2L-BL/capacity_map_dlr.pdf}
     \caption{capacities.}
     \label{fig:capacity-map-2019}
 \end{figure}
-
-
+%
+In addition to location, it is of particular interest in what time periods the improvements occur. Fig. \ref{fig:potential-correlation-2019} shows the total relative increase in transmission capacity as a function of the capacity-weighted capacity factors. For each of the weather-dependent technologies, solar, onshore and offshore wind, a line together with a confidence interval derived from XX is drawn, showing the average value when collecting capacity-weighted capacity factors into bins of size 0.01. The capacity increase strongly correlates with the availability of onshore wind power in the system (green line). In times when onshore wind power availability is at its maximum, i.e. close to 1, the transmission capacity increases by 55\% in average. For low offshore wind power potentials, the increase in transmission capacity weakly correlates with the availability (blue line). However, after a significant positive trend, 35\% transmission capacity increase is observed for times with high offshore wind availability. For solar power, the trend is roughly the opposite. In time periods with low solar potentials, the increase in transmission capacity averages to 23\%, while for a higher potential, the transmission increase declines. Only at the very end, a strong positive trend is observed \todo[inline]{Is this due to cold sunny days?}.
+These findings concretize the general statement that DLR potentials harmonize with wind power potentials for the German power system case.
+%
 \begin{figure}[htpb]
     \centering
     \includegraphics[width=\linewidth]{de2020_all_nodes_Co2L-BL/potential_correlation.pdf}
@@ -150,6 +165,7 @@ Fig. \ref{fig:potential-correlation-2019} shows the ratio between total DLR and 
     \label{fig:potential-correlation-2019}
 \end{figure}
 
+When comparing the optimal dispatch of the SLR and DLR setup for the 2019 scenario, it stands out how this effect it stand
 
 \begin{figure}[htpb]
     \centering
@@ -170,6 +186,13 @@ Fig. \ref{fig:potential-correlation-2019} shows the ratio between total DLR and 
 \begin{figure}[htpb]
     \centering
     \includegraphics[width=\linewidth]{de2030_all_nodes_Co2L-RE0.8/cost_bar.pdf}
+    \caption{Total generation per generation type.}
+    \label{fig:cost-bar-2030}
+\end{figure}
+
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=\linewidth]{de2030_all_nodes_Co2L-RE0.8/congestion_duration_curve.pdf}
     \caption{Total generation per generation type.}
     \label{fig:cost-bar-2030}
 \end{figure}

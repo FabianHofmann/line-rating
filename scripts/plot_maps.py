@@ -12,6 +12,7 @@ import cartopy.crs as ccrs
 import geopandas as gpd
 import matplotlib.cm as cm
 import matplotlib.colors as colors
+import matplotlib.font_manager as font_manager
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -24,6 +25,8 @@ from common import (
     plot_shapes,
 )
 from pypsa.descriptors import get_switchable_as_dense as get_as_dense
+
+font = font_manager.FontProperties(family="sans-serif", style="normal", size=11)
 
 # ---------------------------------------------------------------------------- #
 #    Functions to automatically scale line width and bus sizes in map plots    #
@@ -162,7 +165,7 @@ def plot_capacity(
     line_width_factor = scale_line_widths(line_widths, line_width_factor)
     if with_colormap:
         cmap = cm.get_cmap("viridis", 256)
-        line_colors = n.get_switchable_as_dense("Line", "s_max_pu").mean()
+        line_colors = n.get_switchable_as_dense("Line", "s_max_pu").mean() / 0.7
         norm = colors.Normalize(vmin=line_colors.min(), vmax=line_colors.max())
     else:
         cmap = None
@@ -238,6 +241,7 @@ if __name__ == "__main__":
             size=refsize,
             ncol=4,
             scale=bus_size_factor,
+            prop=font,
             bbox_to_anchor=(0, 0),
             loc="upper left",
             frameon=False,
@@ -256,6 +260,7 @@ if __name__ == "__main__":
             scale=bus_size_factor,
             bbox_to_anchor=(1, 0),
             loc="lower right",
+            prop=font,
             frameon=False,
             framealpha=0.2,
             edgecolor="grey",
@@ -274,11 +279,10 @@ if __name__ == "__main__":
                 ax, n, bounds, bus_size_factor, line_width_factor, with_colormap=True
             )
             plot_shapes(ax, shapes, edgecolor="white", facecolor="#eeeeee")
-            # ax.set_title(n.name, fontsize=11)
             add_carrier_legend(
                 ax,
                 n.carriers.query('color != ""').sort_index(),
-                fontsize=12,
+                prop=font,
                 size=refsize,
                 ncol=2,
                 scale=bus_size_factor,
@@ -292,7 +296,7 @@ if __name__ == "__main__":
             add_carrier_legend(
                 ax,
                 refcirc,
-                fontsize=12,
+                prop=font,
                 size=refsize,
                 scale=bus_size_factor,
                 bbox_to_anchor=(0, 0),
