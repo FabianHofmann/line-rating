@@ -21,6 +21,19 @@ natbib=true % natbib compatibility mode (\citep and \citet still work)
 \bibliography{main.bib}
 % Template from https://de.overleaf.com/latex/templates/ieee-conference-template/grfzhhncsfqn
 
+%define approx proporatinal
+\def\app#1#2{%
+  \mathrel{%
+    \setbox0=\hbox{$#1\sim$}%
+    \setbox2=\hbox{%
+      \rlap{\hbox{$#1\propto$}}%
+      \lower1.1\ht0\box0%
+    }%
+    \raise0.25\ht2\box2%
+  }%
+}
+\def\approxprop{\mathpalette\app\relax}
+
 \graphicspath{{../figures/}}
 
 
@@ -79,8 +92,8 @@ relates the heat losses on the left hand side to the heat gains on the right han
     R(T) = R_{ref} \cdot (1 + \alpha \cdot (T - T_{ref}))
 \end{align}
 
-Solving \eqref{eq:heat_balance} for the electrical current and setting the temperature to its maximal allowed limit yields the maximally allowed current
-\begin{align}
+Solving \eqref{eq:heat_balance} for the electrical current and setting the temperature to its maximal allowed limit yields the ampacity
+\begin{align}\label{ampacity}
     I_{max} = \sqrt{\frac{q_c +q_r-q_s}{R(T_{max})}}
 \end{align}
 which for three-phase electric power transmission operating at voltage level $V$ leads to a maximally allowed, constant power transfer of
@@ -99,14 +112,15 @@ Figure \ref{fig:parameter-space-reduced} shows $P_{max}$ for a typical 3-phase t
 \subsection{Power System Modeling}
 Using the Python package \textit{Python for Power System Analysis} (PyPSA) \cite{brownPyPSAPythonPower2018,browntomPyPSAPythonPower2022}, each of the studied ESOMs is represented by a set of buses which are interconnected via transmission lines and complemented by loads, generators and storage facilities. Further, time-dependent electric demand per bus and generation potentials per generator are included for one year with hourly resolution. The generator dispatch and deployment is determined by linearly minimizing the total system cost, where the optimization uses the linearized power flow approximation \cite{purchalaUsefulnessDCPower2005,brownLinearOptimalPower2016} and may be subject to systemic constraints (CO$_2$ budget, limited capacity expansion, etc.)
 
-Data on the transmission grid, power plants, renewable potentials and demand are created with the workflow \textit{PyPSA-EUR} \cite{horschPyPSAEurOpenOptimisation2018,horschjonasPyPSAEurOpenOptimisation2022}. The representative network of Germany comprises all 256~substations and 333~transmission lines operating at 220~kV and above. Electrical parameters of transmission lines are derived by mapping voltage level of the lines to standard line types given in \cite{oedingElektrischeKraftwerkeUnd2011}. For DLR scenarios, the transmission capacity per line and time step is given by the formulation in Section \ref{sec:dlr}, for SLR scenarios by the reported static transmission capacities. In order to account for N-1 network security, the power transmission $P$ per line must respect a 30\% capacity buffer, i.e. is bound to $-0.7\,P_{max} \le P \le 0.7\,P_{max}$. Since the error of the DC power flow approximation increases with the voltage angle differences in the system, we restrict the voltage angle difference $\Delta\theta$ across a line to maximally 30$^\circ$ by introducing the constraint
+Data on the transmission grid, power plants, renewable potentials and demand are created with the workflow \textit{PyPSA-EUR} \cite{horschPyPSAEurOpenOptimisation2018,horschjonasPyPSAEurOpenOptimisation2022}. The representative network of Germany comprises all 256~substations and 333~transmission lines operating at 220~kV and above. Electrical parameters of transmission lines are derived by mapping voltage level of the lines to standard line types given in \cite{oedingElektrischeKraftwerkeUnd2011}.
+For DLR scenarios, the transmission capacity per line and time step is given by the formulation in Section \ref{sec:dlr}, for SLR scenarios by the reported static transmission capacities. As the DLR scenario is calculated with averaged hourly wind speed data, inner-hourly wind speed fluctuation is neglected. Therefore, Equation \ref{ampacity} overestimates the ampacity $I_{max}$, which leads to an overestimation of $P_{max}$ as shown in \ref{dlr_factor}. To account for this error, we scale the DLR transmission line capacity by an empirically derived factor of $0.95$. Furthermore, we account for N-1 network security in both SLR and DLR scenarios. Hence, the power transmission $P$ per line must respect a 30\% capacity buffer, i.e. is bound to $-0.7\,P_{max} \le P \le 0.7\,P_{max}$. Since the error of the DC power flow approximation increases with the voltage angle differences in the system \cite{dvijothamErrorBoundsDC2016}, we restrict the voltage angle difference $\Delta\theta$ across a line to maximally 30$^\circ$ by introducing the constraint
 \begin{align}
 	P \le \frac{\Delta\theta}{x}=\frac{\pi}{6\,x}
 \end{align}
 for every time step and line, where $x$ is the series reactance.
 
 \section{Study Cases}
-In the following we present the two study cases simulating the year 2019 and 2030 respectively, both of which are separately optimized using DLR and SLR. The parameters settings for both study cases can be found in the Appendix\todo{ToDo}.
+In the following we present the two study cases simulating the year 2019 and 2030 respectively, both of which are separately optimized using DLR and SLR. The parameters settings for both study cases can be found in the Appendix \ref{cases_parameters}.
 
 \subsection{Optimal Operation of the 2019 Power System}
 To quantify the effect of DLR on the existing power system, we choose the pre-pandemic year 2019 in which the system operated under relatively normal circumstances. Electrical load and renewable potentials are derived from historical data of the year 2019, transmission and generator infrastructure are aligned to the state of 2019, using and filtering data from \cite{hofmannFRESNAPowerplantmatchingV02022,openpowersystemdataDataPackageNational2017,wiegmansGridkitExtractEntsoE2016}. To approximate the operation of nuclear and lignite power plants mostly running at base load, we enforce a minimal requirement of operation, based on historical data from the ENTSO-E Transparency Platform  \cite{entso-eENTSOETransparencyPlatform2020}.
@@ -177,8 +191,35 @@ By converting renewable energy to Methane, Hydrogen of synthetic fuels, the ener
 
 \printbibliography
 
-
 \appendix
+\subsection{Study Cases Parameters}\label{cases_parameters}
+\begin{tabular}{lll}
+    \hline
+    { }                             &         2019  &                          2030 \\
+    \hline
+    Substations                     &           256 &                           256 \\
+    Transmission lines              &           333 &                           333 \\
+    Generator capacity expansion    &            no &                           yes \\
+    CO2 Limit                       &  222 mil tons &                  175 mil tons \\
+    Base load constraint            &           yes &                            no \\
+    Renewable generation constraint &            no &      80\% renewable generation \\
+    Generator infrastructure        &          2019 &  2019 and still existing 2030 \\
+    Load data                       &        605TWh &                        658TWh \\
+    \hline
+\end{tabular}
+
+\subsection{DLR Factor}\label{dlr_factor}
+In this section, we show why the hourly averaged wind speed overestimates the DLR transmission capacity compared to higher resolved data. According to the IEEE standard \cite{IEEEStandardCalculating2012},
+\begin{align}
+    P_{max}\propto I_{max} \approxprop \sqrt{\overline{v}_{wind}}
+\end{align}
+, where $\overline{v}_{wind}$ denoted the average wind speed.
+As shown in the following equation,
+\begin{align}
+    \sqrt{\overline{v}_{wind}}=\sqrt{\frac{1}{n}\sum_{i}^{n}{v_{wind,i}}} \ge \frac{1}{n}\sum_{i}^{n}{\sqrt{v_{wind_i}}}
+\end{align}
+the root of the averaged wind speed is greater equal to the root of each single wind speed data point $v_{wind,i}$ which is then averaged. For this reason, we use the DLR scaling factor to account for this difference.
+
 
 
 \end{document}

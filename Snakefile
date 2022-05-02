@@ -161,6 +161,8 @@ rule plot_grid_stats:
     output:
         potential_correlation="figures/de{year}_{clusters}_nodes_{opts}/potential_correlation.{ext}",
         congestion_correlation="figures/de{year}_{clusters}_nodes_{opts}/congestion_correlation.{ext}",
+        line_capacity_overlay="figures/de{year}_{clusters}_nodes_{opts}/line_capacity_overlay.{ext}",
+        congestion_duration_curve="figures/de{year}_{clusters}_nodes_{opts}/congestion_duration_curve.{ext}",
     script:
         "scripts/plot_grid_stats.py"
 
