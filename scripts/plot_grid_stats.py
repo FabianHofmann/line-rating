@@ -118,6 +118,14 @@ def plot_potential_correlation(n):
     potential["normed"] = potential.generation / maximal_generation
     potential["normed_rounded"] = potential.normed.round(1)
 
+    # Only consider capacity factors where we have more than n data points. With less data points the statistical method is not reliable.
+    n=20
+    for carrier in potential.carrier.unique():
+        drop_values=potential.query("carrier==@carrier").normed_rounded.value_counts()[potential.query("carrier==@carrier").normed_rounded.value_counts()<n]
+        filter=potential[potential.normed_rounded.isin(drop_values.index) & (potential.carrier==carrier)].index
+        potential.drop(filter, inplace=True)
+        potential.loc[potential.carrier==carrier, "normed_rounded"]/=potential.loc[potential.carrier==carrier].normed_rounded.max()
+
     carriers = n.carriers.loc[potential.carrier.unique()]
     potential.replace(dict(carrier=n.carriers.nice_name), inplace=True)
 
@@ -217,11 +225,11 @@ if __name__ == "__main__":
     fig = plot_potential_correlation(dlr)
     fig.savefig(snakemake.output.potential_correlation, bbox_inches="tight")
 
-    fig = plot_congestion_correlation(networks)
-    fig.savefig(snakemake.output.congestion_correlation, bbox_inches="tight")
+    # fig = plot_congestion_correlation(networks)
+    # fig.savefig(snakemake.output.congestion_correlation, bbox_inches="tight")
 
-    fig = plot_line_overlay(networks)
-    fig.savefig(snakemake.output["line_capacity_overlay"], bbox_inches="tight")
+    # fig = plot_line_overlay(networks)
+    # fig.savefig(snakemake.output["line_capacity_overlay"], bbox_inches="tight")
 
-    fig = plot_congestion_duration_curve(networks)
-    fig.savefig(snakemake.output["congestion_duration_curve"], bbox_inches="tight")
+    # fig = plot_congestion_duration_curve(networks)
+    # fig.savefig(snakemake.output["congestion_duration_curve"], bbox_inches="tight")
