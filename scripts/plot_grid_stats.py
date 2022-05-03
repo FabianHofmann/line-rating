@@ -225,11 +225,11 @@ if __name__ == "__main__":
     fig = plot_potential_correlation(dlr)
     fig.savefig(snakemake.output.potential_correlation, bbox_inches="tight")
 
-    # fig = plot_congestion_correlation(networks)
-    # fig.savefig(snakemake.output.congestion_correlation, bbox_inches="tight")
+    fig = plot_congestion_correlation(networks)
+    fig.savefig(snakemake.output.congestion_correlation, bbox_inches="tight")
 
-    # fig = plot_line_overlay(networks)
-    # fig.savefig(snakemake.output["line_capacity_overlay"], bbox_inches="tight")
+    fig = plot_line_overlay(networks)
+    fig.savefig(snakemake.output["line_capacity_overlay"], bbox_inches="tight")
 
-    # fig = plot_congestion_duration_curve(networks)
-    # fig.savefig(snakemake.output["congestion_duration_curve"], bbox_inches="tight")
+    fig = plot_congestion_duration_curve(networks)
+    fig.savefig(snakemake.output["congestion_duration_curve"], bbox_inches="tight")
