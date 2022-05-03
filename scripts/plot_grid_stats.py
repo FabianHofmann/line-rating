@@ -149,7 +149,7 @@ def plot_congestion_correlation(n):
         [get_congestion_correlation(n).assign(Scenario=n.name) for n in networks],
         ignore_index=True,
     )
-    fig, axes = plt.subplots(1, 2, figsize=(4.5, 6), sharey=True)
+    fig, axes = plt.subplots(1, 2, figsize=(5, 6), sharey=True)
     norm = plt.Normalize(df["Curtailment [GW]"].min(), df["Curtailment [GW]"].max())
     sm = plt.cm.ScalarMappable(cmap="viridis", norm=norm)
     for key, ax in zip(["Static Line Rating", "Dynamic Line Rating"], axes):
@@ -179,7 +179,7 @@ def plot_congestion_correlation(n):
 
 
 def plot_congestion_duration_curve(networks):
-    fig, ax = plt.subplots(figsize=(4.5, 3.5))
+    fig, ax = plt.subplots(figsize=(5, 3.5))
     data = pd.concat(
         [get_congestion_hours_price(n).assign(Scenario=n.name) for n in networks],
         ignore_index=True,
