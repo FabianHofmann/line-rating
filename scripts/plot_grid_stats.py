@@ -119,9 +119,9 @@ def plot_potential_correlation(n):
     potential["normed_rounded"] = potential.normed.round(1)
 
     # Only consider capacity factors where we have more than n data points. With less data points the statistical method is not reliable.
-    n=20
+    num=20
     for carrier in potential.carrier.unique():
-        drop_values=potential.query("carrier==@carrier").normed_rounded.value_counts()[potential.query("carrier==@carrier").normed_rounded.value_counts()<n]
+        drop_values=potential.query("carrier==@carrier").normed_rounded.value_counts()[potential.query("carrier==@carrier").normed_rounded.value_counts()<num]
         filter=potential[potential.normed_rounded.isin(drop_values.index) & (potential.carrier==carrier)].index
         potential.drop(filter, inplace=True)
         potential.loc[potential.carrier==carrier, "normed_rounded"]/=potential.loc[potential.carrier==carrier].normed_rounded.max()
