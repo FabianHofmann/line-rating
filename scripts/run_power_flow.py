@@ -1,22 +1,17 @@
 import os
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import pypsa
+from common import load_network
 
 
 def normed(s):
     return s / s.sum()
 
 
-def test_voltage_angles():
-
-    # import optimized network
-    network = pypsa.Network(snakemake.input[0])
-    # number of snapshots
-    n = 100
-    network.set_snapshots(network.snapshots[:n])
-
+def run_power_flow(network):
     # calculate voltage angles
     v_ang = network.buses_t.v_ang
     v_ang_diff = v_ang[network.lines.bus0].values - v_ang[network.lines.bus1].values
@@ -40,15 +35,7 @@ def test_voltage_angles():
     network.generators.loc[f.index, "control"] = "PQ"
 
     # by dispatch
-    network.pf(distribute_slack=True, slack_weights="p_set")
-
-    # by capacity
-    # network.pf(distribute_slack=True, slack_weights='p_nom')
-
-    np.testing.assert_array_almost_equal(
-        network.generators_t.p_set.apply(normed, axis=1),
-        (network.generators_t.p - network.generators_t.p_set).apply(normed, axis=1),
-    )
+    return network.pf(distribute_slack=True, slack_weights="p_set")
 
 
 if __name__ == "__main__":
@@ -58,11 +45,20 @@ if __name__ == "__main__":
 
         snakemake = mock_snakemake(
             "test_voltage_angles",
-            network="elec",
-            simpl="",
-            clusters="40",
-            ll="v1.0",
-            opts="Co2L-4H",
+            year="2020",
+            clusters="all",
+            opts="Co2L-BL-Ep",
+            ext="pdf",
         )
 
-    test_voltage_angles()
+    res = {}
+    for name in ["network_slr", "network_dlr"]:
+        n = load_network(snakemake.input[name])
+        r = run_power_flow(n)
+        res[n.name] = r["converged"]
+    res = pd.concat(res, axis=1).droplevel(1, axis=1)
+
+    fig, ax = plt.subplots(figsize=(5, 3.5))
+    res.sum().plot(kind="bar", ax=ax)
+    fig.tight_layout()
+    fig.savefig(snakemake.output[0])

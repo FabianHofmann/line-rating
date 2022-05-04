@@ -165,11 +165,14 @@ rule plot_grid_stats:
         "scripts/plot_grid_stats.py"
 
 
-rule test_voltage_angles:
+rule run_power_flow:
     input:
-        "results/de{year}_{clusters}_nodes_{opts}_{rating}.nc",
+        network_slr="results/de{year}_{clusters}_nodes_{opts}_slr.nc",
+        network_dlr="results/de{year}_{clusters}_nodes_{opts}_dlr.nc",
+    output:
+        "figures/de{year}_{clusters}_nodes_{opts}/converged_power_flow_calculation.{ext}",
     script:
-        "scripts/test_voltage_angles.py"
+        "scripts/run_power_flow.py"
 
 
 # ==================================================================================
