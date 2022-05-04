@@ -148,7 +148,7 @@ In particular, this accounts for short lines in the north and west of Germany.
     \label{fig:capacity-map-2019}
 \end{figure}
 %
-In addition to location, it is of particular interest in what time periods the improvements occur. Fig. \ref{fig:potential-correlation-2019} shows the total relative increase in transmission capacity as a function of the capacity-weighted capacity factors. For each of the weather-dependent technologies, solar, onshore and offshore wind, a line together with its confidence interval is drawn, showing the average value when collecting the sorted values in groups of 30. The transmission capacity increase strongly correlates with the availability of onshore wind power in the system (green line). In times when onshore wind power availability is at its maximum, i.e. close to 1, the transmission capacity increases by 52\% in average. For low offshore wind power potentials, the increase in transmission capacity weakly correlates with the availability (blue line). However, after a significant positive trend, 48\% transmission capacity increase is observed for times with high offshore wind availability. For solar power, the trend is roughly the opposite. In time periods with low solar potentials, the increase in transmission capacity averages to 20\%, while for a higher potential, the transmission increase declines. Only at the very end, a strong positive trend is observed which originates from a very sunny and windy period in the end of April.
+In addition to location, it is of particular interest in what time periods the improvements occur. Fig. \ref{fig:potential-correlation-2019} shows the total relative increase in transmission capacity as a function of the capacity normalized generation. For each of the weather-dependent technologies, solar, onshore and offshore wind, a line together with its confidence interval is drawn, showing the average value when collecting the values sorted by total generation in groups of 30. The transmission capacity increase strongly correlates with the availability of onshore wind power in the system (green line). In times when onshore wind power availability is at its maximum, i.e. close to 1, the transmission capacity increases by 52\% in average. For low offshore wind power potentials, the increase in transmission capacity weakly correlates with the availability (blue line). However, after a significant positive trend, 48\% transmission capacity increase is observed for times with high offshore wind availability. For solar power, the trend is roughly the opposite. In time periods with low solar potentials, the increase in transmission capacity averages to 20\%, while for a higher potential, the transmission increase declines. Only at the very end, a strong positive trend is observed which originates from a very sunny and windy period in the end of April.
 %
 \begin{figure}[htpb]
     \centering
@@ -208,10 +208,9 @@ The cost savings for the DLR scenario compared to the SLR scenario is illustrate
 
 
 \section{Limitations}
-\begin{itemize}
-	\item Neglecting Imports and exports
-	\item Some cross-border lines are missing which leads to overestimated curtailment of wind power (in particular Diele \& Dörpen West bus have to curtail due to missing link to Netherlands)
-\end{itemize}
+Even though the presented power system model reveals a high spatial resolution as well as detailed information about installed capacities and renewable potentials, it is not able to represent all the power system dynamics. The model is isolated from other countries, suppressing cross-border exchange. In order to account for this lack of flexibility, the coal power plants were modelled without ramping limitations. In particular, missing cross-border lines lead to a an overestimated curtailment in the north west of Germany at the substations Diele \& Dörpen West, where much of the curtailed wind power could have been exported to the Netherlands.
+Further, the optimization of the model is kept linear, i.e. power transmission losses as well as complex power flow dynamics are neglected. However, subsequently to the linear optimization, a nonlinear power flow was calculated for each of the time steps.
+
 
 \section{Discussion}
 

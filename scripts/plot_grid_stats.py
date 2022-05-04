@@ -146,7 +146,7 @@ def plot_potential_correlation(n):
     )
     ax.legend(title="")
     ax.set_xlim(0, 1)
-    ax.set_xlabel("Capacity-Weighted Capacity Factor")
+    ax.set_xlabel("Total Generation / Total Capacity")
     ax.set_ylabel("Total DLR / Total SLR")
     ax.grid(True, linestyle="--", linewidth=0.5)
     fig.tight_layout()
@@ -213,9 +213,9 @@ if __name__ == "__main__":
 
         snakemake = mock_snakemake(
             "plot_grid_stats",
-            year="2020",
+            year="2030",
             clusters="all",
-            opts="Co2L-BL-Ep",
+            opts="Co2L-RE0.8-Ep",
             ext="pdf",
         )
 
