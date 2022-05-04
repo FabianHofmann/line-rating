@@ -165,9 +165,9 @@ if __name__ == "__main__":
 
         snakemake = mock_snakemake(
             "plot_bars",
-            year="2030",
+            year="2020",
             clusters="all",
-            opts="Co2L-RE0.8",
+            opts="Co2L-BL-Ep",
             ext="pdf",
         )
 
@@ -175,7 +175,6 @@ if __name__ == "__main__":
     dlr = load_network(snakemake.input.network_dlr)
     networks = slr, dlr
 
-    config = snakemake.config["plotting"]["bar"]
 
     for output in snakemake.output.keys():
         figconfig = config.get(output, {})
