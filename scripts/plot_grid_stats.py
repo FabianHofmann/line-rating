@@ -58,7 +58,7 @@ def get_congestion_hours_price(n):
     c = "Line"
     congestion_price = (n.pnl(c).mu_lower.abs() + n.pnl(c).mu_upper.abs()).sum(axis=1)
     number_lines_congested = (n.pnl(c).mu_lower.abs() + n.pnl(c).mu_upper.abs()).round(
-        3
+        2
     ) != 0
     number_lines_congested = number_lines_congested.sum(axis=1)
     congestion = pd.concat(
@@ -200,7 +200,7 @@ def plot_congestion_duration_curve(networks):
         style="Scenario",
         # hue="Shadow price",
         ax=ax,
-        estimator="sum",
+        #estimator="sum",
     )
     fig.tight_layout()
     return fig

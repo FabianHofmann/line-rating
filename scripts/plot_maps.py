@@ -200,7 +200,7 @@ if __name__ == "__main__":
             "plot_maps",
             year="2020",
             clusters="all",
-            opts="Co2L-BL",
+            opts="Co2L-BL-Ep",
             ext="pdf",
         )
 
