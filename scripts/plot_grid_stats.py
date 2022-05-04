@@ -1,5 +1,6 @@
 import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 import seaborn as sns
 from common import keys, load_network
@@ -16,6 +17,9 @@ def get_absolute_potential(n):
     potential = potential.reset_index().melt(
         id_vars="snapshot", value_name="generation"
     )
+
+    capacity = n.generators.loc[renewables].groupby("carrier").p_nom_opt.sum() / 1e3
+    potential = potential.join(capacity.rename("capacity"), on="carrier")
 
     line_potential = (n.lines.s_nom_opt * n.lines_t.s_max_pu).sum(
         1
@@ -114,38 +118,35 @@ def plot_line_overlay(networks, line_width_factor=None, bus_size_factor=None):
 def plot_potential_correlation(n):
     potential = get_absolute_potential(n)
 
-    maximal_generation = potential.groupby("carrier").generation.transform(max)
-    potential["normed"] = potential.generation / maximal_generation
-    potential["normed_rounded"] = potential.normed.round(1)
-
-    # Only consider capacity factors where we have more than n data points. With less data points the statistical method is not reliable.
-    n=20
+    potential["normed"] = potential.generation / potential.capacity
+    new = []
     for carrier in potential.carrier.unique():
-        drop_values=potential.query("carrier==@carrier").normed_rounded.value_counts()[potential.query("carrier==@carrier").normed_rounded.value_counts()<n]
-        filter=potential[potential.normed_rounded.isin(drop_values.index) & (potential.carrier==carrier)].index
-        potential.drop(filter, inplace=True)
-        potential.loc[potential.carrier==carrier, "normed_rounded"]/=potential.loc[potential.carrier==carrier].normed_rounded.max()
+        cpotential = potential[potential.carrier == carrier].sort_values("normed")
+        cpotential["order"] = np.arange(len(cpotential))
+        cpotential["order_groups"] = pd.cut(cpotential.order, 73)
+        cpotential["normed_groups"] = cpotential.groupby(
+            "order_groups"
+        ).normed.transform("mean")
+        new.append(cpotential)
+    potential = pd.concat(new, ignore_index=True)
 
     carriers = n.carriers.loc[potential.carrier.unique()]
-    potential.replace(dict(carrier=n.carriers.nice_name), inplace=True)
-
     color = carriers.set_index("nice_name").color.to_dict()
+    potential.replace(dict(carrier=n.carriers.nice_name), inplace=True)
 
     fig, ax = plt.subplots(figsize=(5, 3.5))
     sns.lineplot(
         data=potential,
-        x="normed_rounded",
+        x="normed_groups",
         y="transmission",
         hue="carrier",
         style="carrier",
-        # palette=color,
-        # ci='sd',
         estimator="mean",
         ax=ax,
     )
     ax.legend(title="")
     ax.set_xlim(0, 1)
-    ax.set_xlabel("Weighted-Average Capacity Factor")
+    ax.set_xlabel("Capacity-Weighted Capacity Factor")
     ax.set_ylabel("Total DLR / Total SLR")
     ax.grid(True, linestyle="--", linewidth=0.5)
     fig.tight_layout()
@@ -214,7 +215,7 @@ if __name__ == "__main__":
             "plot_grid_stats",
             year="2020",
             clusters="all",
-            opts="Co2L-BL",
+            opts="Co2L-BL-Ep",
             ext="pdf",
         )
 
