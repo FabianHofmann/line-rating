@@ -94,8 +94,8 @@ Section \ref{sec:methodology} describes the methodology of the DLR implementatio
 \subsection{Dynamic Line Rating}
 \label{sec:dlr}
 
-For simulating the effect of DLR, we follow the IEEE standard documented in [17], [19]. The methodology was integrated into the Atlite software \cite{hofmannAtliteLightweightPython2021}, a Python package used for converting weather data into time-series and energy potential for renewable power systems.
-The key concept of DLR is based on a dynamic estimation of the maximally allowed electrical current  for the conducting material \cite{KARIMI2018600}. It is set such that the conductor does not surpass the maximally allowed temperature  after which impermissible sag of the line or hardware damage can be expected. For each conductor, the heat balance equation
+For simulating the effect of DLR, we follow the IEEE standard documented in \cite{IEEEStandardCalculating2012}, \cite{IEEEStd738}. The methodology was integrated into the Atlite software \cite{hofmannAtliteLightweightPython2021}, a Python package used for converting weather data into time-series and energy potential for renewable power systems.
+The key concept of DLR is based on a dynamic estimation of the maximally allowed electrical current  for the conducting material. It is set such that the conductor does not surpass the maximally allowed temperature  after which impermissible sag of the line or hardware damage can be expected \cite{KARIMI2018600}. For each conductor, the heat balance equation
 \begin{align}
     q_c +q_r = q_s + I^2 \cdot R(T)
     \label{eq:heat_balance}
