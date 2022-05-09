@@ -54,9 +54,9 @@ ds = Dataset(
 ds = ds.expand_dims("spatial")
 ds = ds.assign_coords(time=pd.DatetimeIndex(["2020-01-01 13:00"]), lat=35, lon=0)
 
-R = 9.39e-5  # resistance per meter at 100°C
+R = 9.39e-5  # resistance per meter at 80°C
 psi = 0
-i = line_rating(ds, psi, R)
+i = line_rating(ds, psi, R, Ts=353)
 v = 380  # kV
 s = np.sqrt(3) * i * v / 1e3  # in MW
 s = s.squeeze()

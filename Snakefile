@@ -16,6 +16,7 @@ rule create_figures:
             "figures/de{year}_{clusters}_nodes_{opts}/{figure}.pdf",
             **config["scenario_2030"]
         ),
+        "figures/parameter-space-reduced.pdf",
 
 
 rule create_figures_test:

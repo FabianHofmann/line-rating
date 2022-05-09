@@ -175,6 +175,7 @@ if __name__ == "__main__":
     dlr = load_network(snakemake.input.network_dlr)
     networks = slr, dlr
 
+    config = snakemake.config["plotting"]["bar"]
 
     for output in snakemake.output.keys():
         figconfig = config.get(output, {})

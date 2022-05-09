@@ -40,6 +40,7 @@ sns.set_context(
     "paper",
     rc={
         "font.size": 12,
+        "font.family": "Times New Roman",
         "figure.titlesize": "normal",
         "legend.fontsize": 11,
         "axes.titlesize": 12,

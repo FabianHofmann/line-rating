@@ -26,7 +26,7 @@ from common import (
 )
 from pypsa.descriptors import get_switchable_as_dense as get_as_dense
 
-font = font_manager.FontProperties(family="sans-serif", style="normal", size=11)
+font = font_manager.FontProperties(family="Times New Roman", style="normal", size=11)
 
 # ---------------------------------------------------------------------------- #
 #    Functions to automatically scale line width and bus sizes in map plots    #
