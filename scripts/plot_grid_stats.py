@@ -6,6 +6,9 @@ import seaborn as sns
 from common import keys, load_network
 from matplotlib.style import available
 from plot_maps import scale_bus_sizes, scale_line_widths
+import matplotlib.font_manager as font_manager
+font = font_manager.FontProperties(family="Times New Roman", style="normal", size=11)
+sns.set(font="Times New Roman")
 
 
 def get_absolute_potential(n):

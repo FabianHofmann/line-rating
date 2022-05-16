@@ -12,6 +12,10 @@ import pandas as pd
 import xarray as xr
 from atlite.convert import convert_line_rating as line_rating
 from xarray import DataArray, Dataset
+import seaborn as sns
+import matplotlib.font_manager as font_manager
+font = font_manager.FontProperties(family="Times New Roman", style="normal", size=11)
+sns.set(font="Times New Roman")
 
 if "snakemake" not in globals():
     from _helpers import mock_snakemake

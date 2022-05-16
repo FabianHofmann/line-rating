@@ -2,6 +2,9 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 from common import load_network
+import matplotlib.font_manager as font_manager
+font = font_manager.FontProperties(family="Times New Roman", style="normal", size=11)
+sns.set(font="Times New Roman")
 
 
 def get_operation(n):
