@@ -27,6 +27,7 @@ from common import (
 from pypsa.descriptors import get_switchable_as_dense as get_as_dense
 
 font = font_manager.FontProperties(family="Times New Roman", style="normal", size=11)
+sns.set(font="Times New Roman")
 
 # ---------------------------------------------------------------------------- #
 #    Functions to automatically scale line width and bus sizes in map plots    #
@@ -114,21 +115,22 @@ def plot_congestion(ax, n, bounds, bus_size_factor=None, line_width_factor=None)
     vmax = 5000  # maximum value to show on colobar
     norm = colors.Normalize(vmin=vmin, vmax=vmax)
 
-    collection = n.plot(
-        ax=ax,
-        line_widths=line_width_factor,
-        line_colors=f.get("Line"),
-        line_cmap=cmap,
-        link_widths=line_width_factor,
-        bus_sizes=bus_sizes * bus_size_factor,
-        bus_alpha=0.7,
-        color_geomap=False,
-        boundaries=bounds,
-    )
+    with plt.rc_context({"patch.linewidth": 0}):
+        collection = n.plot(
+            ax=ax,
+            line_widths=line_width_factor,
+            line_colors=f.get("Line"),
+            line_cmap=cmap,
+            link_widths=line_width_factor,
+            bus_sizes=bus_sizes * bus_size_factor,
+            bus_alpha=0.7,
+            color_geomap=False,
+            boundaries=bounds,
+        )
     collection[1].set(norm=norm)
 
     if "Dynamic" in n.name:
-        plt.colorbar(collection[1], ax=ax, fraction=0.046, pad=0.004)
+        plt.colorbar(collection[1], ax=ax, fraction=0.04, pad=0.004)
 
     return bus_size_factor, line_width_factor
 
@@ -172,17 +174,18 @@ def plot_capacity(
         line_colors = "purple"
         line_widths *= n.get_switchable_as_dense("Line", "s_max_pu").mean() / 0.7
 
-    collection = n.plot(
-        ax=ax,
-        line_widths=line_widths * line_width_factor,
-        link_widths=link_widths * line_width_factor,
-        line_colors=line_colors,
-        line_cmap=cmap,
-        bus_sizes=bus_sizes * bus_size_factor,
-        bus_alpha=0.7,
-        color_geomap=False,
-        boundaries=bounds,
-    )
+    with plt.rc_context({"patch.linewidth": 0}):
+        collection = n.plot(
+            ax=ax,
+            line_widths=line_widths * line_width_factor,
+            link_widths=link_widths * line_width_factor,
+            line_colors=line_colors,
+            line_cmap=cmap,
+            bus_sizes=bus_sizes * bus_size_factor,
+            bus_alpha=0.7,
+            color_geomap=False,
+            boundaries=bounds,
+        )
 
     if with_colormap:
         collection[1].set(norm=norm)

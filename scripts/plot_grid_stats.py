@@ -1,4 +1,5 @@
 import cartopy.crs as ccrs
+import matplotlib.font_manager as font_manager
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -6,7 +7,7 @@ import seaborn as sns
 from common import keys, load_network
 from matplotlib.style import available
 from plot_maps import scale_bus_sizes, scale_line_widths
-import matplotlib.font_manager as font_manager
+
 font = font_manager.FontProperties(family="Times New Roman", style="normal", size=11)
 sns.set(font="Times New Roman")
 
@@ -203,7 +204,7 @@ def plot_congestion_duration_curve(networks):
         style="Scenario",
         # hue="Shadow price",
         ax=ax,
-        #estimator="sum",
+        # estimator="sum",
     )
     fig.tight_layout()
     return fig

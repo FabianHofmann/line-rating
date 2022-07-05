@@ -7,13 +7,14 @@ Created on Tue Nov 16 13:53:32 2021.
 """
 
 import common
+import matplotlib.font_manager as font_manager
 import numpy as np
 import pandas as pd
+import seaborn as sns
 import xarray as xr
 from atlite.convert import convert_line_rating as line_rating
 from xarray import DataArray, Dataset
-import seaborn as sns
-import matplotlib.font_manager as font_manager
+
 font = font_manager.FontProperties(family="Times New Roman", style="normal", size=11)
 sns.set(font="Times New Roman")
 
