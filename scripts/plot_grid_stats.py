@@ -201,7 +201,7 @@ def plot_congestion_duration_curve(networks):
         data=data,
         x="Hour",
         y="Number of congested lines",
-        style="Scenario",
+        hue="Scenario",
         # hue="Shadow price",
         ax=ax,
         # estimator="sum",
