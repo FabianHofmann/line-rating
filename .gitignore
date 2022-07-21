@@ -28,6 +28,7 @@ scripts/__pycache__
 *.out
 *.bcf
 *.fls
+*.pdf
 *.run.xml
 *.synctex.gz
 *.fdb_latexmk
