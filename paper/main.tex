@@ -8,6 +8,12 @@
 \usepackage{xcolor}
 \usepackage{todonotes}
 \usepackage{tabularx, multirow}
+\usepackage{fancyhdr,lipsum}
+
+\fancypagestyle{firstpage}{% Page style for first page
+  \fancyhf{}% Clear header/footer
+  \fancyfoot[l]{978-1-6654-0896-7/22/\$31.00 ©2022 IEEE}% Footer
+}
 % \usepackage{cleveref}
 
 % \crefname{align}{}{}
@@ -62,6 +68,7 @@ natbib=true % natbib compatibility mode (\citep and \citet still work)
 }
 
 \maketitle
+\thispagestyle{firstpage}
 
 \begin{abstract}
     The German government recently announced that 80\% of the power supply should come from renewable energy by 2030. One key task lies in reorganizing the transmission system such that power can be transported from sites with good renewable potentials to the load centers. Dynamic Line Rating (DLR), which allows the dynamic calculation of transmission line capacities based on prevailing weather conditions rather than conservative invariant ratings, offers the potential to exploit existing grid capacities better. In this paper, we analyze the effect of DLR on behalf of a detailed power system model of Germany including all of today's extra high voltage transmission lines and substations. The evolving synergies between DLR and an increased wind power generation lead to savings of around 400 million euro per year in the short term and 900 million per year in a scenario for 2030.
