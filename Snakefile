@@ -14,7 +14,7 @@ configfile: "configs/config.cluster.yaml"
 rule create_figures:
     input:
         expand(
-            "figures/de{year}_{clusters}_nodes_{opts}-DLR{rating}/{figure}.pdf",
+            "figures/de{year}_{clusters}_nodes_{opts}_dlr{rating}/{figure}.pdf",
             **config["scenario_2020"]
         ),
         expand(
@@ -27,7 +27,7 @@ rule create_figures:
 rule create_figures_test:
     input:
         expand(
-            "figures/de{year}_{clusters}_nodes_{opts}-DLR{rating}/{figure}.pdf",
+            "figures/de{year}_{clusters}_nodes_{opts}_dlr{rating}/{figure}.pdf",
             **config["test"],
         ),
 
@@ -52,20 +52,20 @@ subworkflow pypsaeur2030:
 
 def network_from_subworkflow(wildcards):
     if wildcards.year == "2020":
-        return pypsaeur2020("networks/elec_s_{clusters}_ec_lv1.0_{opts}-DLR{rating}.nc")
+        return pypsaeur2020("networks/elec_s_{clusters}_ec_lv1.0_{opts}.nc")
     elif wildcards.year == "2030":
-        return pypsaeur2030("networks/elec_s_{clusters}_ec_lv1.0_{opts}-DLR{rating}.nc")
+        return pypsaeur2030("networks/elec_s_{clusters}_ec_lv1.0_{opts}.nc")
     else:
         raise ValueError("Wildcard 'year' must be 2020 or 2030.")
 
 
 rule prepare_networks:
     input:
-        network_from_subworkflow,
+        network=network_from_subworkflow,
     output:
-        "networks/de{year}_{clusters}_nodes_{opts}-DLR{rating}.nc",
-    shell:
-        "cp {input} {output}"
+        network="networks/de{year}_{clusters}_nodes_{opts}_dlr{rating}.nc",
+    script:
+        "scripts/prepare_networks.py"
 
 
 def shapes_from_subworkflow(wildcards):
@@ -108,15 +108,15 @@ def memory(w):
 
 rule solve_network:
     input:
-        "networks/de{year}_{clusters}_nodes_{opts}-DLR{rating}.nc",
+        "networks/de{year}_{clusters}_nodes_{opts}_dlr{rating}.nc",
     output:
-        "results/de{year}_{clusters}_nodes_{opts}-DLR{rating}.nc",
+        "results/de{year}_{clusters}_nodes_{opts}_dlr{rating}.nc",
     log:
-        solver="logs/solve_network/de{year}_{clusters}_nodes_{opts}-DLR{rating}_solver.log",
-        python="logs/solve_network/de{year}_{clusters}_nodes_{opts}-DLR{rating}_python.log",
-        memory="logs/solve_network/de{year}_{clusters}_nodes_{opts}-DLR{rating}_memory.log",
+        solver="logs/solve_network/de{year}_{clusters}_nodes_{opts}_dlr{rating}_solver.log",
+        python="logs/solve_network/de{year}_{clusters}_nodes_{opts}_dlr{rating}_python.log",
+        memory="logs/solve_network/de{year}_{clusters}_nodes_{opts}_dlr{rating}_memory.log",
     benchmark:
-        "benchmarks/solve_network/de{year}_{clusters}_nodes_{opts}-DLR{rating}"
+        "benchmarks/solve_network/de{year}_{clusters}_nodes_{opts}_dlr{rating}"
     threads: 4
     resources:
         mem_mb=memory,
@@ -129,53 +129,53 @@ rule solve_network:
 
 rule plot_maps:
     input:
-        network_dlr="results/de{year}_{clusters}_nodes_{opts}-DLR{rating}.nc",
-        network_slr="results/de{year}_{clusters}_nodes_{opts}-DLR1.0.nc",
+        network_dlr="results/de{year}_{clusters}_nodes_{opts}_dlr{rating}.nc",
+        network_slr="results/de{year}_{clusters}_nodes_{opts}_dlr1.0.nc",
         shapes="resources/regions_onshore_de{year}_{clusters}_nodes.geojson",
     output:
-        capacity="figures/de{year}_{clusters}_nodes_{opts}-DLR{rating}/capacity_map.{ext}",
-        operation="figures/de{year}_{clusters}_nodes_{opts}-DLR{rating}/operation_map.{ext}",
-        utilization="figures/de{year}_{clusters}_nodes_{opts}-DLR{rating}/utilization_map.{ext}",
-        congestion="figures/de{year}_{clusters}_nodes_{opts}-DLR{rating}/congestion_map.{ext}",
+        capacity="figures/de{year}_{clusters}_nodes_{opts}_dlr{rating}/capacity_map.{ext}",
+        operation="figures/de{year}_{clusters}_nodes_{opts}_dlr{rating}/operation_map.{ext}",
+        utilization="figures/de{year}_{clusters}_nodes_{opts}_dlr{rating}/utilization_map.{ext}",
+        congestion="figures/de{year}_{clusters}_nodes_{opts}_dlr{rating}/congestion_map.{ext}",
     script:
         "scripts/plot_maps.py"
 
 
 rule plot_bars:
     input:
-        network_dlr="results/de{year}_{clusters}_nodes_{opts}-DLR{rating}.nc",
-        network_slr="results/de{year}_{clusters}_nodes_{opts}-DLR1.0.nc",
+        network_dlr="results/de{year}_{clusters}_nodes_{opts}_dlr{rating}.nc",
+        network_slr="results/de{year}_{clusters}_nodes_{opts}_dlr1.0.nc",
         curtailment_data="data/curtailment_carrier.csv",
     output:
-        operation="figures/de{year}_{clusters}_nodes_{opts}-DLR{rating}/operation_bar.{ext}",
-        capacity="figures/de{year}_{clusters}_nodes_{opts}-DLR{rating}/capacity_bar.{ext}",
-        curtailment="figures/de{year}_{clusters}_nodes_{opts}-DLR{rating}/curtailment_bar.{ext}",
-        relative_curtailment="figures/de{year}_{clusters}_nodes_{opts}-DLR{rating}/relative_curtailment_bar.{ext}",
-        historical_curtailment="figures/de{year}_{clusters}_nodes_{opts}-DLR{rating}/historical_curtailment_bar.{ext}",
-        cost="figures/de{year}_{clusters}_nodes_{opts}-DLR{rating}/cost_bar.{ext}",
+        operation="figures/de{year}_{clusters}_nodes_{opts}_dlr{rating}/operation_bar.{ext}",
+        capacity="figures/de{year}_{clusters}_nodes_{opts}_dlr{rating}/capacity_bar.{ext}",
+        curtailment="figures/de{year}_{clusters}_nodes_{opts}_dlr{rating}/curtailment_bar.{ext}",
+        relative_curtailment="figures/de{year}_{clusters}_nodes_{opts}_dlr{rating}/relative_curtailment_bar.{ext}",
+        historical_curtailment="figures/de{year}_{clusters}_nodes_{opts}_dlr{rating}/historical_curtailment_bar.{ext}",
+        cost="figures/de{year}_{clusters}_nodes_{opts}_dlr{rating}/cost_bar.{ext}",
     script:
         "scripts/plot_bars.py"
 
 
 rule plot_grid_stats:
     input:
-        network_slr="results/de{year}_{clusters}_nodes_{opts}-DLR1.0.nc",
-        network_dlr="results/de{year}_{clusters}_nodes_{opts}-DLR{rating}.nc",
+        network_slr="results/de{year}_{clusters}_nodes_{opts}_dlr1.0.nc",
+        network_dlr="results/de{year}_{clusters}_nodes_{opts}_dlr{rating}.nc",
     output:
-        potential_correlation="figures/de{year}_{clusters}_nodes_{opts}-DLR{rating}/potential_correlation.{ext}",
-        congestion_correlation="figures/de{year}_{clusters}_nodes_{opts}-DLR{rating}/congestion_correlation.{ext}",
-        line_capacity_overlay="figures/de{year}_{clusters}_nodes_{opts}-DLR{rating}/line_capacity_overlay.{ext}",
-        congestion_duration_curve="figures/de{year}_{clusters}_nodes_{opts}-DLR{rating}/congestion_duration_curve.{ext}",
+        potential_correlation="figures/de{year}_{clusters}_nodes_{opts}_dlr{rating}/potential_correlation.{ext}",
+        congestion_correlation="figures/de{year}_{clusters}_nodes_{opts}_dlr{rating}/congestion_correlation.{ext}",
+        line_capacity_overlay="figures/de{year}_{clusters}_nodes_{opts}_dlr{rating}/line_capacity_overlay.{ext}",
+        congestion_duration_curve="figures/de{year}_{clusters}_nodes_{opts}_dlr{rating}/congestion_duration_curve.{ext}",
     script:
         "scripts/plot_grid_stats.py"
 
 
 rule run_power_flow:
     input:
-        network_slr="results/de{year}_{clusters}_nodes_{opts}-DLR1.0.nc",
-        network_dlr="results/de{year}_{clusters}_nodes_{opts}-DLR{rating}.nc",
+        network_slr="results/de{year}_{clusters}_nodes_{opts}_dlr1.0.nc",
+        network_dlr="results/de{year}_{clusters}_nodes_{opts}_dlr{rating}.nc",
     output:
-        "figures/de{year}_{clusters}_nodes_{opts}-DLR{rating}/converged_power_flow_calculation.{ext}",
+        "figures/de{year}_{clusters}_nodes_{opts}_dlr{rating}/converged_power_flow_calculation.{ext}",
     script:
         "scripts/run_power_flow.py"
 

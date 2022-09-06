@@ -13,9 +13,12 @@ if __name__ == "__main__":
 
     n = pypsa.Network(snakemake.input.network)
 
-    # Network has already Dynamic Line Rating
-    n.export_to_netcdf(snakemake.output.network_dlr)
+    max_rating = snakemake.wildcards["rating"]
+    if max_rating:
+        max_rating = float(max_rating)
+        if max_rating == 1:
+            n.lines_t.s_max_pu.drop(n.lines_t.s_max_pu.columns, axis=1, inplace=True)
+        else:
+            n.lines_t.s_max_pu = n.lines_t.s_max_pu.clip(upper=max_rating)
 
-    # Convert to Static Line Rating
-    n.lines_t.s_max_pu.drop(n.lines_t.s_max_pu.columns, axis=1, inplace=True)
-    n.export_to_netcdf(snakemake.output.network_slr)
+    n.export_to_netcdf(snakemake.output.network)
