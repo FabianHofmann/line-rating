@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 
 
 configfile: "configs/config.yaml"
+configfile: "configs/config.cluster.yaml"
 
 
 rule create_figures:
@@ -186,3 +187,18 @@ rule plot_parameter_space:
         figure="figures/parameter-space-{kind}.pdf",
     script:
         "scripts/parameter-space.py"
+
+
+# ---------------------------------------------------------------------------- #
+#                     Additional function to run on cluster                    #
+# ---------------------------------------------------------------------------- #
+
+
+rule sync:
+    params:
+        cluster=config["cluster"],
+    shell:
+        """
+        rsync -uvarh --no-g --exclude-from=.syncignore-send --include-from=.syncinclude-send . {params.cluster}
+        rsync -uvarh --no-g --exclude-from=.syncignore-receive --include-from=.syncinclude-receive {params.cluster} .
+        """
