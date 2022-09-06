@@ -3,6 +3,10 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 
+wildcard_constraints:
+    rating="[0-9\.]+|",
+
+
 configfile: "configs/config.yaml"
 configfile: "configs/config.cluster.yaml"
 
@@ -10,7 +14,7 @@ configfile: "configs/config.cluster.yaml"
 rule create_figures:
     input:
         expand(
-            "figures/de{year}_{clusters}_nodes_{opts}/{figure}.pdf",
+            "figures/de{year}_{clusters}_nodes_{opts}-DLR{rating}/{figure}.pdf",
             **config["scenario_2020"]
         ),
         expand(
@@ -23,7 +27,7 @@ rule create_figures:
 rule create_figures_test:
     input:
         expand(
-            "figures/de{year}_{clusters}_nodes_{opts}/{figure}.pdf",
+            "figures/de{year}_{clusters}_nodes_{opts}-DLR{rating}/{figure}.pdf",
             **config["test"],
         ),
 
@@ -48,21 +52,20 @@ subworkflow pypsaeur2030:
 
 def network_from_subworkflow(wildcards):
     if wildcards.year == "2020":
-        return pypsaeur2020("networks/elec_s_{clusters}_ec_lv1.0_{opts}.nc")
+        return pypsaeur2020("networks/elec_s_{clusters}_ec_lv1.0_{opts}-DLR{rating}.nc")
     elif wildcards.year == "2030":
-        return pypsaeur2030("networks/elec_s_{clusters}_ec_lv1.0_{opts}.nc")
+        return pypsaeur2030("networks/elec_s_{clusters}_ec_lv1.0_{opts}-DLR{rating}.nc")
     else:
         raise ValueError("Wildcard 'year' must be 2020 or 2030.")
 
 
 rule prepare_networks:
     input:
-        network=network_from_subworkflow,
+        network_from_subworkflow,
     output:
-        network_dlr="networks/de{year}_{clusters}_nodes_{opts}_dlr.nc",
-        network_slr="networks/de{year}_{clusters}_nodes_{opts}_slr.nc",
-    script:
-        "scripts/prepare_networks.py"
+        "networks/de{year}_{clusters}_nodes_{opts}-DLR{rating}.nc",
+    shell:
+        "cp {input} {output}"
 
 
 def shapes_from_subworkflow(wildcards):
@@ -105,15 +108,15 @@ def memory(w):
 
 rule solve_network:
     input:
-        "networks/de{year}_{clusters}_nodes_{opts}_{rating}.nc",
+        "networks/de{year}_{clusters}_nodes_{opts}-DLR{rating}.nc",
     output:
-        "results/de{year}_{clusters}_nodes_{opts}_{rating}.nc",
+        "results/de{year}_{clusters}_nodes_{opts}-DLR{rating}.nc",
     log:
-        solver="logs/solve_network/de{year}_{clusters}_nodes_{opts}_{rating}_solver.log",
-        python="logs/solve_network/de{year}_{clusters}_nodes_{opts}_{rating}_python.log",
-        memory="logs/solve_network/de{year}_{clusters}_nodes_{opts}_{rating}_memory.log",
+        solver="logs/solve_network/de{year}_{clusters}_nodes_{opts}-DLR{rating}_solver.log",
+        python="logs/solve_network/de{year}_{clusters}_nodes_{opts}-DLR{rating}_python.log",
+        memory="logs/solve_network/de{year}_{clusters}_nodes_{opts}-DLR{rating}_memory.log",
     benchmark:
-        "benchmarks/solve_network/de{year}_{clusters}_nodes_{opts}_{rating}"
+        "benchmarks/solve_network/de{year}_{clusters}_nodes_{opts}-DLR{rating}"
     threads: 4
     resources:
         mem_mb=memory,
@@ -126,53 +129,53 @@ rule solve_network:
 
 rule plot_maps:
     input:
-        network_dlr="results/de{year}_{clusters}_nodes_{opts}_dlr.nc",
-        network_slr="results/de{year}_{clusters}_nodes_{opts}_slr.nc",
+        network_dlr="results/de{year}_{clusters}_nodes_{opts}-DLR{rating}.nc",
+        network_slr="results/de{year}_{clusters}_nodes_{opts}-DLR1.0.nc",
         shapes="resources/regions_onshore_de{year}_{clusters}_nodes.geojson",
     output:
-        capacity="figures/de{year}_{clusters}_nodes_{opts}/capacity_map.{ext}",
-        operation="figures/de{year}_{clusters}_nodes_{opts}/operation_map.{ext}",
-        utilization="figures/de{year}_{clusters}_nodes_{opts}/utilization_map.{ext}",
-        congestion="figures/de{year}_{clusters}_nodes_{opts}/congestion_map.{ext}",
+        capacity="figures/de{year}_{clusters}_nodes_{opts}-DLR{rating}/capacity_map.{ext}",
+        operation="figures/de{year}_{clusters}_nodes_{opts}-DLR{rating}/operation_map.{ext}",
+        utilization="figures/de{year}_{clusters}_nodes_{opts}-DLR{rating}/utilization_map.{ext}",
+        congestion="figures/de{year}_{clusters}_nodes_{opts}-DLR{rating}/congestion_map.{ext}",
     script:
         "scripts/plot_maps.py"
 
 
 rule plot_bars:
     input:
-        network_dlr="results/de{year}_{clusters}_nodes_{opts}_dlr.nc",
-        network_slr="results/de{year}_{clusters}_nodes_{opts}_slr.nc",
+        network_dlr="results/de{year}_{clusters}_nodes_{opts}-DLR{rating}.nc",
+        network_slr="results/de{year}_{clusters}_nodes_{opts}-DLR1.0.nc",
         curtailment_data="data/curtailment_carrier.csv",
     output:
-        operation="figures/de{year}_{clusters}_nodes_{opts}/operation_bar.{ext}",
-        capacity="figures/de{year}_{clusters}_nodes_{opts}/capacity_bar.{ext}",
-        curtailment="figures/de{year}_{clusters}_nodes_{opts}/curtailment_bar.{ext}",
-        relative_curtailment="figures/de{year}_{clusters}_nodes_{opts}/relative_curtailment_bar.{ext}",
-        historical_curtailment="figures/de{year}_{clusters}_nodes_{opts}/historical_curtailment_bar.{ext}",
-        cost="figures/de{year}_{clusters}_nodes_{opts}/cost_bar.{ext}",
+        operation="figures/de{year}_{clusters}_nodes_{opts}-DLR{rating}/operation_bar.{ext}",
+        capacity="figures/de{year}_{clusters}_nodes_{opts}-DLR{rating}/capacity_bar.{ext}",
+        curtailment="figures/de{year}_{clusters}_nodes_{opts}-DLR{rating}/curtailment_bar.{ext}",
+        relative_curtailment="figures/de{year}_{clusters}_nodes_{opts}-DLR{rating}/relative_curtailment_bar.{ext}",
+        historical_curtailment="figures/de{year}_{clusters}_nodes_{opts}-DLR{rating}/historical_curtailment_bar.{ext}",
+        cost="figures/de{year}_{clusters}_nodes_{opts}-DLR{rating}/cost_bar.{ext}",
     script:
         "scripts/plot_bars.py"
 
 
 rule plot_grid_stats:
     input:
-        network_slr="results/de{year}_{clusters}_nodes_{opts}_slr.nc",
-        network_dlr="results/de{year}_{clusters}_nodes_{opts}_dlr.nc",
+        network_slr="results/de{year}_{clusters}_nodes_{opts}-DLR1.0.nc",
+        network_dlr="results/de{year}_{clusters}_nodes_{opts}-DLR{rating}.nc",
     output:
-        potential_correlation="figures/de{year}_{clusters}_nodes_{opts}/potential_correlation.{ext}",
-        congestion_correlation="figures/de{year}_{clusters}_nodes_{opts}/congestion_correlation.{ext}",
-        line_capacity_overlay="figures/de{year}_{clusters}_nodes_{opts}/line_capacity_overlay.{ext}",
-        congestion_duration_curve="figures/de{year}_{clusters}_nodes_{opts}/congestion_duration_curve.{ext}",
+        potential_correlation="figures/de{year}_{clusters}_nodes_{opts}-DLR{rating}/potential_correlation.{ext}",
+        congestion_correlation="figures/de{year}_{clusters}_nodes_{opts}-DLR{rating}/congestion_correlation.{ext}",
+        line_capacity_overlay="figures/de{year}_{clusters}_nodes_{opts}-DLR{rating}/line_capacity_overlay.{ext}",
+        congestion_duration_curve="figures/de{year}_{clusters}_nodes_{opts}-DLR{rating}/congestion_duration_curve.{ext}",
     script:
         "scripts/plot_grid_stats.py"
 
 
 rule run_power_flow:
     input:
-        network_slr="results/de{year}_{clusters}_nodes_{opts}_slr.nc",
-        network_dlr="results/de{year}_{clusters}_nodes_{opts}_dlr.nc",
+        network_slr="results/de{year}_{clusters}_nodes_{opts}-DLR1.0.nc",
+        network_dlr="results/de{year}_{clusters}_nodes_{opts}-DLR{rating}.nc",
     output:
-        "figures/de{year}_{clusters}_nodes_{opts}/converged_power_flow_calculation.{ext}",
+        "figures/de{year}_{clusters}_nodes_{opts}-DLR{rating}/converged_power_flow_calculation.{ext}",
     script:
         "scripts/run_power_flow.py"
 
@@ -199,6 +202,6 @@ rule sync:
         cluster=config["cluster"],
     shell:
         """
-        rsync -uvarh --no-g --exclude-from=.syncignore-send --include-from=.syncinclude-send . {params.cluster}
-        rsync -uvarh --no-g --exclude-from=.syncignore-receive --include-from=.syncinclude-receive {params.cluster} .
+        rsync -uvarh --no-g --exclude-from=.syncignore-send . {params.cluster}
+        rsync -uvarh --no-g --exclude-from=.syncignore-receive {params.cluster} .
         """
