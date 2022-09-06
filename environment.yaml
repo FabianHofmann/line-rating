@@ -12,7 +12,7 @@ dependencies:
   - pip
   - mamba # esp for windows build
 
-  - pypsa>=0.18
+  - pypsa==0.19.2
   - atlite>=0.2.7
 
   # Dependencies of the workflow itself
@@ -20,7 +20,7 @@ dependencies:
   - openpyxl
   - pycountry
   - seaborn
-  - snakemake-minimal
+  - snakemake-minimal<=7.7.0
   - memory_profiler
   - yaml
   - pytables

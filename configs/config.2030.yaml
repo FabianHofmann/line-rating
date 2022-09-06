@@ -60,6 +60,7 @@ electricity:
     onwind: 100 #GW
     offwind: 30 #GW
     solar: 200 #GW
+    biomass: 0 #if not given set to 0
   estimate_renewable_capacities:
     # Renewable capacities are based on existing capacities reported by IRENA
 
