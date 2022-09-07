@@ -18,7 +18,7 @@ rule create_figures:
             **config["scenario_2020"]
         ),
         expand(
-            "figures/de{year}_{clusters}_nodes_{opts}/{figure}.pdf",
+            "figures/de{year}_{clusters}_nodes_{opts}_dlr{rating}/{figure}.pdf",
             **config["scenario_2030"]
         ),
         "figures/parameter-space-reduced.pdf",
@@ -204,4 +204,17 @@ rule sync:
         """
         rsync -uvarh --no-g --exclude-from=.syncignore-send . {params.cluster}
         rsync -uvarh --no-g --exclude-from=.syncignore-receive {params.cluster} .
+        """
+
+
+# ---------------------------------------------------------------------------- #
+#                               Helper functions                               #
+# ---------------------------------------------------------------------------- #
+
+
+rule clean_networks:
+    shell:
+        """
+        rm -r pypsa-eur-2020/networks
+        rm -r pypsa-eur-2030/networks
         """
