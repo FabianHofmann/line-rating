@@ -88,10 +88,10 @@ def add_carrier_groups(n):
 
 def load_network(path):
     n = pypsa.Network(path)
-    if "dlr" in path:
-        n.name = "Dynamic Line Rating"
-    elif "slr" in path:
+    if "dlr1.0" in path:
         n.name = "Static Line Rating"
+    elif "dlr" in path:
+        n.name = "Dynamic Line Rating"
     else:
         raise ValueError("Cannot evaluate network name.")
     add_load_shedding_color(n)
