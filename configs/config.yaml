@@ -46,7 +46,7 @@ scenario_2030:
 test:
   rating: ["", 1.0]
   clusters: [5]
-  opts: ["Co2L-24H-RE0.8", "Co2L-24H-RE0.8"]
+  opts: ["Co2L-24H-BL", "Co2L-24H-RE0.8"]
   year: [2020, 2030]
   figure:
     [
