@@ -1,82 +1,49 @@
-\documentclass[conference]{IEEEtran}
-\IEEEoverridecommandlockouts
-% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+\documentclass[preprint,12pt]{elsarticle}
 \usepackage{amsmath,amssymb,amsfonts}
+\usepackage[utf8]{inputenc}
+\usepackage{babel}
+\usepackage{tabularx, multirow}
 \usepackage{algorithmic}
-\usepackage{graphicx}
 \usepackage{textcomp}
 \usepackage{xcolor}
 \usepackage{todonotes}
-\usepackage{tabularx, multirow}
 \usepackage{fancyhdr,lipsum}
 
-\fancypagestyle{firstpage}{% Page style for first page
-  \fancyhf{}% Clear header/footer
-  \fancyfoot[l]{978-1-6654-0896-7/22/\$31.00 ©2022 IEEE}% Footer
-}
-% \usepackage{cleveref}
-
-% \crefname{align}{}{}
-% \Crefname{align}{Equation}{Equations}
-
-\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
-    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
-\usepackage[%
-backend=biber,bibencoding=utf8, %instead of bibtex
-language=auto,
-style=ieee,
-sorting=none, % nyt for name, year, title
-maxbibnames=10, % default: 3, et al.
-%backref=true,%
-natbib=true % natbib compatibility mode (\citep and \citet still work)
-]{biblatex}
-\bibliography{main.bib}
-% Template from https://de.overleaf.com/latex/templates/ieee-conference-template/grfzhhncsfqn
-
-%define approx proportional
-\def\app#1#2{%
-  \mathrel{%
-    \setbox0=\hbox{$#1\sim$}%
-    \setbox2=\hbox{%
-      \rlap{\hbox{$#1\propto$}}%
-      \lower1.1\ht0\box0%
-    }%
-    \raise0.25\ht2\box2%
-  }%
-}
-\def\approxprop{\mathpalette\app\relax}
 
 \graphicspath{{../figures/}}
 
+\journal{Applied Energy}
+
 
 \begin{document}
-\title{Enhancing the German Transmission Grid Through Dynamic Line Rating
-\thanks{Fabian Hofmann is funded by the Breakthrough Energy Project ``Hydrogen Integration and Carbon Management in Energy System Models''.}
-}
 
-\author{\IEEEauthorblockN{1\textsuperscript{st} Philipp Glaum}
-    \IEEEauthorblockA{\textit{Institute of Energy Technology} \\
-        \textit{Technical University of Berlin}\\
-        Berlin, Germany \\
-        p.glaum@tu-berlin.de}
-    \and
-    \IEEEauthorblockN{2\textsuperscript{nd} Fabian Hofmann}
-    \IEEEauthorblockA{\textit{Institute of Energy Technology} \\
-        \textit{Technical University of Berlin}\\
-        Berlin, Germany \\
-        m.hofmann@tu-berlin.de}
-}
+% \thanks{Fabian Hofmann is funded by the Breakthrough Energy Project ``Hydrogen Integration and Carbon Management in Energy System Models''.}
+% }
 
-\maketitle
-\thispagestyle{firstpage}
+\begin{frontmatter}
 
-\begin{abstract}
-    The German government recently announced that 80\% of the power supply should come from renewable energy by 2030. One key task lies in reorganizing the transmission system such that power can be transported from sites with good renewable potentials to the load centers. Dynamic Line Rating (DLR), which allows the dynamic calculation of transmission line capacities based on prevailing weather conditions rather than conservative invariant ratings, offers the potential to exploit existing grid capacities better. In this paper, we analyze the effect of DLR on behalf of a detailed power system model of Germany including all of today's extra high voltage transmission lines and substations. The evolving synergies between DLR and an increased wind power generation lead to savings of around 400 million euro per year in the short term and 900 million per year in a scenario for 2030.
-\end{abstract}
+    \title{Enhancing the German Transmission Grid Through Dynamic Line Rating}
 
-\begin{IEEEkeywords}
-    power system analysis computing, power system management, power system planning, renewable energy source
-\end{IEEEkeywords}
+    \author[tub]{Philipp Glaum}
+    \ead{p.glaum@tu-berlin.de}
+    \author[tub]{Fabian Hofmann}
+    \ead{mhofmann@tu-berlin.de}
+
+    % \affiliation[tub]{organization={Technical University Berlin, Department of Energy Systems},
+    %     city={Berlin},
+    %     postcode={10623},
+    %     country={Germany}}
+
+
+    \begin{abstract}
+        The German government recently announced that 80\% of the power supply should come from renewable energy by 2030. One key task lies in reorganizing the transmission system such that power can be transported from sites with good renewable potentials to the load centers. Dynamic Line Rating (DLR), which allows the dynamic calculation of transmission line capacities based on prevailing weather conditions rather than conservative invariant ratings, offers the potential to exploit existing grid capacities better. In this paper, we analyze the effect of DLR on behalf of a detailed power system model of Germany including all of today's extra high voltage transmission lines and substations. The evolving synergies between DLR and an increased wind power generation lead to savings of around 400 million euro per year in the short term and 900 million per year in a scenario for 2030.
+    \end{abstract}
+
+    \begin{keyword}
+        power system analysis computing, power system management, power system planning, renewable energy source
+    \end{keyword}
+
+\end{frontmatter}
 
 \section{Introduction}
 The deployment of new renewable energy sources far from load centers is leading to an increasing need for grid capacity. A notable example can be found in Germany, where most of the wind energy is generated in the North while there is significant industrial demand in the South \cite{kuhneConflictsNegotiationProcesses2018}. The current federal government plans to add ~70 GW wind power capacity until 2030, at the same time the transmission line capacities need to be expanded \cite{federalministryofeconomicaffairsandclimateactionGermanyCurrentClimate2022}. However, in the last decade only few grid expansion projects have been realized. Most of these are delayed due to administrative problems and protest activities \cite{neukirchProtestsGermanElectricity2016}, \cite{fernandezReviewDynamicLine2016}. This trend will likely exacerbate transmission system congestion, which may lead to more grid instability and curtailment \cite{erdincComprehensiveOverviewDynamic2020}. There is therefore a strong incentive to make better use of the existing grid infrastructure.
@@ -140,7 +107,7 @@ For DLR scenarios, the transmission capacity per line and time step is given by 
 % \todo[inline]{add citation} https://www.50hertz.com/Netzlast/Karte/index.html also different, as they just categorize <70% as high utilization and we do it for N-1 security. Could not find a reference for this value.
 Finally, since the error of the linearized power flow approximation increases with the voltage angle differences in the system \cite{dvijothamErrorBoundsDC2016}, we restrict the voltage angle difference $\Delta\theta$ across a line to maximally 30$^\circ$ by introducing the constraint
 \begin{align}
-	|P| \le \frac{V^2\Delta\theta}{x}=\frac{V^2\pi}{6\,x}
+    |P| \le \frac{V^2\Delta\theta}{x}=\frac{V^2\pi}{6\,x}
     \label{eq:angle_difference_constraint}
 \end{align}
 for every time step and line, where $x$ is the series reactance.
@@ -198,13 +165,13 @@ In comparison to SLR, the system with DLR builds out more offshore wind and less
 \begin{table}
     \caption{Capacity expansion / installed capacity in 2030 study case}
     \begin{tabularx}{\linewidth}{lrrrr}
-        {} & \multicolumn{2}{l}{Static Line Rating} & \multicolumn{2}{l}{Dynamic Line Rating} \\
-        {} &               Exp.~[GW] &         Inst.~[GW] &                Exp.~[GW] &         Inst.~[GW] \\
+        {}               & \multicolumn{2}{l}{Static Line Rating} & \multicolumn{2}{l}{Dynamic Line Rating}                          \\
+        {}               & Exp.~[GW]                              & Inst.~[GW]                              & Exp.~[GW] & Inst.~[GW] \\
         \hline
-        Offshore wind & 7.6 & 15.13  & 14.62 & 22.15 \\
-        Onshore wind  & 59.72  & 112.91 & 50.27 & 103.46 \\
-        Solar   & 118.57 & 167.61 & 105.75 & 154.79 \\
-        H$_2$ Fuel cells & 19.07 & 19.07 & 16.4 & 16.4 \\
+        Offshore wind    & 7.6                                    & 15.13                                   & 14.62     & 22.15      \\
+        Onshore wind     & 59.72                                  & 112.91                                  & 50.27     & 103.46     \\
+        Solar            & 118.57                                 & 167.61                                  & 105.75    & 154.79     \\
+        H$_2$ Fuel cells & 19.07                                  & 19.07                                   & 16.4      & 16.4       \\
         \hline
     \end{tabularx}
     \label{tab:installed capacity}
@@ -245,20 +212,19 @@ We conclude that in urgent need for decarbonizing the German power system, DLR i
 
 \newpage
 
-\printbibliography
 
 \appendix
 \subsection{Study Cases Parameters}\label{tab:cases_parameters}
 \begin{tabularx}{\linewidth}{>{\bfseries}l  X  X}
     \hline
-    { }                             &         2019  &                          2030 \\
+    { }                      & 2019         & 2030                        \\
     \hline
-    Generator capacity\\expansion    &            no &                           yes \\
-    CO2 Limit                       &  222 mil tons &                  175 mil tons \\
-    Base load of nuclear\\and lignite &           yes &                            no \\
-    Renewable generation\\constraint &            no &      80\% renewable generation \\
-    Generator infrastructure        &          2019 &  2019 still existing in 2030 \\
-    Electrical load                 &       605 TWh &                        658 TWh \\
+    Generator capacity                                                    \\expansion    &            no &                           yes \\
+    CO2 Limit                & 222 mil tons & 175 mil tons                \\
+    Base load of nuclear                                                  \\and lignite &           yes &                            no \\
+    Renewable generation                                                  \\constraint &            no &      80\% renewable generation \\
+    Generator infrastructure & 2019         & 2019 still existing in 2030 \\
+    Electrical load          & 605 TWh      & 658 TWh                     \\
     \hline
 \end{tabularx}
 
@@ -267,7 +233,8 @@ We conclude that in urgent need for decarbonizing the German power system, DLR i
 \subsection{DLR Factor}\label{dlr_factor}
 In the following, we illustrate why the hourly averaged wind speed overestimates the DLR transmission capacity compared to higher resolved data. According to the IEEE standard \cite{IEEEStandardCalculating2012},
 \begin{align*}
-    P_{max}\propto I_{max} \approxprop \sqrt{\overline{v}_{wind}}
+    P_{max}\varpropto I_{max} \underset{\sim}{\varpropto} \qquad \stackrel{\varpropto}{\sim}
+    \sqrt{\overline{v}_{wind}}
 \end{align*}
 , where $\overline{v}_{wind}$ denotes the averaged hourly wind speed.
 In the following equation,
@@ -276,5 +243,9 @@ In the following equation,
 \end{align*}
 $v_{wind,i}$ corresponds to an sub-hourly wind speed data point going from $i$ to $n$, i.e. from $1$ to $6$ when regarding 10-minute wind speed data. The Equation shows that the root of the averaged sub-hourly wind speed is greater equal the average of the rooted sub-hourly wind speed.
 
+
+\clearpage
+\bibliographystyle{elsarticle-harv}
+\bibliography{main.bib}
 
 \end{document}
