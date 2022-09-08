@@ -3,9 +3,9 @@
 # SPDX-License-Identifier: CC0-1.0
 
 scenario_2020:
-  rating: ["", 1.3]
-  angle: [30, 45]
-  clusters: ["5"]
+  rating: ["", 1.3, 1.5, 1.8, 2.0]
+  angle: [45]
+  clusters: ["all"]
   opts: ["Co2L-24H-BL-Ep"]
   year: [2020]
   figure:
@@ -24,9 +24,31 @@ scenario_2020:
     ]
 
 scenario_2030:
-  rating: ["", 1.3]
-  angle: [30, 45]
-  clusters: ["5"]
+  rating: ["", 1.3, 1.5, 1.8, 2.0]
+  angle: [45]
+  clusters: ["all"]
+  opts: ["Co2L-24H-RE0.8-Ep"]
+  year: [2030]
+  figure:
+    [
+      "operation_map",
+      "capacity_map",
+      "congestion_map",
+      "curtailment_bar",
+      "capacity_bar",
+      "cost_bar",
+      "relative_curtailment_bar",
+      "historical_curtailment_bar",
+      "potential_correlation",
+      "congestion_correlation",
+      "potential_correlation",
+      "congestion_duration_curve",
+    ]
+
+scenario_2030_unbound:
+  rating: [""]
+  angle: [""]
+  clusters: ["all"]
   opts: ["Co2L-24H-RE0.8-Ep"]
   year: [2030]
   figure:
