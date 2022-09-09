@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 
 wildcard_constraints:
     rating="[0-9\.]+|",
+    angle="[0-9]+|",
 
 
 configfile: "configs/config.yaml"
@@ -31,6 +32,20 @@ rule create_figures_test:
             **config["test"],
         ),
 
+rule prepare_all_networks:
+    input:
+        expand(
+            "networks/de{year}_{clusters}_nodes_{opts}_dlr{rating}_v{angle}.nc",
+            **config["scenario_2020"],
+        ),
+        expand(
+            "networks/de{year}_{clusters}_nodes_{opts}_dlr{rating}_v{angle}.nc",
+            **config["scenario_2030"],
+        ),
+        expand(
+            "networks/de{year}_{clusters}_nodes_{opts}_dlr{rating}_v{angle}.nc",
+            **config["scenario_2030_unbound"],
+        )
 
 subworkflow pypsaeur2020:
     workdir:
