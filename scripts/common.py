@@ -88,7 +88,7 @@ def add_carrier_groups(n):
 
 def load_network(path):
     n = pypsa.Network(path)
-    if "dlr1.0" in path:
+    if "dlr1.0" in path or "slr" in path:
         n.name = "Static Line Rating"
     elif "dlr" in path:
         n.name = "Dynamic Line Rating"

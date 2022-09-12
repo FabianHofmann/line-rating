@@ -20,6 +20,7 @@ scenario_2020:
       "congestion_correlation",
       "potential_correlation",
       "congestion_duration_curve",
+      "sensitivity_cost",
     ]
 
 scenario_2030:
@@ -41,6 +42,7 @@ scenario_2030:
       "congestion_correlation",
       "potential_correlation",
       "congestion_duration_curve",
+      "sensitivity_cost",
     ]
 
 test:
@@ -57,7 +59,8 @@ test:
       "capacity_bar",
       "relative_curtailment_bar",
       "historical_curtailment_bar",
-      "potential_correlation"
+      "potential_correlation",
+      "sensitivity_cost"
     ]
 
 solving:
