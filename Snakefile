@@ -32,6 +32,7 @@ rule create_figures_test:
             **config["test"],
         ),
 
+
 rule prepare_all_networks:
     input:
         expand(
@@ -45,7 +46,8 @@ rule prepare_all_networks:
         expand(
             "networks/de{year}_{clusters}_nodes_{opts}_dlr{rating}_v{angle}.nc",
             **config["scenario_2030_unbound"],
-        )
+        ),
+
 
 subworkflow pypsaeur2020:
     workdir:
@@ -183,6 +185,24 @@ rule plot_grid_stats:
         congestion_duration_curve="figures/de{year}_{clusters}_nodes_{opts}_dlr{rating}_v{angle}/congestion_duration_curve.{ext}",
     script:
         "scripts/plot_grid_stats.py"
+
+
+def get_cap_networks(w):
+    return expand(
+        "results/de{year}_{clusters}_nodes_{opts}_dlr{rating}.nc",
+        **config[f"scenario_{w.year}"],
+    )
+
+
+rule plot_cap_sensitivity:
+    input:
+        get_cap_networks,
+    output:
+        sensitivity_cost="figures/de{year}_{clusters}_nodes_{opts}/sensitivity_cost.{ext}",
+        sensitivity_curtailment="figures/de{year}_{clusters}_nodes_{opts}/sensitivity_curtailment.{ext}",
+        sensitivity_capacity="figures/de{year}_{clusters}_nodes_{opts}/sensitivity_capacity.{ext}",
+    script:
+        "scripts/plot_sensitivity.py.ipynb"
 
 
 rule run_power_flow:
