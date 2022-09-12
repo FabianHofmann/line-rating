@@ -68,8 +68,8 @@ Section~\ref{sec:methodology} describes the methodology of the DLR implementatio
 \subsection{Dynamic Line Rating}
 \label{sec:dlr}
 
-For simulating the effect of DLR, we follow the IEEE standard documented in \cite{IEEEStandardCalculating2012}, \cite{IEEEStd738}.
-The key concept of DLR is based on a dynamic estimation of the maximally allowed electrical current  for the conducting material. It is set such that the conductor does not surpass the maximally allowed temperature  after which impermissible sag of the line or hardware damage can be expected \cite{KARIMI2018600}. To model the weather dependent impact on DLR, we implemented the IEEE standard in Atlite \cite{hofmannAtliteLightweightPython2021}, a Python package used for converting weather data into renewable power potentials. The following outlines the basic concept of DLR, for further detail refer to \cite{IEEEStandardCalculating2012}, \cite{IEEEStd738}.
+For simulating the effect of DLR, we follow the IEEE standard documented in \cite{ieeeIEEEStandardCalculating2012}, \cite{ieeeIEEEStd738}.
+The key concept of DLR is based on a dynamic estimation of the maximally allowed electrical current  for the conducting material. It is set such that the conductor does not surpass the maximally allowed temperature  after which impermissible sag of the line or hardware damage can be expected \cite{KARIMI2018600}. To model the weather dependent impact on DLR, we implemented the IEEE standard in Atlite \cite{hofmannAtliteLightweightPython2021}, a Python package used for converting weather data into renewable power potentials. The following outlines the basic concept of DLR, for further detail refer to \cite{ieeeIEEEStandardCalculating2012}, \cite{ieeeIEEEStd738}.
 For each conductor, the heat balance equation
 \begin{align}
     q_c +q_r = q_s + I^2 \cdot R(T)
@@ -231,7 +231,7 @@ We conclude that in urgent need for decarbonizing the German power system, DLR i
 
 
 \subsection{DLR Factor}\label{dlr_factor}
-In the following, we illustrate why the hourly averaged wind speed overestimates the DLR transmission capacity compared to higher resolved data. According to the IEEE standard \cite{IEEEStandardCalculating2012},
+In the following, we illustrate why the hourly averaged wind speed overestimates the DLR transmission capacity compared to higher resolved data. According to the IEEE standard \cite{ieeeIEEEStandardCalculating2012},
 \begin{align*}
     P_{max}\varpropto I_{max} \underset{\sim}{\varpropto} \qquad \stackrel{\varpropto}{\sim}
     \sqrt{\overline{v}_{wind}}
