@@ -19,7 +19,15 @@ rule create_figures:
             **config["scenario_2020"]
         ),
         expand(
+            "figures/de{year}_{clusters}_nodes_{opts}_v{angle}/sensitivity_{sensitivity}.pdf",
+            **config["scenario_2020"]
+        ),
+        expand(
             "figures/de{year}_{clusters}_nodes_{opts}_dlr{rating}_v{angle}/{figure}.pdf",
+            **config["scenario_2030"]
+        ),
+        expand(
+            "figures/de{year}_{clusters}_nodes_{opts}_v{angle}/sensitivity_{sensitivity}.pdf",
             **config["scenario_2030"]
         ),
         "figures/parameter-space-reduced.pdf",
@@ -134,7 +142,7 @@ rule solve_network:
         memory="logs/solve_network/de{year}_{clusters}_nodes_{opts}_dlr{rating}_v{angle}_memory.log",
     benchmark:
         "benchmarks/solve_network/de{year}_{clusters}_nodes_{opts}_dlr{rating}_v{angle}"
-    threads: 4
+    threads: 8
     resources:
         mem_mb=memory,
         walltime="20:00:00",
@@ -189,20 +197,20 @@ rule plot_grid_stats:
 
 def get_cap_networks(w):
     return expand(
-        "results/de{year}_{clusters}_nodes_{opts}_dlr{rating}.nc",
+        "results/de{year}_{clusters}_nodes_{opts}_dlr{rating}_v{angle}.nc",
         **config[f"scenario_{w.year}"],
     )
 
 
 rule plot_cap_sensitivity:
     input:
-        get_cap_networks,
+        networks=get_cap_networks,
     output:
-        sensitivity_cost="figures/de{year}_{clusters}_nodes_{opts}/sensitivity_cost.{ext}",
-        sensitivity_curtailment="figures/de{year}_{clusters}_nodes_{opts}/sensitivity_curtailment.{ext}",
-        sensitivity_capacity="figures/de{year}_{clusters}_nodes_{opts}/sensitivity_capacity.{ext}",
+        sensitivity_cost="figures/de{year}_{clusters}_nodes_{opts}_v{angle}/sensitivity_cost.{ext}",
+        sensitivity_curtailment="figures/de{year}_{clusters}_nodes_{opts}_v{angle}/sensitivity_curtailment.{ext}",
+        sensitivity_capacity="figures/de{year}_{clusters}_nodes_{opts}_v{angle}/sensitivity_capacity.{ext}",
     script:
-        "scripts/plot_sensitivity.py.ipynb"
+        "scripts/plot_cap_sensitivity.py"
 
 
 rule run_power_flow:

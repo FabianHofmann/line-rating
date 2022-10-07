@@ -215,6 +215,7 @@ solving:
     track_iterations: false
   solver:
     name: gurobi
+    threads: 8
     method: 2 # barrier
     crossover: 0
     BarConvTol: 1.e-5

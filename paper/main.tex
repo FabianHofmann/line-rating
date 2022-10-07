@@ -93,7 +93,7 @@ Fig.~\ref{fig:parameter-space-reduced} shows $P_{max}$ for a single wire of a ty
 %
 \begin{figure}
     \centering
-    \includegraphics[width=\linewidth]{parameter-space-reduced.pdf}
+    \includegraphics[width=0.7\linewidth]{parameter-space-reduced.pdf}
     \caption{Transmission capacity for different environmental conditions. For three different wind incidence angles (0$^\circ$, 45$^\circ$, 90$^\circ$), the maximal transmission capacity of a typical electricity line ($R(T_{max})$=$9.39\cdot10^{-5}\,\Omega/\text{m}$, $V$~=~380~kV) is shown as a function of temperature and wind speed. The cooling effect of a perpendicular, strong, cold wind can lead to capacity increase of factor 4-5 compared to conservative conditions with 40$^\circ$C and low wind.}
     \label{fig:parameter-space-reduced}
 \end{figure}
@@ -129,9 +129,9 @@ In contrast to the 2019 scenario, the 2030 scenario of the German power system a
 At first, we present the extent to which the DLR implementation alters the operation of the existing power system. Fig.~\ref{fig:capacity-map-2019} shows the geographical layout of existing generation and transmission capacities for the 2019 scenario. The circles with its subdivisions show the installed power generation capacity per site and technology with their area being proportional to the capacity. The widths of the transmission lines indicate the installed nominal capacities, while their colors show the relative average change in capacity when applying DLR. Note that for some of the long transmission lines with high reactances, the voltage angle constraint introduced in \eqref{eq:angle_difference_constraint} suppresses the relative improvement through DLR. For most of the others, an improvement in the average capacity up to a factor 2 is observed.
 In particular, this accounts for short lines in the north and west of Germany.
 %
-\begin{figure}[htpb]
+\begin{figure}[h!]
     \centering
-    \includegraphics[width=\linewidth]{de2020_all_nodes_Co2L-BL-Ep/capacity_map_dlr.pdf}
+    \includegraphics[width=.7\linewidth]{de2020_all_nodes_Co2L-BL-Ep/capacity_map_dlr.pdf}
     \caption{Capacity layout of the 2019 scenario of the German power system. The circle with its subdivisions are proportionally to the installed generation capacity. The widths of the line indicate their nominal transmission capacity, their color the relative average change when going from SLR to DLR.}
     \label{fig:capacity-map-2019}
 \end{figure}
@@ -140,7 +140,7 @@ In addition to location, it is of particular interest in what time periods the i
 %
 \begin{figure}[htpb]
     \centering
-    \includegraphics[width=\linewidth]{de2020_all_nodes_Co2L-BL-Ep/potential_correlation.pdf}
+    \includegraphics[width=.7\linewidth]{de2020_all_nodes_Co2L-BL-Ep/potential_correlation.pdf}
     \caption{Ratio between total DLR and SLR transmission capacity as a function of the capacity normalized total generation. }
     \label{fig:potential-correlation-2019}
 \end{figure}
@@ -150,7 +150,7 @@ When running the optimization for the 2019 case study, these effects prove thems
 
 \begin{figure}[htpb]
     \centering
-    \includegraphics[width=\linewidth]{de2020_all_nodes_Co2L-BL-Ep/congestion_correlation.pdf}
+    \includegraphics[width=.7\linewidth]{de2020_all_nodes_Co2L-BL-Ep/congestion_correlation.pdf}
     \caption{The plot shows the number of congested lines for SLR and DLR as a function of the ratio between the renewable generation potential and the load for each hour during the year. A ratio higher than 1 implies an over-supply which is curtailed. The size and color of the scatter points correspond to the amount of curtailment at the regarded hour.}
     \label{fig:congestion-correlation-2019}
 \end{figure}
@@ -181,7 +181,7 @@ As depicted in Fig.~\ref{fig:load-duration-2030}, transmission congestion is sig
 
 \begin{figure}[htpb]
     \centering
-    \includegraphics[width=\linewidth]{de2030_all_nodes_Co2L-RE0.8-Ep/congestion_duration_curve.pdf}
+    \includegraphics[width=.7\linewidth]{de2030_all_nodes_Co2L-RE0.8-Ep/congestion_duration_curve.pdf}
     \caption{Duration curve for number of congested lines in the 2030 study case.}
     \label{fig:load-duration-2030}
 \end{figure}
@@ -190,7 +190,7 @@ Fig.~\ref{fig:cost-bar-2030} illustrates the cost savings for the DLR scenario c
 
 \begin{figure}[htpb]
     \centering
-    \includegraphics[width=\linewidth]{de2030_all_nodes_Co2L-RE0.8-Ep/cost_bar.pdf}
+    \includegraphics[width=.7\linewidth]{de2030_all_nodes_Co2L-RE0.8-Ep/cost_bar.pdf}
     \caption{Savings of capital expenditures (CAPEX) and operational expenditures (OPEX) when going from SLR to DLR.  Positive costs represent higher expenses of DLR.}
     \label{fig:cost-bar-2030}
 \end{figure}

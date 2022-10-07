@@ -34,7 +34,8 @@ costs.div(1e9).plot.area(ax=ax, color=gcolors[costs.columns], legend="reverse")
 ax.legend(title="", bbox_to_anchor=(1, 1), loc="upper left")
 ax.set_xlabel("Maximally allowed rating")
 ax.set_ylabel("System Costs [bn€]")
-# fig.savefig(snakemake.output.sensitivity_cost)
+fig.tight_layout()
+fig.savefig(snakemake.output.sensitivity_cost, bbox_inches="tight")
 
 
 fig, ax = plt.subplots()
@@ -42,7 +43,8 @@ curtailment.plot.area(ax=ax, color=ccolors[curtailment.columns], legend="reverse
 ax.legend(title="", bbox_to_anchor=(1, 1), loc="upper left")
 ax.set_xlabel("Maximally allowed rating")
 ax.set_ylabel("Curtailment [TWh]")
-# fig.savefig(snakemake.output.sensitivity_curtailment)
+fig.tight_layout()
+fig.savefig(snakemake.output.sensitivity_curtailment, bbox_inches="tight")
 
 
 fig, ax = plt.subplots()
@@ -50,4 +52,5 @@ capacity.plot.area(ax=ax, color=ccolors[capacity.columns], legend="reverse")
 ax.legend(title="", bbox_to_anchor=(1, 1), loc="upper left")
 ax.set_xlabel("Maximally allowed rating")
 ax.set_ylabel("Curtailment [TWh]")
-# fig.savefig(snakemake.output.sensitivity_capacity)
+fig.tight_layout()
+fig.savefig(snakemake.output.sensitivity_capacity, bbox_inches="tight")
