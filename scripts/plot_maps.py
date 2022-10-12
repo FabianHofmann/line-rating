@@ -168,11 +168,15 @@ def plot_capacity(
     if with_colormap:
         cmap = cm.get_cmap("viridis", 256)
         line_colors = n.get_switchable_as_dense("Line", "s_max_pu").mean() / 0.7
+        if snakemake.wildcards["rating"]:
+            line_colors.clip(upper=float(snakemake.wildcards["rating"]), inplace=True)
         norm = colors.Normalize(vmin=line_colors.min(), vmax=line_colors.max())
     else:
         cmap = None
         line_colors = "purple"
         line_widths *= n.get_switchable_as_dense("Line", "s_max_pu").mean() / 0.7
+        if snakemake.wildcards["rating"]:
+            line_widths.clip(upper=float(snakemake.wildcards["rating"]), inplace=True)
 
     with plt.rc_context({"patch.linewidth": 0}):
         collection = n.plot(
@@ -204,6 +208,8 @@ if __name__ == "__main__":
             year="2020",
             clusters="all",
             opts="Co2L-BL-Ep",
+            rating="",
+            angle="",
             ext="pdf",
         )
 

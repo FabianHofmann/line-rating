@@ -178,6 +178,7 @@ rule plot_bars:
         relative_curtailment="figures/de{year}_{clusters}_nodes_{opts}_dlr{rating}_v{angle}/relative_curtailment_bar.{ext}",
         historical_curtailment="figures/de{year}_{clusters}_nodes_{opts}_dlr{rating}_v{angle}/historical_curtailment_bar.{ext}",
         cost="figures/de{year}_{clusters}_nodes_{opts}_dlr{rating}_v{angle}/cost_bar.{ext}",
+        capex_opex="figures/de{year}_{clusters}_nodes_{opts}_dlr{rating}_v{angle}/capex_opex_bar.{ext}",
     script:
         "scripts/plot_bars.py"
 
@@ -204,9 +205,11 @@ def get_cap_networks(w):
 
 rule plot_cap_sensitivity:
     input:
-        networks=get_cap_networks,
+        network_slr="results/de{year}_{clusters}_nodes_{opts}_dlr1.0_v{angle}.nc",
+        networks_dlr=get_cap_networks,
     output:
         sensitivity_cost="figures/de{year}_{clusters}_nodes_{opts}_v{angle}/sensitivity_cost.{ext}",
+        sensitivity_cost_line="figures/de{year}_{clusters}_nodes_{opts}_v{angle}/sensitivity_cost_line.{ext}",
         sensitivity_curtailment="figures/de{year}_{clusters}_nodes_{opts}_v{angle}/sensitivity_curtailment.{ext}",
         sensitivity_capacity="figures/de{year}_{clusters}_nodes_{opts}_v{angle}/sensitivity_capacity.{ext}",
     script:

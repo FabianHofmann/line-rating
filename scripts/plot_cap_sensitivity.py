@@ -27,7 +27,9 @@ if __name__ == "__main__":
         )
     year = snakemake.wildcards["year"]
     keys = snakemake.config[f"scenario_{year}"]["rating"]
-    networks = {k: load_network(p) for k, p in zip(keys, snakemake.input.networks)}
+    keys[-1] = "no limit"
+    networks = {k: load_network(p) for k, p in zip(keys, snakemake.input.networks_dlr)}
+    network_slr = load_network(snakemake.input.network_slr)
 
     ref = networks[keys[0]]
     gcolors = ref.carriers.groupby("group").color.first()
@@ -37,6 +39,7 @@ if __name__ == "__main__":
     ccolors[ccolors.index.str.contains("Hydrogen")]="#ea048a"
 
     costs = pd.DataFrame({name: get_costs(n).sum(1) for name, n in networks.items()}).T
+    costs_slr = get_costs(network_slr).sum(1)
 
     curtailment = pd.DataFrame({name: get_curtailment(n) for name, n in networks.items()}).T
     curtailment = curtailment.rename(columns=ref.carriers.nice_name)
@@ -49,11 +52,17 @@ if __name__ == "__main__":
     costs.div(1e9).plot.area(ax=ax, color=gcolors[costs.columns], legend="reverse")
     ax.legend(title="", bbox_to_anchor=(1, 1), loc="upper left")
     ax.set_xlabel("Maximally allowed rating")
-    ax.set_ylabel("System Costs [bn€]")
+    ax.set_ylabel("System costs [bn€]")
     fig.tight_layout()
     fig.savefig(snakemake.output.sensitivity_cost, bbox_inches="tight")
 
-
+    fig, ax = plt.subplots()
+    costs_slr.sub(costs).sum(1).div(1e6).plot(ax=ax, color=gcolors[costs.columns])
+    ax.set_xlabel("Maximally allowed rating")
+    ax.set_ylabel("System costs savings[m€]")
+    fig.tight_layout()
+    fig.savefig(snakemake.output.sensitivity_cost_line, bbox_inches="tight")
+    
     fig, ax = plt.subplots()
     curtailment.plot.area(ax=ax, color=ccolors[curtailment.columns], legend="reverse")
     ax.legend(title="", bbox_to_anchor=(1, 1), loc="upper left")

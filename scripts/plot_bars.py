@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 from common import load_network
+import numpy as np
 
 font = font_manager.FontProperties(family="Times New Roman", style="normal", size=11)
 sns.set(font="Times New Roman")
@@ -69,11 +70,11 @@ def get_costs(n):
 
     opex = pd.concat([gopex, lopex, sopex])
 
-    gcapex = n.generators.p_nom_opt * n.generators.capital_cost
+    gcapex = (n.generators.p_nom_opt - n.generators.p_nom) * n.generators.capital_cost
     gcapex = gcapex.groupby(n.generators.carrier).sum().drop("load", errors="ignore")
-    lcapex = n.links.p_nom_opt * n.links.capital_cost
+    lcapex = (n.links.p_nom_opt - n.links.p_nom) * n.links.capital_cost
     lcapex = lcapex.groupby(n.links.carrier).sum().drop("DC", errors="ignore")
-    scapex = n.stores.e_nom_opt * n.stores.capital_cost
+    scapex = (n.stores.e_nom_opt - n.stores.e_nom) * n.stores.capital_cost
     scapex = scapex.groupby(n.stores.carrier).sum()
 
     capex = pd.concat([gcapex, lcapex, scapex])
@@ -91,14 +92,16 @@ def get_costs(n):
 def plot_operation(ax, networks):
     operation = pd.concat((get_operation(n) for n in networks), axis=1)
     operation /= 1e6  # in TWh
-    operation.sort_values(networks[0].name, ascending=False, inplace=True)
-    operation.plot(kind="barh", ax=ax, zorder=4, legend="reverse")
+    operation= operation["Dynamic Line Rating"]- operation["Static Line Rating"]
+    operation.sort_values(ascending=False, inplace=True)
+    #operation.plot(kind="barh", ax=ax, zorder=4, legend="reverse")
+    operation.plot(kind="barh", ax=ax, zorder=4)
     # ax.legend(loc="lower center", bbox_to_anchor=(0.5, 1.02), frameon=False)
     ax.grid(linestyle="--", linewidth=0.5, alpha=0.5, zorder=2)
     # ax.set_yticklabels(slr.carriers.nice_name[operation.index])
     ax.set_xlabel("Energy [TWh]")
     ax.set_ylabel("")
-    ax.set_title("Total generation")
+    ax.set_title("Generation of DLR compared to SLR ")
 
 
 def plot_capacity(ax, networks):
@@ -153,13 +156,36 @@ def plot_historical_curtailment(ax, networks):
 
 
 def plot_cost(ax, networks):
-    costs = get_costs(networks[1]) - get_costs(networks[0])
+    costs = get_costs(networks[0]) - get_costs(networks[1])
     costs /= 1e9
     costs.plot.barh(stacked=True, ax=ax, zorder=4, legend="reverse")
     ax.grid(linestyle="--", linewidth=0.5, alpha=0.5, zorder=2)
     ax.set_ylabel("")
     ax.set_xlabel("Cost [bn€]")
     ax.set_title("Total Cost Savings")
+
+def plot_capex_opex(ax, networks):  
+    costs = pd.concat([get_costs(networks[1]),get_costs(networks[0])], axis=1).dropna().div(1e9)
+    arrays =[["DLR", "DLR","SLR", "SLR"],
+             ["OPEX", "CAPEX","OPEX", "CAPEX"]]
+    tuples = list(zip(*arrays))
+    index = pd.MultiIndex.from_tuples(tuples, names=["rating", "cost"])
+    costs.set_axis(index, axis=1, inplace=True)
+    ind = np.arange(len(costs.index))  # the x locations for the groups
+    width = 0.35 
+    slr_color="#4c72b0"
+    dlr_color="#dd8452"
+    ax.bar(x=ind-width/2, height=costs.loc[:, ("DLR", "CAPEX")], width=width, color=dlr_color)
+    ax.bar(x=ind-width/2, height=costs.loc[:, ("DLR", "OPEX")], bottom=costs.loc[:, ("DLR", "CAPEX")], width=width, color=dlr_color, hatch="xx")
+    ax.bar(x=ind+width/2, height=costs.loc[:, ("SLR", "CAPEX")], width=width, color=slr_color)
+    ax.bar(x=ind+width/2, height=costs.loc[:, ("SLR", "OPEX")], bottom=costs.loc[:, ("SLR", "CAPEX")], width=width, color=slr_color, hatch="xx")
+    ax.set_xticks(ind, costs.index)
+    plt.setp(ax.get_xticklabels(), rotation=30, horizontalalignment='right')
+    ax.legend(labels=["SLR CAPEX", "SLR OPEX", "DLR CAPEX", "DLR OPEX"])
+    ax.grid(linestyle="--", linewidth=0.5, alpha=0.5, zorder=2)
+    ax.set_xlabel("")
+    ax.set_ylabel("Cost [bn€]")
+    ax.set_title("Total Cost")
 
 
 if __name__ == "__main__":
@@ -169,9 +195,11 @@ if __name__ == "__main__":
 
         snakemake = mock_snakemake(
             "plot_bars",
-            year="2020",
+            year="2030",
             clusters="all",
-            opts="Co2L-BL-Ep",
+            opts="Co2L-RE0.8-Ep",
+            rating="",
+            angle="",
             ext="pdf",
         )
 
