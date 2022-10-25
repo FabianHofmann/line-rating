@@ -22,7 +22,7 @@
 
 \begin{frontmatter}
 
-    \title{Enhancing the German Transmission Grid Through Dynamic Line Rating}
+    \title{Leveraging the Existing German Transmission Grid with Dynamic Line Rating}
 
     \author[tub]{Philipp Glaum}
     \ead{p.glaum@tu-berlin.de}
@@ -36,7 +36,7 @@
 
 
     \begin{abstract}
-        The German government recently announced that 80\% of the power supply should come from renewable energy by 2030. One key task lies in reorganizing the transmission system such that power can be transported from sites with good renewable potentials to the load centers. Dynamic Line Rating (DLR), which allows the dynamic calculation of transmission line capacities based on prevailing weather conditions rather than conservative invariant ratings, offers the potential to exploit existing grid capacities better. In this paper, we analyze the effect of DLR on behalf of a detailed power system model of Germany including all of today's extra high voltage transmission lines and substations. The evolving synergies between DLR and an increased wind power generation lead to savings of around 400 million euro per year in the short term and 900 million per year in a scenario for 2030.
+        The German government announced that, by 2030, 80\% of the power supply should come from renewable energy which, in terms of installations, means a doubling of wind capacity and a tripling of solar capacity. For an efficient integration into the system, the fast ramp up of renewables needs to be accompanied by a reorganization of the transmission system. However, due to its invasive nature, the construction of new power lines requires long planning phases and is often delayed by citizen protests. As an non-invasive alternative, Dynamic Line Rating (DLR) offers the potential to leverage the existing grid capacities by dynamically adjusting the transmission line capacities to the prevailing weather conditions rather than setting conservative invariant ratings. Here we show that a system-wide integration of DLR not only facilitates the 80\% feed-in target for renewables, but also significantly reduces grid congestion and renewable curtailment. The evolving synergies between DLR and an increased wind power generation leads to overall cost savings of around 900 million euro per year for a scenario of 2030 and are expected to increase for higher shares of renewables. Our results underscore the importance of rapid implementation of DLR in the German power system to support the energy transition and relieve grid congestion.
     \end{abstract}
 
     \begin{keyword}
@@ -141,7 +141,7 @@ In particular, this accounts for short lines in the north and west of Germany.
 %
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=.7\linewidth]{de2020_all_nodes_Co2L-BL-Ep/capacity_map_dlr.pdf}
+    \includegraphics[width=.7\linewidth]{de2020_all_nodes_Co2L-BL-Ep_dlr/capacity_map_dlr.pdf}
     \caption{Capacity layout of the 2019 scenario of the German power system. The circle with its subdivisions are proportionally to the installed generation capacity. The widths of the line indicate their nominal transmission capacity, their color the relative average change when going from SLR to DLR.}
     \label{fig:capacity-map-2019}
 \end{figure}
@@ -150,7 +150,7 @@ In addition to location, it is of particular interest in what time periods the i
 %
 \begin{figure}[htpb]
     \centering
-    \includegraphics[width=.7\linewidth]{de2020_all_nodes_Co2L-BL-Ep/potential_correlation.pdf}
+    \includegraphics[width=.7\linewidth]{de2020_all_nodes_Co2L-BL-Ep_dlr/potential_correlation.pdf}
     \caption{Ratio between total DLR and SLR transmission capacity as a function of the capacity normalized total generation. }
     \label{fig:potential-correlation-2019}
 \end{figure}
@@ -160,7 +160,7 @@ When running the optimization for the 2019 case study, these effects prove thems
 
 \begin{figure}[htpb]
     \centering
-    \includegraphics[width=.7\linewidth]{de2020_all_nodes_Co2L-BL-Ep/congestion_correlation.pdf}
+    \includegraphics[width=.7\linewidth]{de2020_all_nodes_Co2L-BL-Ep_dlr/congestion_correlation.pdf}
     \caption{The plot shows the number of congested lines for SLR and DLR as a function of the ratio between the renewable generation potential and the load for each hour during the year. A ratio higher than 1 implies an over-supply which is curtailed. The size and color of the scatter points correspond to the amount of curtailment at the regarded hour.}
     \label{fig:congestion-correlation-2019}
 \end{figure}
@@ -191,7 +191,7 @@ As depicted in Fig.~\ref{fig:load-duration-2030}, transmission congestion is sig
 
 \begin{figure}[htpb]
     \centering
-    \includegraphics[width=.7\linewidth]{de2030_all_nodes_Co2L-RE0.8-Ep/congestion_duration_curve.pdf}
+    \includegraphics[width=.7\linewidth]{de2030_all_nodes_Co2L-RE0.8-Ep_dlr/congestion_duration_curve.pdf}
     \caption{Duration curve for number of congested lines in the 2030 study case.}
     \label{fig:load-duration-2030}
 \end{figure}
@@ -200,7 +200,7 @@ Fig.~\ref{fig:cost-bar-2030} illustrates the cost savings for the DLR scenario c
 
 \begin{figure}[htpb]
     \centering
-    \includegraphics[width=.7\linewidth]{de2030_all_nodes_Co2L-RE0.8-Ep/cost_bar.pdf}
+    \includegraphics[width=.7\linewidth]{de2030_all_nodes_Co2L-RE0.8-Ep_dlr/cost_bar.pdf}
     \caption{Savings of capital expenditures (CAPEX) and operational expenditures (OPEX) when going from SLR to DLR.  Positive costs represent higher expenses of DLR.}
     \label{fig:cost-bar-2030}
 \end{figure}
