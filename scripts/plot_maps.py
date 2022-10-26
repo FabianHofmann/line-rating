@@ -216,8 +216,8 @@ if __name__ == "__main__":
     config = snakemake.config["plotting"]["map"]
     bounds = config["boundaries"]
 
-    slr = load_network(snakemake.input.network_slr)
-    dlr = load_network(snakemake.input.network_dlr)
+    slr = load_network(snakemake.input.network_slr, name="Static Line Rating")
+    dlr = load_network(snakemake.input.network_dlr, name="Dynamic Line Rating")
     networks = slr, dlr
     shapes = gpd.read_file(snakemake.input.shapes)
 

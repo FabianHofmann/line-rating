@@ -86,14 +86,17 @@ def add_carrier_groups(n):
     n.carriers["group"] = n.carriers.index.map(super_carrier)
 
 
-def load_network(path):
+def load_network(path, name=None):
     n = pypsa.Network(path)
-    if "dlr1.0" in path or "slr" in path:
-        n.name = "Static Line Rating"
-    elif "dlr" in path:
-        n.name = "Dynamic Line Rating"
+    if name is None:
+        if "dlr1.0" in path or "slr" in path:
+            n.name = "Static Line Rating"
+        elif "dlr" in path:
+            n.name = "Dynamic Line Rating"
+        else:
+            raise ValueError("Cannot evaluate network name.")
     else:
-        raise ValueError("Cannot evaluate network name.")
+        n.name = name
     add_load_shedding_color(n)
     modify_offwind_carrier(n)
     add_carrier_nice_names(n)

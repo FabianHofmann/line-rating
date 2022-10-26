@@ -148,8 +148,8 @@ if __name__ == "__main__":
             "ytick.labelsize": 12,
         },
     )
-    slr = load_network(snakemake.input.network_slr)
-    dlr = load_network(snakemake.input.network_dlr)
+    slr = load_network(snakemake.input.network_slr, name="Static Line Rating")
+    dlr = load_network(snakemake.input.network_dlr, name="Dynamic Line Rating")
     networks = slr, dlr
 
     fig = plot_congestion_correlation(networks)

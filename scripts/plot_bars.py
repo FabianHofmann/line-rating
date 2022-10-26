@@ -1,9 +1,9 @@
 import matplotlib.font_manager as font_manager
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 import seaborn as sns
 from common import load_network
-import numpy as np
 
 font = font_manager.FontProperties(family="Times New Roman", style="normal", size=11)
 sns.set(font="Times New Roman")
@@ -92,9 +92,9 @@ def get_costs(n):
 def plot_operation(ax, networks):
     operation = pd.concat((get_operation(n) for n in networks), axis=1)
     operation /= 1e6  # in TWh
-    operation= operation["Dynamic Line Rating"]- operation["Static Line Rating"]
+    operation = operation["Dynamic Line Rating"] - operation["Static Line Rating"]
     operation.sort_values(ascending=False, inplace=True)
-    #operation.plot(kind="barh", ax=ax, zorder=4, legend="reverse")
+    # operation.plot(kind="barh", ax=ax, zorder=4, legend="reverse")
     operation.plot(kind="barh", ax=ax, zorder=4)
     # ax.legend(loc="lower center", bbox_to_anchor=(0.5, 1.02), frameon=False)
     ax.grid(linestyle="--", linewidth=0.5, alpha=0.5, zorder=2)
@@ -164,23 +164,51 @@ def plot_cost(ax, networks):
     ax.set_xlabel("Cost [bn€]")
     ax.set_title("Total Cost Savings")
 
-def plot_capex_opex(ax, networks):  
-    costs = pd.concat([get_costs(networks[1]),get_costs(networks[0])], axis=1).dropna().div(1e9)
-    arrays =[["DLR", "DLR","SLR", "SLR"],
-             ["OPEX", "CAPEX","OPEX", "CAPEX"]]
+
+def plot_capex_opex(ax, networks):
+    costs = (
+        pd.concat([get_costs(networks[1]), get_costs(networks[0])], axis=1)
+        .dropna()
+        .div(1e9)
+    )
+    arrays = [["DLR", "DLR", "SLR", "SLR"], ["OPEX", "CAPEX", "OPEX", "CAPEX"]]
     tuples = list(zip(*arrays))
     index = pd.MultiIndex.from_tuples(tuples, names=["rating", "cost"])
     costs.set_axis(index, axis=1, inplace=True)
     ind = np.arange(len(costs.index))  # the x locations for the groups
-    width = 0.35 
-    slr_color="#4c72b0"
-    dlr_color="#dd8452"
-    ax.bar(x=ind-width/2, height=costs.loc[:, ("DLR", "CAPEX")], width=width, color=dlr_color)
-    ax.bar(x=ind-width/2, height=costs.loc[:, ("DLR", "OPEX")], bottom=costs.loc[:, ("DLR", "CAPEX")], width=width, color=dlr_color, hatch="xx")
-    ax.bar(x=ind+width/2, height=costs.loc[:, ("SLR", "CAPEX")], width=width, color=slr_color)
-    ax.bar(x=ind+width/2, height=costs.loc[:, ("SLR", "OPEX")], bottom=costs.loc[:, ("SLR", "CAPEX")], width=width, color=slr_color, hatch="xx")
+    width = 0.35
+    slr_color = "#4c72b0"
+    dlr_color = "#dd8452"
+    ax.bar(
+        x=ind - width / 2,
+        height=costs.loc[:, ("DLR", "CAPEX")],
+        width=width,
+        color=dlr_color,
+    )
+    ax.bar(
+        x=ind - width / 2,
+        height=costs.loc[:, ("DLR", "OPEX")],
+        bottom=costs.loc[:, ("DLR", "CAPEX")],
+        width=width,
+        color=dlr_color,
+        hatch="xx",
+    )
+    ax.bar(
+        x=ind + width / 2,
+        height=costs.loc[:, ("SLR", "CAPEX")],
+        width=width,
+        color=slr_color,
+    )
+    ax.bar(
+        x=ind + width / 2,
+        height=costs.loc[:, ("SLR", "OPEX")],
+        bottom=costs.loc[:, ("SLR", "CAPEX")],
+        width=width,
+        color=slr_color,
+        hatch="xx",
+    )
     ax.set_xticks(ind, costs.index)
-    plt.setp(ax.get_xticklabels(), rotation=30, horizontalalignment='right')
+    plt.setp(ax.get_xticklabels(), rotation=30, horizontalalignment="right")
     ax.legend(labels=["SLR CAPEX", "SLR OPEX", "DLR CAPEX", "DLR OPEX"])
     ax.grid(linestyle="--", linewidth=0.5, alpha=0.5, zorder=2)
     ax.set_xlabel("")
@@ -203,8 +231,8 @@ if __name__ == "__main__":
             ext="pdf",
         )
 
-    slr = load_network(snakemake.input.network_slr)
-    dlr = load_network(snakemake.input.network_dlr)
+    slr = load_network(snakemake.input.network_slr, name="Static Line Rating")
+    dlr = load_network(snakemake.input.network_dlr, name="Dynamic Line Rating")
     networks = slr, dlr
 
     config = snakemake.config["plotting"]["bar"]

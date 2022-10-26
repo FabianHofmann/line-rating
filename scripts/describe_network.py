@@ -71,8 +71,8 @@ ef = n.carriers.set_index("nice_name").co2_emissions[supply.index]
 emissions = supply @ ef / 1e6
 print("", "CO2 emissions [Mt]:", "", emissions, sep="\n", file=fn)
 
-np.rad2deg(n.lines_t.p0 * n.lines.x_pu).max().max()
-print("", "Maximum Voltage Difference [deg]:", "", emissions, sep="\n", file=fn)
+vdiff = np.rad2deg(n.lines_t.p0 * n.lines.x_pu).max().max()
+print("", "Maximum Voltage Difference [deg]:", "", vdiff, sep="\n", file=fn)
 
 
 fn.close()
