@@ -54,16 +54,34 @@ This trend will likely exacerbate transmission system congestion, which may lead
 
 To overcome the mismatch between rapid installation of renewable generation and slow installation of transmission lines, several, complementing measures can be taken that must be reconciled:  (1) large scale implementation of storage facilities to flatten power feed-ins and power demands \cite{caoPreventPromoteGrid2021}; (2) usage of alternative energy carrier networks like hydrogen to relieve the electricity grid \cite{welderDesignEvaluationHydrogen2019}; (3) leveraging the existing grid infrastructure to increase the operating capacity. In the following, we will focus on the last point, which in comparison to (1) and (2) stands out through a fast, low-cost and non-invasive implementation \cite{deutscheenergie-agenturgmbhdenaErgebnispapierDenaStakeholderprozessHohere, minguezApplicationDigitalElevation2022}.
 
-- Transmission line capacities are limited by the maximally allowed temperature allowing a stable transmission. This capacity is also regarded as thermal capacity.\\
+- Transmission line capacities are limited by the maximally allowed temperature ensuring a stable transmission. This capacity is also regarded as thermal capacity.\\
+
 - If the thermal capacity is exceeded, a safe operation of the transmission line is not ensured anymore due to clearance infringements and loss in tensile strength of the conductor \cite{fernandezReviewDynamicLine2016} \\
 
 Traditionally, transmission line capacities are calculated assuming unfavorable, static weather conditions such as 40$^\circ$C  ambient temperature and 0.6~m/s wind speed \cite{fernandezReviewDynamicLine2016}. This is referred to as Static Line Rating (SLR). By design, SLR underestimates the capacity of a transmission line and, when implemented in practice, leads to an underutilization of the transmission infrastructure. In contrast, Dynamic Line Rating (DLR) calculates the line capacity taking into account the prevailing weather conditions. Cold weather and wind cool overheated transmission lines, enabling the thermal rating to be raised. This results in key benefits in cost-efficiency, congestion reduction and better wind power integration \cite{erdincComprehensiveOverviewDynamic2020}.
 
-According to the grid development plan of the German gird agency, the grid operation should be optimised by DLR wherever possible \cite{bundesnetzagenturNetzentwicklungsplan202120352022}. However, if Germans Transmission System Operators (TSOs) currently apply DLR, it is mainly based on the current season. Therefore, German TSOs do not exploit the full potential of DLR monitoring local, real time cooling effects \cite{bundesnetzagenturMonitoringReport20212022}. 
+- According to the grid development plan of the German gird agency, the grid operation should be optimised by DLR wherever possible \cite{bundesnetzagenturNetzentwicklungsplan202120352022}. \\
+
+- There are different methods how the thermal capacity for DLR can be measured:1. Weather measurement: Weather conditions are used to calculate the temperature of the conductor, 2. Conductor temperature measurement:Sensors along the line measure the temperature of the conductor, 3. Tension Measurement: Load cell measures the tension of the line to derive the clearance of the line, 4: Sag measurement: Monitoring of the security clearance \cite{albizuMethodsIncreasingRating2005}\\
+
+- weather based measuring of the thermal capacity is considered the simplest method to implement as well as the cheapest. \cite{KARIMI2018600}
+
+- If Germans Transmission System Operators (TSOs) currently apply DLR, it is mainly based on the seasonal weather data, thus e.g. distinguishing between winter and summer operation. \\
+
+- Therefore, German TSOs do not exploit the full potential of DLR monitoring local, real time cooling effects \cite{bundesnetzagenturMonitoringReport20212022}. 
+
+- According to ENTSOE DLR can lead to an increase in line capacity of 200~\% compared to SLR. (https://www.entsoe.eu/Technopedia/techsheets/dynamic-line-rating-dlr)\\
+
+-According to the German TSO Transnetbw, they increase the line capacity up to 50~\%. (https://www.transnetbw.de/de/unternehmen/portraet/innovationen/freileitungsmonitoring)\\
+
+-in a study by FfE \cite{samweberProjektMeritOrder2016} for the German grid, they found an averaged over capacity with DLR of 42\% \\ 
+- their assumed cost for the implementation of DLR is 60 - 80 thousand € per km with a life time of 30a. \\
+
 The literature provides case studies with DLR applied in small scale Energy System Optimization Models (ESOMs) \cite{liDayAheadSchedulingPower2019,dabbaghjamaneshEffectiveSchedulingReconfigurable2019,viaforaDayaheadDispatchOptimization2019}. %Rena suggested a reference. However, is a simulation and not an optimisation, would not put this reference here. Results not comparable as different energy system.
 % IEEE paper Increase cross-border capacity to reduce market splitting of day-ahead electricity markets A dynamic line rating approach; Consentec paper: https://www.currenteurope.eu/wp-content/uploads/2021/12/currENT_Consentec_BenefitsOfInnovativeGridTechnologies_FinalReport_20211208_clean.pdf
 However, it is lacking of an extensive evaluation and assessment of DLR in higher scale ESOMs.
-This paper addresses this gap. We present the first capacity optimization of the German power system with DLR being subject to high CO2 emission targets.
+\\- in our previous paper \cite{EnhancingtheGermanTransmissionGrid2022}, we did an initial study discussing the benefits of DLR in the German power system.
+\\- In this study we want to extend our former study by adding a sensitivity analysis, using updated cost assumptions and doing further analysis 
 
 The article is structured as follows.
 Section~\ref{sec:methodology} describes the methodology of the DLR implementation (\ref{sec:dlr}) and the underlying power system modelling (\ref{sec:powersystem}). In Section~\ref{sec:study-cases}, we present two case studies for the German power system used throughout the paper. Section~\ref{sec:results} comprises the main results of the analysis with limitations outlined in Section~\ref{sec:limitations}. A conclusion is presented in Section~\ref{sec:conclusion}.
@@ -101,12 +119,12 @@ which for three-phase electric power transmission operating at voltage level $V$
 \end{align}
 Fig.~\ref{fig:parameter-space-reduced} shows $P_{max}$ for a single wire of a typical 3-phase transmission line with $R(T_{max}=80^\circ C) = 9.39\cdot10^{-5}\,\Omega/\text{m}$ and $V$~=~380~kV, as a function of temperature and wind speed for three different wind incidence angles, 0$^\circ$, 45$^\circ$ and 90$^\circ$. The cooling effect at cold temperature with strong perpendicular wind leads to a transmission capacity increase of factor 4-5 compared to conservative conditions with 40$^\circ$C and low wind.
 %
-\begin{figure}
-    \centering
-    \includegraphics[width=0.7\linewidth]{parameter-space-reduced.pdf}
-    \caption{Transmission capacity for different environmental conditions. For three different wind incidence angles (0$^\circ$, 45$^\circ$, 90$^\circ$), the maximal transmission capacity of a typical electricity line ($R(T_{max})$=$9.39\cdot10^{-5}\,\Omega/\text{m}$, $V$~=~380~kV) is shown as a function of temperature and wind speed. The cooling effect of a perpendicular, strong, cold wind can lead to capacity increase of factor 4-5 compared to conservative conditions with 40$^\circ$C and low wind.}
-    \label{fig:parameter-space-reduced}
-\end{figure}
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=0.7\linewidth]{parameter-space-reduced.pdf}
+%     \caption{Transmission capacity for different environmental conditions. For three different wind incidence angles (0$^\circ$, 45$^\circ$, 90$^\circ$), the maximal transmission capacity of a typical electricity line ($R(T_{max})$=$9.39\cdot10^{-5}\,\Omega/\text{m}$, $V$~=~380~kV) is shown as a function of temperature and wind speed. The cooling effect of a perpendicular, strong, cold wind can lead to capacity increase of factor 4-5 compared to conservative conditions with 40$^\circ$C and low wind.}
+%     \label{fig:parameter-space-reduced}
+% \end{figure}
 %
 \subsection{Power System Modeling}
 \label{sec:powersystem}
@@ -139,31 +157,31 @@ In contrast to the 2019 scenario, the 2030 scenario of the German power system a
 At first, we present the extent to which the DLR implementation alters the operation of the existing power system. Fig.~\ref{fig:capacity-map-2019} shows the geographical layout of existing generation and transmission capacities for the 2019 scenario. The circles with its subdivisions show the installed power generation capacity per site and technology with their area being proportional to the capacity. The widths of the transmission lines indicate the installed nominal capacities, while their colors show the relative average change in capacity when applying DLR. Note that for some of the long transmission lines with high reactances, the voltage angle constraint introduced in \eqref{eq:angle_difference_constraint} suppresses the relative improvement through DLR. For most of the others, an improvement in the average capacity up to a factor 2 is observed.
 In particular, this accounts for short lines in the north and west of Germany.
 %
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=.7\linewidth]{de2020_all_nodes_Co2L-BL-Ep_dlr/capacity_map_dlr.pdf}
-    \caption{Capacity layout of the 2019 scenario of the German power system. The circle with its subdivisions are proportionally to the installed generation capacity. The widths of the line indicate their nominal transmission capacity, their color the relative average change when going from SLR to DLR.}
-    \label{fig:capacity-map-2019}
-\end{figure}
+% \begin{figure}[h!]
+%     \centering
+%     \includegraphics[width=.7\linewidth]{de2020_all_nodes_Co2L-BL-Ep_dlr/capacity_map_dlr.pdf}
+%     \caption{Capacity layout of the 2019 scenario of the German power system. The circle with its subdivisions are proportionally to the installed generation capacity. The widths of the line indicate their nominal transmission capacity, their color the relative average change when going from SLR to DLR.}
+%     \label{fig:capacity-map-2019}
+% \end{figure}
 
 In addition to location, it is of particular interest in what time periods the improvements occur. Fig.~\ref{fig:potential-correlation-2019} shows the total relative increase in transmission capacity as a function of the production relative to the installed capacity for solar, onshore and offshore wind separately. The lines represent the average when collecting the data points along the x-axis in groups of 30, with the shaded areas corresponding to the 95\% confidence intervals. The transmission capacity increase strongly correlates with the availability of onshore wind power in the system. In times when onshore wind power availability is at its maximum, i.e. close to 1, the transmission capacity increases by 52\% in average. For low offshore wind power potentials, the increase in transmission capacity weakly correlates with the availability. However, after a significant positive trend, 48\% transmission capacity increase is observed for times with high offshore wind availability. For solar power, the trend is roughly the opposite. In time periods with low solar potentials, the increase in transmission capacity averages to 20\%, while for a higher potential, the transmission increase declines. However, note  that for solar the overall transmission capacity of DLR stays above transmission capacity of SLR. Only at the very end, a strong positive trend is observed which originates from an exceptionally sunny and windy period in the end of April. %\todo[inline]{frame more positive, values are above 1 and solar mainly locally distributed.}
 %
-\begin{figure}[htpb]
-    \centering
-    \includegraphics[width=.7\linewidth]{de2020_all_nodes_Co2L-BL-Ep_dlr/potential_correlation.pdf}
-    \caption{Ratio between total DLR and SLR transmission capacity as a function of the capacity normalized total generation. }
-    \label{fig:potential-correlation-2019}
-\end{figure}
+% \begin{figure}[htpb]
+%     \centering
+%     \includegraphics[width=.7\linewidth]{de2020_all_nodes_Co2L-BL-Ep_dlr/potential_correlation.pdf}
+%     \caption{Ratio between total DLR and SLR transmission capacity as a function of the capacity normalized total generation. }
+%     \label{fig:potential-correlation-2019}
+% \end{figure}
 
 
 When running the optimization for the 2019 case study, these effects prove themselves to be quiet impactful. Of the 490~TWh total net electricity generation throughout the year, 31\% (152~TWh) are supplied by fossil power generation (hard coal, lignite and gas) in the SLR scenario. This share drops to 28.9\% (141~TWh) in the DLR scenario, while the share of onshore wind power increases from 24\% (117~TWh) to 24.6\% (120~TWh) and of offshore wind power from from 4.2\% (20.6~TWh) to 5.8\% (28.5~TWh). The total generation of the other carriers remain unchanged. We recall that the installed generation capacities are the same for both scenarios. As we show in the following, the reason for this shift in generation lays in an improved exploitation of the wind and transmission infrastructure.
 
-\begin{figure}[htpb]
-    \centering
-    \includegraphics[width=.7\linewidth]{de2020_all_nodes_Co2L-BL-Ep_dlr/congestion_correlation.pdf}
-    \caption{The plot shows the number of congested lines for SLR and DLR as a function of the ratio between the renewable generation potential and the load for each hour during the year. A ratio higher than 1 implies an over-supply which is curtailed. The size and color of the scatter points correspond to the amount of curtailment at the regarded hour.}
-    \label{fig:congestion-correlation-2019}
-\end{figure}
+% \begin{figure}[htpb]
+%     \centering
+%     \includegraphics[width=.7\linewidth]{de2020_all_nodes_Co2L-BL-Ep_dlr/congestion_correlation.pdf}
+%     \caption{The plot shows the number of congested lines for SLR and DLR as a function of the ratio between the renewable generation potential and the load for each hour during the year. A ratio higher than 1 implies an over-supply which is curtailed. The size and color of the scatter points correspond to the amount of curtailment at the regarded hour.}
+%     \label{fig:congestion-correlation-2019}
+% \end{figure}
 
 Fig.~\ref{fig:congestion-correlation-2019} shows the number of congested lines as a function of the total renewable power potential relative to the total load in each time step. The color and size of the dots indicate the renewable curtailment. It stands out that DLR (right panel) leads to a significant decrease in transmission congestion as well as curtailment. While the SLR scenario (left panel) reveals up to 16 congested lines, maximally 10 lines are congested in the the DLR scenario. In particular, at times with a shortage of renewable energy (Potential / Load $<$ 1) the SLR system has to curtail 7 times more power due to transmission congestion. This does not hold for the DLR scenario. The same accounts for times with renewable excess power (Potential / Load $>$ 1), where power is mainly curtailed due to oversupply in the DLR scenario and curtailed due to oversupply and congestion in the SLR scenario.
 Solely, from the change in operation, the system saves around 403~mil~Euro of dispatch costs per year throughout the whole simulation year. This translates to 5.5~\% of the total operational expenditure (OPEX). In addition to the OPEX savings, the implementation of DLR leads to a carbon emission reduction of 3.1\% compared to the SLR scenario.
@@ -189,21 +207,21 @@ In comparison to SLR, the system with DLR builds out more offshore wind and less
 
 As depicted in Fig.~\ref{fig:load-duration-2030}, transmission congestion is significantly reduced in the DLR scenario. The figure shows the duration curve of the total congestion throughout the simulation year. In the DLR scenario, approximately half the year is free of congestion while, for SLR, this situation can only be observed for a few hundred hours. Furthermore, the number of maximally congested lines drops from 58 to 14 when going from SLR to DLR.
 
-\begin{figure}[htpb]
-    \centering
-    \includegraphics[width=.7\linewidth]{de2030_all_nodes_Co2L-RE0.8-Ep_dlr/congestion_duration_curve.pdf}
-    \caption{Duration curve for number of congested lines in the 2030 study case.}
-    \label{fig:load-duration-2030}
-\end{figure}
+% \begin{figure}[htpb]
+%     \centering
+%     \includegraphics[width=.7\linewidth]{de2030_all_nodes_Co2L-RE0.8-Ep_dlr/congestion_duration_curve.pdf}
+%     \caption{Duration curve for number of congested lines in the 2030 study case.}
+%     \label{fig:load-duration-2030}
+% \end{figure}
 
 Fig.~\ref{fig:cost-bar-2030} illustrates the cost savings for the DLR scenario compared to the SLR scenario. Note that positive costs represent higher expenses for the DLR scenario. The capital cost from Fig.~\ref{fig:cost-bar-2030} directly correlates to the capacity expansion given in Table \ref{tab:installed capacity}. We observe significantly less OPEX for fossil energy carriers in the DLR scenario. The total cost savings for the DLR scenario are 3.4\% which corresponds to 908~mil~Euro per year. %\todo[inline]{more positive framing}
 
-\begin{figure}[htpb]
-    \centering
-    \includegraphics[width=.7\linewidth]{de2030_all_nodes_Co2L-RE0.8-Ep_dlr/cost_bar.pdf}
-    \caption{Savings of capital expenditures (CAPEX) and operational expenditures (OPEX) when going from SLR to DLR.  Positive costs represent higher expenses of DLR.}
-    \label{fig:cost-bar-2030}
-\end{figure}
+% \begin{figure}[htpb]
+%     \centering
+%     \includegraphics[width=.7\linewidth]{de2030_all_nodes_Co2L-RE0.8-Ep_dlr/cost_bar.pdf}
+%     \caption{Savings of capital expenditures (CAPEX) and operational expenditures (OPEX) when going from SLR to DLR.  Positive costs represent higher expenses of DLR.}
+%     \label{fig:cost-bar-2030}
+% \end{figure}
 
 \section{Limitations}
 \label{sec:limitations}
