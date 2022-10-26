@@ -12,25 +12,31 @@ configfile: "configs/config.yaml"
 configfile: "configs/config.cluster.yaml"
 
 
-rule create_figures:
+rule all:
     input:
-        expand(
+        expand("results/.{scenario}", scenario=config["scenarios"]),
+        parameter_space="figures/parameter-space-reduced.pdf",
+
+
+def get_scenario(w):
+    return expand(
+        (
             "figures/de{year}_{clusters}_nodes_{opts}_dlr{rating}_v{angle}/{figure}.pdf",
-            **config["scenario_2020"]
-        ),
-        expand(
             "figures/de{year}_{clusters}_nodes_{opts}_v{angle}/sensitivity_{sensitivity}.pdf",
-            **config["scenario_2020"]
+            "results/description/de{year}_{clusters}_nodes_{opts}_dlr{rating}_v{angle}.{format}.txt",
         ),
-        expand(
-            "figures/de{year}_{clusters}_nodes_{opts}_dlr{rating}_v{angle}/{figure}.pdf",
-            **config["scenario_2030"]
-        ),
-        expand(
-            "figures/de{year}_{clusters}_nodes_{opts}_v{angle}/sensitivity_{sensitivity}.pdf",
-            **config["scenario_2030"]
-        ),
-        "figures/parameter-space-reduced.pdf",
+        **config[w.scenario],
+        format=["md", "tex"]
+    )
+
+
+rule scenario:
+    input:
+        get_scenario,
+    output:
+        res="results/.{scenario}",
+    shell:
+        "touch {output.res}"
 
 
 rule create_figures_test:
@@ -50,10 +56,6 @@ rule prepare_all_networks:
         expand(
             "networks/de{year}_{clusters}_nodes_{opts}_dlr{rating}_v{angle}.nc",
             **config["scenario_2030"],
-        ),
-        expand(
-            "networks/de{year}_{clusters}_nodes_{opts}_dlr{rating}_v{angle}.nc",
-            **config["scenario_2030_unbound"],
         ),
 
 
@@ -150,6 +152,15 @@ rule solve_network:
         "shallow"
     script:
         pypsaeur2020("scripts/solve_network.py")
+
+
+rule describe_network:
+    input:
+        network="results/de{year}_{clusters}_nodes_{opts}_dlr{rating}_v{angle}.nc",
+    output:
+        description="results/description/de{year}_{clusters}_nodes_{opts}_dlr{rating}_v{angle}.{format}.txt",
+    script:
+        "scripts/describe_network.py"
 
 
 rule plot_maps:
