@@ -80,6 +80,9 @@ Traditionally, transmission line capacities are calculated assuming unfavorable,
 The literature provides case studies with DLR applied in small scale Energy System Optimization Models (ESOMs) \cite{liDayAheadSchedulingPower2019,dabbaghjamaneshEffectiveSchedulingReconfigurable2019,viaforaDayaheadDispatchOptimization2019}. %Rena suggested a reference. However, is a simulation and not an optimisation, would not put this reference here. Results not comparable as different energy system.
 % IEEE paper Increase cross-border capacity to reduce market splitting of day-ahead electricity markets A dynamic line rating approach; Consentec paper: https://www.currenteurope.eu/wp-content/uploads/2021/12/currENT_Consentec_BenefitsOfInnovativeGridTechnologies_FinalReport_20211208_clean.pdf
 However, it is lacking of an extensive evaluation and assessment of DLR in higher scale ESOMs.
+
+\\-For our analysis, we only model a single country to ensure we can model a system in high spatial and temporal resolution. 
+\\- As model,we chose Germany due to the reliability of the required data. However, the model can be easily extended to regard other countries.
 \\- in our previous paper \cite{EnhancingtheGermanTransmissionGrid2022}, we did an initial study discussing the benefits of DLR in the German power system.
 \\- In this study we want to extend our former study by adding a sensitivity analysis, using updated cost assumptions and doing further analysis
 
@@ -94,10 +97,12 @@ Section~\ref{sec:methodology} describes the methodology of the DLR implementatio
 \subsection{Dynamic Line Rating}
 \label{sec:dlr}
 
-- IEEE standard more conservative compared to CIGRE \cite{simmsComparativeAnalysisDynamic2013}
+- IEEE standard more conservative compared to CIGRE \cite{simmsComparativeAnalysisDynamic2013}\\
 
 For simulating the effect of DLR, we follow the IEEE standard documented in \cite{ieeeIEEEStandardCalculating2012}, \cite{ieeeIEEEStd738}.
-The key concept of DLR is based on a dynamic estimation of the maximally allowed electrical current  for the conducting material. It is set such that the conductor does not surpass the maximally allowed temperature  after which impermissible sag of the line or hardware damage can be expected \cite{KARIMI2018600}. To model the weather dependent impact on DLR, we implemented the IEEE standard in Atlite \cite{hofmannAtliteLightweightPython2021}, a Python package used for converting weather data into renewable power potentials. The following outlines the basic concept of DLR, for further detail refer to \cite{ieeeIEEEStandardCalculating2012}, \cite{ieeeIEEEStd738}.
+The key concept of DLR is based on a dynamic estimation of the maximally allowed electrical current  for the conducting material. It is set such that the conductor does not surpass the maximally allowed temperature  after which impermissible sag of the line or hardware damage can be expected \cite{KARIMI2018600}. To model the weather dependent impact on DLR, we implemented the IEEE standard.
+
+The following outlines the basic concept of DLR, for further detail refer to \cite{ieeeIEEEStandardCalculating2012}, \cite{ieeeIEEEStd738}.
 For each conductor, the heat balance equation
 \begin{align}
     q_c +q_r = q_s + I^2 \cdot R(T)
@@ -117,6 +122,17 @@ which for three-phase electric power transmission operating at voltage level $V$
 \begin{align}
     P_{max} = \sqrt{3} \cdot I_{max} \cdot V
 \end{align}
+
+The IEEE standard is implemented Atlite \cite{hofmannAtliteLightweightPython2021}, a Python package used for converting weather data into renewable power potentials. Atlite obtains the weather data from the ECMWF Reanalysis v5 (ERA5) dataset providing various weather-related variables in a hourly resolution on a $0.25^\circ \times 0.25^\circ$ grid. 
+With Atlite, we can overlap every weather cell with the given transmission line and calculate its ampacity according to Equation \ref{ampacity}. If a transmission line overlaps with multiple weather cells, we take the minimal calculated ampacity of the overlapping cells. This is illustrated in Figure \ref{fig:line-rating-calculation}.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.7\linewidth]{line_rating_calculation.pdf}
+    \caption{This figure shows a transmission line which passes through 3 different weather cells, all having their own wind speeds. Therefore, Atlite calculates three different ampacities for the transmission line. The minimal calculated ampacity limits the flow of the given line and hence is taken as limit for the whole line.}
+    \label{fig:line-rating-calculation}
+\end{figure}
+
 Fig.~\ref{fig:parameter-space-reduced} shows $P_{max}$ for a single wire of a typical 3-phase transmission line with $R(T_{max}=80^\circ C) = 9.39\cdot10^{-5}\,\Omega/\text{m}$ and $V$~=~380~kV, as a function of temperature and wind speed for three different wind incidence angles, 0$^\circ$, 45$^\circ$ and 90$^\circ$. The cooling effect at cold temperature with strong perpendicular wind leads to a transmission capacity increase of factor 4-5 compared to conservative conditions with 40$^\circ$C and low wind.
 %
 % \begin{figure}
@@ -130,15 +146,19 @@ Fig.~\ref{fig:parameter-space-reduced} shows $P_{max}$ for a single wire of a ty
 \label{sec:powersystem}
 Using the Python package \textit{Python for Power System Analysis} (PyPSA) \cite{brownPyPSAPythonPower2018,browntomPyPSAPythonPower2022}, the linear ESOM is represented by a set of buses which are interconnected via transmission lines and complemented by loads, generators and storage facilities. Further, time-dependent electric demand per bus and generation potentials per generator are included for one year with hourly resolution. The generator dispatch and deployment is determined by minimizing the total system cost, where the optimization uses the linearized power flow approximation \cite{purchalaUsefulnessDCPower2005,brownLinearOptimalPower2016} and may be subject to systemic constraints (CO$_2$ budget, limited capacity expansion, etc.).
 
-Data on the transmission grid, power plants, renewable potentials and demand are created with the workflow \textit{PyPSA-EUR} \cite{horschPyPSAEurOpenOptimisation2018,horschjonasPyPSAEurOpenOptimisation2022}. Underlying weather data is provided by the ECMWF Reanalysis v5 (ERA5) dataset providing various weather-related variables in a hourly resolution on a $0.25^\circ \times 0.25^\circ$ grid. The representative network of Germany comprises all 256~substations and 333~transmission lines operating at 220~kV and above. Electrical parameters of transmission lines are derived by mapping voltage level of the lines to standard line types given in \cite{oedingElektrischeKraftwerkeUnd2011}. %\todo[inline]{add descripion for geographical overlap and mapping of weather data.}
-For DLR scenarios, the transmission capacity per line and time step is given by the formulation in Section~\ref{sec:dlr}, for SLR scenarios by the standard static transmission capacities. In case multiple weather grid cells overlap with a transmission line, the grid cell with the most unfavorable condition is chosen to provide the input variables. As the DLR scenario is calculated with averaged hourly wind speed data, sub-hourly wind speed fluctuations are neglected. This leads to a slightly overestimated $P_{max}$, which we consequently scale down by an empirically derived factor of $0.95$, see Appendix~\ref{dlr_factor} for details. Furthermore, we account for N-1 network security in both SLR and DLR scenarios by restricting the power transmission P per line to $-0.7\,P_{max} \le P \le 0.7\,P_{max}$ leaving a 30\% capacity buffer.
-% \todo[inline]{add citation} https://www.50hertz.com/Netzlast/Karte/index.html also different, as they just categorize <70% as high utilization and we do it for N-1 security. Could not find a reference for this value.
-Finally, since the error of the linearized power flow approximation increases with the voltage angle differences in the system \cite{dvijothamErrorBoundsDC2016}, we restrict the voltage angle difference $\Delta\theta$ across a line to maximally 30$^\circ$ by introducing the constraint
-\begin{align}
-    |P| \le \frac{V^2\Delta\theta}{x}=\frac{V^2\pi}{6\,x}
-    \label{eq:angle_difference_constraint}
-\end{align}
-for every time step and line, where $x$ is the series reactance.
+Data on the transmission grid, power plants, renewable potentials and demand are created with the workflow \textit{PyPSA-EUR} \cite{horschPyPSAEurOpenOptimisation2018,horschjonasPyPSAEurOpenOptimisation2022}.
+The representative network of Germany comprises all 256~substations and 333~transmission lines operating at 220~kV and above. Electrical parameters of transmission lines are derived by mapping voltage level of the lines to standard line types given in \cite{oedingElektrischeKraftwerkeUnd2011}.
+Demand data and renewable profiles, provided by Atlite, have a hourly resolution.
+
+For DLR scenarios, the transmission capacity per line and time step is given by the formulation in Section~\ref{sec:dlr}, for SLR scenarios by the standard static transmission capacities. In case multiple weather grid cells overlap with a transmission line, the grid cell with the most unfavorable condition is chosen to provide the input variables. As the DLR scenario is calculated with averaged hourly wind speed data, sub-hourly wind speed fluctuations are neglected. This leads to a slightly overestimated $P_{max}$, which we consequently scale down by an empirically derived factor of $0.95$, see Appendix~\ref{dlr_factor} for details. Furthermore, we account for N-1 network security in both SLR and DLR scenarios by restricting the power transmission P per line to $-0.7\,P_{max} \le P \le 0.7\,P_{max}$ leaving a 30\% capacity buffer \cite{brownOptimisingEuropeanTransmission2016}. 
+
+
+% Finally, since the error of the linearized power flow approximation increases with the voltage angle differences in the system \cite{dvijothamErrorBoundsDC2016}, we restrict the voltage angle difference $\Delta\theta$ across a line to maximally 30$^\circ$ by introducing the constraint
+% \begin{align}
+%     |P| \le \frac{V^2\Delta\theta}{x}=\frac{V^2\pi}{6\,x}
+%     \label{eq:angle_difference_constraint}
+% \end{align}
+% for every time step and line, where $x$ is the series reactance.
 
 \section{Study Cases}
 \label{sec:study-cases}
