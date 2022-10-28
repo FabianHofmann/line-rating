@@ -81,15 +81,14 @@ The literature provides case studies with DLR applied in small scale Energy Syst
 % IEEE paper Increase cross-border capacity to reduce market splitting of day-ahead electricity markets A dynamic line rating approach; Consentec paper: https://www.currenteurope.eu/wp-content/uploads/2021/12/currENT_Consentec_BenefitsOfInnovativeGridTechnologies_FinalReport_20211208_clean.pdf
 However, it is lacking of an extensive evaluation and assessment of DLR in higher scale ESOMs.
 
-\\-For our analysis, we only model a single country to ensure we can model a system in high spatial and temporal resolution. 
-\\- As model,we chose Germany due to the reliability of the required data. However, the model can be easily extended to regard other countries.
-\\- in our previous paper \cite{EnhancingtheGermanTransmissionGrid2022}, we did an initial study discussing the benefits of DLR in the German power system.
-\\- In this study we want to extend our former study by adding a sensitivity analysis, using updated cost assumptions and doing further analysis
+- For our analysis, we only model a single country to ensure we can model a system in high spatial and temporal resolution. 
+\\ - As model,we chose Germany due to the reliability of the required data. However, the model can be easily extended to regard other countries.
+\\ - in our previous paper \cite{EnhancingtheGermanTransmissionGrid2022}, we did an initial study discussing the benefits of DLR in the German power system.
+\\ - In this study we want to extend our former study by adding a sensitivity analysis, using updated cost assumptions and doing further analysis
 
 The article is structured as follows.
 Section~\ref{sec:methodology} describes the methodology of the DLR implementation (\ref{sec:dlr}) and the underlying power system modelling (\ref{sec:powersystem}). In Section~\ref{sec:study-cases}, we present two case studies for the German power system used throughout the paper. Section~\ref{sec:results} comprises the main results of the analysis with limitations outlined in Section~\ref{sec:limitations}. A conclusion is presented in Section~\ref{sec:conclusion}.
 
-% The underlying model is created from the PyPSA-Eur framework [16], and for Germany consists of 256 representative nodes and considers a time horizon of one year with an hourly resolution. To model the effect of DLR on the power system, we use the IEEE standard \cite{IEEEStandardCalculating2012} with highly resolved historical weather data implemented in the Atlite software \cite{hofmannAtliteLightweightPython2021}. The advantages of the DLR are illustrated by comparison with an SLR-based system. Therefore, we analyze and compare curtailment, grid congestion as well as the optimal generator deployment.
 
 \section{Methodology}
 \label{sec:methodology}
@@ -146,9 +145,11 @@ Fig.~\ref{fig:parameter-space-reduced} shows $P_{max}$ for a single wire of a ty
 \label{sec:powersystem}
 Using the Python package \textit{Python for Power System Analysis} (PyPSA) \cite{brownPyPSAPythonPower2018,browntomPyPSAPythonPower2022}, the linear ESOM is represented by a set of buses which are interconnected via transmission lines and complemented by loads, generators and storage facilities. Further, time-dependent electric demand per bus and generation potentials per generator are included for one year with hourly resolution. The generator dispatch and deployment is determined by minimizing the total system cost, where the optimization uses the linearized power flow approximation \cite{purchalaUsefulnessDCPower2005,brownLinearOptimalPower2016} and may be subject to systemic constraints (CO$_2$ budget, limited capacity expansion, etc.).
 
+% The underlying model is created from the PyPSA-Eur framework [16], and for Germany consists of 256 representative nodes and considers a time horizon of one year with an hourly resolution. To model the effect of DLR on the power system, we use the IEEE standard \cite{IEEEStandardCalculating2012} with highly resolved historical weather data implemented in the Atlite software \cite{hofmannAtliteLightweightPython2021}. The advantages of the DLR are illustrated by comparison with an SLR-based system. Therefore, we analyze and compare curtailment, grid congestion as well as the optimal generator deployment.
+
 Data on the transmission grid, power plants, renewable potentials and demand are created with the workflow \textit{PyPSA-EUR} \cite{horschPyPSAEurOpenOptimisation2018,horschjonasPyPSAEurOpenOptimisation2022}.
 The representative network of Germany comprises all 256~substations and 333~transmission lines operating at 220~kV and above. Electrical parameters of transmission lines are derived by mapping voltage level of the lines to standard line types given in \cite{oedingElektrischeKraftwerkeUnd2011}.
-Demand data and renewable profiles, provided by Atlite, have a hourly resolution.
+\\- Demand data and renewable profiles, provided by Atlite, have a hourly resolution.
 
 For DLR scenarios, the transmission capacity per line and time step is given by the formulation in Section~\ref{sec:dlr}, for SLR scenarios by the standard static transmission capacities. In case multiple weather grid cells overlap with a transmission line, the grid cell with the most unfavorable condition is chosen to provide the input variables. As the DLR scenario is calculated with averaged hourly wind speed data, sub-hourly wind speed fluctuations are neglected. This leads to a slightly overestimated $P_{max}$, which we consequently scale down by an empirically derived factor of $0.95$, see Appendix~\ref{dlr_factor} for details. Furthermore, we account for N-1 network security in both SLR and DLR scenarios by restricting the power transmission P per line to $-0.7\,P_{max} \le P \le 0.7\,P_{max}$ leaving a 30\% capacity buffer \cite{brownOptimisingEuropeanTransmission2016}. 
 
