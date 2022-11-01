@@ -39,8 +39,10 @@ fn = open(snakemake.output.description, "w")
 
 def out(key, df):
     f = snakemake.wildcards["format"]
+    if isinstance(df, pd.Series):
+        df = df.to_frame()
     if f == "tex":
-        print("", key, "", df.to_latex(), sep="\n", file=fn)
+        print("", key, "", df.style.to_latex(), sep="\n", file=fn)
     elif f == "md":
         print("", key, "", df.to_markdown(), sep="\n", file=fn)
     else:

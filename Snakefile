@@ -22,10 +22,13 @@ def get_scenario(w):
     return expand(
         (
             "figures/de{year}_{clusters}_nodes_{opts}_dlr{rating}_v{angle}/{figure}.pdf",
-            "figures/de{year}_{clusters}_nodes_{opts}_v{angle}/sensitivity_{sensitivity}.pdf",
             "results/description/de{year}_{clusters}_nodes_{opts}_dlr{rating}_v{angle}.{format}.txt",
+            "figures/de{year}_{clusters}_nodes_{opts}_v{angle}/sensitivity_dlr_{sensitivity_dlr}.pdf",
+            "figures/de{year}_{clusters}_nodes_v{angle}/sensitivity_vres_{sensitivity_vres}.pdf",
         ),
         **config[w.scenario],
+        sensitivity_dlr=config[w.scenario]["sensitivity"]["dlr"],
+        sensitivity_vres=config[w.scenario]["sensitivity"]["vres"],
         format=["md", "tex"]
     )
 
@@ -37,14 +40,6 @@ rule scenario:
         res="results/.{scenario}",
     shell:
         "touch {output.res}"
-
-
-rule create_figures_test:
-    input:
-        expand(
-            "figures/de{year}_{clusters}_nodes_{opts}_dlr{rating}_v{angle}/{figure}.pdf",
-            **config["test"],
-        ),
 
 
 rule prepare_all_networks:
@@ -214,17 +209,40 @@ def get_cap_networks(w):
     )
 
 
-rule plot_cap_sensitivity:
+rule plot_sensitivity_dlr_cap:
     input:
         network_slr="results/de{year}_{clusters}_nodes_{opts}_dlr1.0_v{angle}.nc",
         networks_dlr=get_cap_networks,
     output:
-        sensitivity_cost="figures/de{year}_{clusters}_nodes_{opts}_v{angle}/sensitivity_cost.{ext}",
-        sensitivity_cost_line="figures/de{year}_{clusters}_nodes_{opts}_v{angle}/sensitivity_cost_line.{ext}",
-        sensitivity_curtailment="figures/de{year}_{clusters}_nodes_{opts}_v{angle}/sensitivity_curtailment.{ext}",
-        sensitivity_capacity="figures/de{year}_{clusters}_nodes_{opts}_v{angle}/sensitivity_capacity.{ext}",
+        sensitivity_combined="figures/de{year}_{clusters}_nodes_{opts}_v{angle}/sensitivity_dlr_combined.{ext}",
+    threads: 8
     script:
-        "scripts/plot_cap_sensitivity.py"
+        "scripts/plot_sensitivity_dlr_cap.py"
+
+
+def get_renewable_share_networks_slr(w):
+    return expand(
+        "results/de{year}_{clusters}_nodes_{opts}_dlr1.0_v.nc",
+        **config[f"scenario_2035"],
+    )
+
+
+def get_renewable_share_networks_dlr(w):
+    return expand(
+        "results/de{year}_{clusters}_nodes_{opts}_dlr_v.nc",
+        **config[f"scenario_2035"],
+    )
+
+
+rule plot_sensitivity_renewable_share:
+    input:
+        networks_slr=get_renewable_share_networks_slr,
+        networks_dlr=get_renewable_share_networks_dlr,
+    output:
+        sensitivity_costs="figures/de20{year}_{clusters}_nodes_v{angle}/sensitivity_vres_costs.{ext}",
+    threads: 8
+    script:
+        "scripts/plot_sensitivity_renewable_share.py"
 
 
 rule run_power_flow:
