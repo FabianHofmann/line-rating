@@ -95,12 +95,13 @@ Section~\ref{sec:methodology} describes the methodology of the DLR implementatio
 \subsection{Dynamic Line Rating}
 \label{sec:dlr}
 
-- IEEE standard more conservative compared to CIGRE \cite{simmsComparativeAnalysisDynamic2013}\\
+The key concept of DLR is based on a dynamic estimation of the maximally allowed electrical current, also referred to as ampacity, for the conducting material.
+The ampacity is set such that the conductor does not surpass the maximally allowed temperature  after which impermissible sag of the line or hardware damage can be expected \cite{KARIMI2018600}.
+There are two widely used standards to calculate the ampacity of a conductor, namely the IEEE and the CIGRE standard \cite{ieeeIEEEStd738}, \cite{TechnicalBrochure2072002}. 
+According to \cite{simmsComparativeAnalysisDynamic2013}, the the IEEE standard is a more conservative method to calculate the ampacity of a transmission line compared to CIGRE.
+Therefore, for simulating the effect of DLR in our model, we follow the IEEE standard.
 
-For simulating the effect of DLR, we follow the IEEE standard documented in \cite{ieeeIEEEStandardCalculating2012}, \cite{ieeeIEEEStd738}.
-The key concept of DLR is based on a dynamic estimation of the maximally allowed electrical current  for the conducting material. It is set such that the conductor does not surpass the maximally allowed temperature  after which impermissible sag of the line or hardware damage can be expected \cite{KARIMI2018600}. To model the weather dependent impact on DLR, we implemented the IEEE standard.
-
-The following outlines the basic concept of DLR, for further detail refer to \cite{ieeeIEEEStandardCalculating2012}, \cite{ieeeIEEEStd738}.
+The following outlines the basic concept of DLR according to IEEE, for further detail refer to \cite{ieeeIEEEStandardCalculating2012}, \cite{ieeeIEEEStd738}.
 For each conductor, the heat balance equation
 \begin{align}
     q_c +q_r = q_s + I^2 \cdot R(T)
@@ -122,7 +123,7 @@ which for three-phase electric power transmission operating at voltage level $V$
 \end{align}
 
 The IEEE standard is implemented Atlite \cite{hofmannAtliteLightweightPython2021}, a Python package used for converting weather data into renewable power potentials. Atlite obtains the weather data from the ECMWF Reanalysis v5 (ERA5) dataset providing various weather-related variables in a hourly resolution on a $0.25^\circ \times 0.25^\circ$ grid. 
-With Atlite, we can overlap every weather cell with the given transmission line and calculate its ampacity according to Equation \ref{ampacity}. If a transmission line overlaps with multiple weather cells, we take the minimal calculated ampacity of the overlapping cells. This is illustrated in Figure \ref{fig:line-rating-calculation}.
+With Atlite, we overlap every weather cell with the given transmission line and calculate its ampacity according to Equation~\ref{ampacity}. If multiple weather grid cells overlap with a transmission line, the grid cell with the most unfavorable condition provides the ampacity for the line. This is illustrated in Figure~\ref{fig:line-rating-calculation}.
 
 \begin{figure}
     \centering
@@ -146,11 +147,11 @@ Using the Python package \textit{Python for Power System Analysis} (PyPSA) \cite
 
 % The underlying model is created from the PyPSA-Eur framework [16], and for Germany consists of 256 representative nodes and considers a time horizon of one year with an hourly resolution. To model the effect of DLR on the power system, we use the IEEE standard \cite{IEEEStandardCalculating2012} with highly resolved historical weather data implemented in the Atlite software \cite{hofmannAtliteLightweightPython2021}. The advantages of the DLR are illustrated by comparison with an SLR-based system. Therefore, we analyze and compare curtailment, grid congestion as well as the optimal generator deployment.
 
-Data on the transmission grid, power plants, renewable potentials and demand are created with the workflow \textit{PyPSA-EUR} \cite{horschPyPSAEurOpenOptimisation2018,horschjonasPyPSAEurOpenOptimisation2022}.
+Data on the transmission grid, power plants, renewable potentials and demand for the model are created with the workflow \textit{PyPSA-EUR} \cite{horschPyPSAEurOpenOptimisation2018,horschjonasPyPSAEurOpenOptimisation2022}.
 The representative network of Germany comprises all 256~substations and 333~transmission lines operating at 220~kV and above. Electrical parameters of transmission lines are derived by mapping voltage level of the lines to standard line types given in \cite{oedingElektrischeKraftwerkeUnd2011}.
-\\- Demand data and renewable profiles, provided by Atlite, have a hourly resolution.
+The demand data and renewable profile data, provided by Atlite, have an hourly resolution.
 
-For DLR scenarios, the transmission capacity per line and time step is given by the formulation in Section~\ref{sec:dlr}, for SLR scenarios by the standard static transmission capacities. In case multiple weather grid cells overlap with a transmission line, the grid cell with the most unfavorable condition is chosen to provide the input variables. As the DLR scenario is calculated with averaged hourly wind speed data, sub-hourly wind speed fluctuations are neglected. This leads to a slightly overestimated $P_{max}$, which we consequently scale down by an empirically derived factor of $0.95$, see Appendix~\ref{dlr_factor} for details. Furthermore, we account for N-1 network security in both SLR and DLR scenarios by restricting the power transmission P per line to $-0.7\,P_{max} \le P \le 0.7\,P_{max}$ leaving a 30\% capacity buffer \cite{brownOptimisingEuropeanTransmission2016}. 
+For DLR scenarios, the transmission capacity per line and time step is given by the formulation in Section~\ref{sec:dlr}, for SLR scenarios by the standard static transmission capacities. As the DLR scenario is calculated with averaged hourly wind speed data, sub-hourly wind speed fluctuations are neglected. This leads to a slightly overestimated $P_{max}$, which we consequently scale down by an empirically derived factor of $0.95$, see \ref{dlr_factor} for details. Furthermore, we account for N-1 network security in both SLR and DLR scenarios by restricting the power transmission P per line to $-0.7\,P_{max} \le P \le 0.7\,P_{max}$ leaving a 30\% capacity buffer \cite{brownOptimisingEuropeanTransmission2016}. 
 
 
 % Finally, since the error of the linearized power flow approximation increases with the voltage angle differences in the system \cite{dvijothamErrorBoundsDC2016}, we restrict the voltage angle difference $\Delta\theta$ across a line to maximally 30$^\circ$ by introducing the constraint
@@ -162,7 +163,7 @@ For DLR scenarios, the transmission capacity per line and time step is given by 
 
 \section{Study Cases}
 \label{sec:study-cases}
-In the following, we present two study cases. These simulate the year 2019 for short-term benefits (i.e. by running an operational optimization) and 2030 for long-term benefits (i.e. by running a capacity expansion optimization). Both years are modelled using DLR and SLR. The parameters settings for both study cases can be found in the Appendix~\ref{tab:cases_parameters}.
+In the following, we present two study cases. These simulate the year 2019 for short-term benefits (i.e. by running an operational optimization) and 2030 for long-term benefits (i.e. by running a capacity expansion optimization). Both years are modelled using DLR and SLR. The parameters settings for both study cases can be found in the \ref{tab:cases_parameters}.
 
 \subsection{Optimal Operation of the 2019 Power System}
 To quantify the effect of DLR on the existing power system, we choose the pre-pandemic year 2019 in which the system operated under relatively normal circumstances. Electrical load and renewable potentials are derived from historical data of the year 2019 \cite{muehlenpfordtTimeSeries2020}, transmission and generator infrastructure are aligned to the state of 2019, using selected data from \cite{hofmannFRESNAPowerplantmatchingV02022,openpowersystemdataDataPackageNational2017,wiegmansGridkitExtractEntsoE2016}. To approximate the operation of nuclear and lignite power plants mostly running at base load, we enforce a minimal requirement of operation, based on historical data from the ENTSO-E Transparency Platform  \cite{entso-eENTSOETransparencyPlatform2020}.
@@ -291,7 +292,7 @@ In the following equation,
 \end{align*}
 $v_{wind,i}$ corresponds to an sub-hourly wind speed data point going from $i$ to $n$, i.e. from $1$ to $6$ when regarding 10-minute wind speed data. The Equation shows that the root of the averaged sub-hourly wind speed is greater equal the average of the rooted sub-hourly wind speed.
 
-
+\todo[inline]{Transnet BW reference not formatted correctly}
 \clearpage
 \bibliographystyle{elsarticle-harv}
 \bibliography{main.bib}
