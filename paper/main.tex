@@ -8,6 +8,7 @@
 \usepackage{xcolor}
 \usepackage{todonotes}
 \usepackage{fancyhdr,lipsum}
+\usepackage{eurosym}
 
 
 \graphicspath{{../figures/}}
@@ -46,46 +47,44 @@
 \end{frontmatter}
 
 \section{Introduction}
-The deployment of new renewable energy sources far from load centers is leading to an increasing need for grid capacity. A notable example can be found in Germany, where most of the wind energy is generated in the North while there is significant industrial demand in the South \cite{kuhneConflictsNegotiationProcesses2018}. The current federal government plans to add ~70 GW wind power capacity until 2030, at the same time the transmission line capacities need to be expanded \cite{federalministryofeconomicaffairsandclimateactionGermanyCurrentClimate2022}. However, in the last decade only few grid expansion projects have been realized. Most of these are delayed due to administrative problems and protest activities \cite{neukirchProtestsGermanElectricity2016}, \cite{fernandezReviewDynamicLine2016}.
+The expansion of new renewable energy sources far from load centers is leading to an increasing need for grid capacity. A notable example can be found in Germany, where most of the wind energy is generated in the North while there is significant industrial demand in the South \cite{kuhneConflictsNegotiationProcesses2018}. The current federal government plans to have 100~GW onshore and 40~GW offshore wind power capacity in place by 2030 \cite{federalministryofeconomicaffairsandclimateactionGermanyCurrentClimate2022}. For this an expansion of the transmission line capacities is essential. However, in the last decade only few grid expansion projects have been realized. Most of these are delayed due to administrative problems and protest activities \cite{neukirchProtestsGermanElectricity2016}, \cite{fernandezReviewDynamicLine2016}. Furthermore,  transmission lines typically require 5-10 years from initial planning phase to final construction, which exacerbates the problem of missing transmission capacities even more \cite{michiorriForecastingDynamicLine2015}.
 
-- new lines typicall take 5-10 years from initial planning phase to final construction and require massive investments \cite{michiorriForecastingDynamicLine2015} \\
+This trend will likely increase transmission system congestion, which may lead to more grid instability and curtailment \cite{erdincComprehensiveOverviewDynamic2020}. There is therefore a strong incentive to make better use of the existing grid infrastructure.
 
-This trend will likely exacerbate transmission system congestion, which may lead to more grid instability and curtailment \cite{erdincComprehensiveOverviewDynamic2020}. There is therefore a strong incentive to make better use of the existing grid infrastructure.
+To overcome the mismatch between rapid installation of renewable generation and slow installation of transmission lines, several, complementing measures can be taken:  (1) large scale implementation of storage facilities to flatten power feed-ins and power demands \cite{caoPreventPromoteGrid2021}; (2) usage of alternative energy carrier networks like hydrogen to relieve the electricity grid \cite{welderDesignEvaluationHydrogen2019}; (3) leveraging the existing grid infrastructure to increase the transmission line capacity. In the following, we will focus on the last point, which in comparison to (1) and (2) stands out through a fast, low-cost and non-invasive implementation \cite{deutscheenergie-agenturgmbhdenaErgebnispapierDenaStakeholderprozessHohere, minguezApplicationDigitalElevation2022}.
 
-To overcome the mismatch between rapid installation of renewable generation and slow installation of transmission lines, several, complementing measures can be taken that must be reconciled:  (1) large scale implementation of storage facilities to flatten power feed-ins and power demands \cite{caoPreventPromoteGrid2021}; (2) usage of alternative energy carrier networks like hydrogen to relieve the electricity grid \cite{welderDesignEvaluationHydrogen2019}; (3) leveraging the existing grid infrastructure to increase the operating capacity. In the following, we will focus on the last point, which in comparison to (1) and (2) stands out through a fast, low-cost and non-invasive implementation \cite{deutscheenergie-agenturgmbhdenaErgebnispapierDenaStakeholderprozessHohere, minguezApplicationDigitalElevation2022}.
+As transmission line dissipate resistive losses as heat, the line capacity is typically limited by the maximally allowed temperature of the conductor ensuring a stable transmission.  This maximal line capacity is also regarded as thermal capacity.
+If the transmission line exceeds its thermal capacity, a safe operation of the transmission line cannot be ensured anymore due to clearance infringements and loss in tensile strength of the conductor \cite{fernandezReviewDynamicLine2016}.
 
-- Transmission line capacities are limited by the maximally allowed temperature ensuring a stable transmission. This capacity is also regarded as thermal capacity.\\
+Traditionally, thermal capacity of a transmission line is calculated assuming unfavorable, static weather conditions such as 40$^\circ$C  ambient temperature and 0.6~m/s wind speed \cite{fernandezReviewDynamicLine2016}. This is referred to as Static Line Rating (SLR). By design, SLR underestimates the thermal capacity of a transmission line and, when implemented in practice, leads to an underutilization of the transmission infrastructure. In contrast, Dynamic Line Rating (DLR) calculates the line capacity taking into account the prevailing weather conditions. Cold weather and wind cool overheated transmission lines, enabling the thermal capacity to be raised. This results in key benefits in cost-efficiency, congestion reduction and better wind power integration \cite{erdincComprehensiveOverviewDynamic2020}.
 
-- If the thermal capacity is exceeded, a safe operation of the transmission line is not ensured anymore due to clearance infringements and loss in tensile strength of the conductor \cite{fernandezReviewDynamicLine2016} \\
+According to the grid development plan of the German grid agency, the grid operation should be optimised with DLR wherever possible \cite{bundesnetzagenturNetzentwicklungsplan202120352022}.
+There are different methods how DLR can ensure that the thermal capacity for a transmission line is not exceeded \cite{albizuMethodsIncreasingRating2005}:
+\begin{enumerate}
+    \item Weather measurement: Prevailing weather conditions from weather stations are used to calculate the temperature of the conductor
+    \item Conductor temperature measurement: Sensors along the line measure the real time temperature of the conductor
+    \item Tension measurement: A load cell measures the tension of the line to derive the clearance of the line
+    \item Sag measurement: Directly monitoring of the security clearance
+\end{enumerate}
 
-Traditionally, transmission line capacities are calculated assuming unfavorable, static weather conditions such as 40$^\circ$C  ambient temperature and 0.6~m/s wind speed \cite{fernandezReviewDynamicLine2016}. This is referred to as Static Line Rating (SLR). By design, SLR underestimates the capacity of a transmission line and, when implemented in practice, leads to an underutilization of the transmission infrastructure. In contrast, Dynamic Line Rating (DLR) calculates the line capacity taking into account the prevailing weather conditions. Cold weather and wind cool overheated transmission lines, enabling the thermal rating to be raised. This results in key benefits in cost-efficiency, congestion reduction and better wind power integration \cite{erdincComprehensiveOverviewDynamic2020}.
+Weather based measuring of the thermal capacity is considered the simplest method to implement as well as the cheapest \cite{KARIMI2018600}.
+The assumed investment cost for the implementation of DLR is between 60-80 thousand \euro{} per km with a life time of 30a\cite{samweberProjektMeritOrder2016}.
+If Germans Transmission System Operators (TSOs) currently apply DLR, it is mainly based on regional and seasonal weather data, thus e.g. distinguishing between winter and summer operation \cite{bundesnetzagenturMonitoringReport20212022}.
+Hence, German TSOs do not exploit the full potential of DLR monitoring local, real time cooling effects.
+According to ENTSOE DLR can lead to an increase in line capacity of 200~\% compared to SLR \cite{entso-eDynamicLineRating}.
+However, the the German TSO Transnetbw for example only increase the DLR line capacity up to 50~\% compared to SLR \cite{transnetbwFreileitungsmonitoring}.
 
-- According to the grid development plan of the German gird agency, the grid operation should be optimised by DLR wherever possible \cite{bundesnetzagenturNetzentwicklungsplan202120352022}. \\
 
-- There are different methods how the thermal capacity for DLR can be measured:1. Weather measurement: Weather conditions are used to calculate the temperature of the conductor, 2. Conductor temperature measurement:Sensors along the line measure the temperature of the conductor, 3. Tension Measurement: Load cell measures the tension of the line to derive the clearance of the line, 4: Sag measurement: Monitoring of the security clearance \cite{albizuMethodsIncreasingRating2005}\\
+The literature provides case studies with DLR applied in small scale Energy System Optimization Models (ESOMs) \cite{liDayAheadSchedulingPower2019,dabbaghjamaneshEffectiveSchedulingReconfigurable2019,viaforaDayaheadDispatchOptimization2019}.
+Additionally, there is a DLR potential study on Germany however the study does not include an ESOM \cite{samweberProjektMeritOrder2016}.
 
-- weather based measuring of the thermal capacity is considered the simplest method to implement as well as the cheapest. \cite{KARIMI2018600}
+Therefore, literature is lacking of an extensive evaluation and assessment of DLR in higher scale ESOMs.
+In our analysis, we want to model a single country to ensure high spatial and temporal resolution of the model. 
+As country, we chose Germany due to the high reliability of the required input data. However, the model can be easily extended to regard other countries.
+In our previous paper \cite{EnhancingtheGermanTransmissionGrid2022}, we present our initial results showing the benefits of DLR in the German power system.
+In this study we expand our former study by adding a sensitivity analysis, using updated cost assumptions and doing further analysis.
 
-- If Germans Transmission System Operators (TSOs) currently apply DLR, it is mainly based on the seasonal weather data, thus e.g. distinguishing between winter and summer operation. \\
-
-- Therefore, German TSOs do not exploit the full potential of DLR monitoring local, real time cooling effects \cite{bundesnetzagenturMonitoringReport20212022}.
-
-- According to ENTSOE DLR can lead to an increase in line capacity of 200~\% compared to SLR. (https://www.entsoe.eu/Technopedia/techsheets/dynamic-line-rating-dlr)\\
-
--According to the German TSO Transnetbw, they increase the line capacity up to 50~\%. (https://www.transnetbw.de/de/unternehmen/portraet/innovationen/freileitungsmonitoring)\\
-
--in a study by FfE \cite{samweberProjektMeritOrder2016} for the German grid, they found an averaged over capacity with DLR of 42\% \\
-- their assumed cost for the implementation of DLR is 60 - 80 thousand € per km with a life time of 30a. \\
-
-The literature provides case studies with DLR applied in small scale Energy System Optimization Models (ESOMs) \cite{liDayAheadSchedulingPower2019,dabbaghjamaneshEffectiveSchedulingReconfigurable2019,viaforaDayaheadDispatchOptimization2019}. %Rena suggested a reference. However, is a simulation and not an optimisation, would not put this reference here. Results not comparable as different energy system.
-% IEEE paper Increase cross-border capacity to reduce market splitting of day-ahead electricity markets A dynamic line rating approach; Consentec paper: https://www.currenteurope.eu/wp-content/uploads/2021/12/currENT_Consentec_BenefitsOfInnovativeGridTechnologies_FinalReport_20211208_clean.pdf
-However, it is lacking of an extensive evaluation and assessment of DLR in higher scale ESOMs.
-
-- For our analysis, we only model a single country to ensure we can model a system in high spatial and temporal resolution. 
-\\ - As model,we chose Germany due to the reliability of the required data. However, the model can be easily extended to regard other countries.
-\\ - in our previous paper \cite{EnhancingtheGermanTransmissionGrid2022}, we did an initial study discussing the benefits of DLR in the German power system.
-\\ - In this study we want to extend our former study by adding a sensitivity analysis, using updated cost assumptions and doing further analysis
-
+\todo[inline]{hier muss später noch angepasst werden:}
 The article is structured as follows.
 Section~\ref{sec:methodology} describes the methodology of the DLR implementation (\ref{sec:dlr}) and the underlying power system modelling (\ref{sec:powersystem}). In Section~\ref{sec:study-cases}, we present two case studies for the German power system used throughout the paper. Section~\ref{sec:results} comprises the main results of the analysis with limitations outlined in Section~\ref{sec:limitations}. A conclusion is presented in Section~\ref{sec:conclusion}.
 
