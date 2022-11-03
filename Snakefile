@@ -178,7 +178,7 @@ rule plot_bars:
         network_slr="results/de{year}_{clusters}_nodes_{opts}_dlr1.0_v{angle}.nc",
         curtailment_data="data/curtailment_carrier.csv",
     output:
-        operation="figures/de{year}_{clusters}_nodes_{opts}_dlr{rating}_v{angle}/operation_bar.{ext}",
+        operation_difference="figures/de{year}_{clusters}_nodes_{opts}_dlr{rating}_v{angle}/operation_difference_bar.{ext}",
         capacity="figures/de{year}_{clusters}_nodes_{opts}_dlr{rating}_v{angle}/capacity_bar.{ext}",
         curtailment="figures/de{year}_{clusters}_nodes_{opts}_dlr{rating}_v{angle}/curtailment_bar.{ext}",
         relative_curtailment="figures/de{year}_{clusters}_nodes_{opts}_dlr{rating}_v{angle}/relative_curtailment_bar.{ext}",

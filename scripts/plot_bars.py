@@ -89,16 +89,16 @@ def get_costs(n):
     return costs
 
 
-def plot_operation(ax, networks):
+def plot_operation_difference(ax, networks):
+    ref = networks[0]
     operation = pd.concat((get_operation(n) for n in networks), axis=1)
     operation /= 1e6  # in TWh
     operation = operation["Dynamic Line Rating"] - operation["Static Line Rating"]
     operation.sort_values(ascending=False, inplace=True)
-    # operation.plot(kind="barh", ax=ax, zorder=4, legend="reverse")
-    operation.plot(kind="barh", ax=ax, zorder=4)
-    # ax.legend(loc="lower center", bbox_to_anchor=(0.5, 1.02), frameon=False)
+
+    colors = ref.carriers.groupby("group").color.first()[operation.index]
+    operation.plot(kind="barh", ax=ax, zorder=4, color=colors, alpha=0.7)
     ax.grid(linestyle="--", linewidth=0.5, alpha=0.5, zorder=2)
-    # ax.set_yticklabels(slr.carriers.nice_name[operation.index])
     ax.set_xlabel("Energy [TWh]")
     ax.set_ylabel("")
     ax.set_title("Generation of DLR compared to SLR ")

@@ -13,6 +13,7 @@ scenario_2020:
   figure:
     [
       "operation_map",
+      "operation_difference_bar",
       "capacity_map",
       "congestion_map",
       "curtailment_bar",
@@ -37,6 +38,7 @@ scenario_2030:
   figure:
     [
       "operation_map",
+      "operation_difference_bar",
       "capacity_map",
       "congestion_map",
       "curtailment_bar",
@@ -62,6 +64,7 @@ scenario_2035:
   figure:
     [
       "operation_map",
+      "operation_difference_bar",
       "capacity_map",
       "congestion_map",
       "curtailment_bar",
@@ -151,8 +154,8 @@ plotting:
       refsize: 1.e+6 # at what capacity should circle be drawn
       line_width_factor: 1
   bar:
-    operation:
-      figsize: [5, 5]
+    operation_difference:
+      figsize: [5, 3]
     cost:
       figsize: [5, 5]
     capacity:

@@ -5,7 +5,6 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 from common import keys, load_network
-from matplotlib.style import available
 from plot_maps import scale_bus_sizes, scale_line_widths
 
 font = font_manager.FontProperties(family="Times New Roman", style="normal", size=11)
@@ -53,7 +52,11 @@ def get_congestion_correlation(n):
     congestion = (n.pnl(c).mu_lower.abs() + n.pnl(c).mu_upper.abs()).round(3) != 0
     cogestion = congestion.sum(axis=1)
 
-    keys = ["Potential / Load", "Number of congested lines", "Curtailment [GW]"]
+    keys = [
+        "Potential / Load",
+        "Number of congested lines",
+        "Curtailment [GW]",
+    ]
     df = pd.concat([over_capacity, cogestion, curtailment / 1e3], axis=1, keys=keys)
     return df.reset_index()
 
@@ -121,24 +124,40 @@ def plot_line_overlay(networks, line_width_factor=None, bus_size_factor=None):
 
 def plot_potential_correlation(n):
     potential = get_absolute_potential(n)
-
     potential["normed"] = potential.generation / potential.capacity
+    potential = potential.replace({"carrier": n.carriers.nice_name})
+
+    nbins = 40
+
     new = []
     for carrier in potential.carrier.unique():
         cpotential = potential[potential.carrier == carrier].sort_values("normed")
         cpotential["order"] = np.arange(len(cpotential))
-        cpotential["order_groups"] = pd.cut(cpotential.order, 73)
+        cpotential["order_groups"] = pd.cut(cpotential.order, nbins)
         cpotential["normed_groups"] = cpotential.groupby(
             "order_groups"
         ).normed.transform("mean")
         new.append(cpotential)
     potential = pd.concat(new, ignore_index=True)
 
-    carriers = n.carriers.loc[potential.carrier.unique()]
-    color = carriers.set_index("nice_name").color.to_dict()
-    potential.replace(dict(carrier=n.carriers.nice_name), inplace=True)
+    fig, (ax, ax2) = plt.subplots(
+        2,
+        figsize=(5, 5.5),
+        sharex=True,
+        gridspec_kw={"height_ratios": (1, 2)},
+    )
+    sns.histplot(
+        data=potential,
+        x="normed",
+        hue="carrier",
+        bins=nbins,
+        ax=ax,
+        legend=False,
+    )
 
-    fig, ax = plt.subplots(figsize=(5, 3.5))
+    ax.set_ylim(top=1200)
+    ax.set_ylabel("Observations")
+
     sns.lineplot(
         data=potential,
         x="normed_groups",
@@ -146,13 +165,13 @@ def plot_potential_correlation(n):
         hue="carrier",
         style="carrier",
         estimator="mean",
-        ax=ax,
+        ax=ax2,
     )
-    ax.legend(title="")
-    ax.set_xlim(0, 1)
-    ax.set_xlabel("Total Generation / Total Capacity")
-    ax.set_ylabel("Total DLR / Total SLR")
-    ax.grid(True, linestyle="--", linewidth=0.5)
+    ax2.legend(title="")
+    ax2.set_xlim(0, 1)
+    ax2.set_xlabel("Capacity Factor")
+    ax2.set_ylabel("Total DLR / Total SLR")
+    # ax.grid(True, linestyle="--", linewidth=0.5)
     fig.tight_layout()
     return fig
 
@@ -186,7 +205,11 @@ def plot_congestion_correlation(n):
         ax.set_xlim(left=0)
     fig.tight_layout()
     fig.colorbar(
-        sm, ax=axes, orientation="horizontal", label="Curtailment [GW]", fraction=0.1
+        sm,
+        ax=axes,
+        orientation="horizontal",
+        label="Curtailment [GW]",
+        fraction=0.1,
     )
     return fig
 
@@ -217,10 +240,12 @@ if __name__ == "__main__":
 
         snakemake = mock_snakemake(
             "plot_grid_stats",
-            year="2030",
+            year="2020",
             clusters="all",
-            opts="Co2L-RE0.8-Ep",
+            opts="Co2L-BL-Ep",
             ext="pdf",
+            angle="",
+            rating="",
         )
 
     slr = load_network(snakemake.input.network_slr, name="Static Line Rating")

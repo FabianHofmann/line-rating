@@ -58,7 +58,7 @@ def add_load_shedding_color(n):
     if "Load" in n.carriers.index:
         n.carriers.loc["load", "color"] = "purple"
         n.carriers.loc["load", "co2_emissions"] = 0
-        n.carriers.loc["load", "nice_name"] = "Load shedding"
+        n.carriers.loc["load", "nice_name"] = "Load Shedding"
         n.remove("Carrier", "Load")
     return n
 
