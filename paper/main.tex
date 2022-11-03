@@ -79,12 +79,31 @@ The literature provides case studies with DLR applied in small scale Energy Syst
 Additionally, there is a DLR potential study on Germany however the study does not include an ESOM \cite{samweberProjektMeritOrder2016}.
 
 Therefore, literature is lacking of an extensive evaluation and assessment of DLR in higher scale ESOMs.
-In our analysis, we want to model a single country to ensure high spatial and temporal resolution of the model. 
+In our analysis, we want to model a single country to ensure high spatial and temporal resolution of the model.
 As country, we chose Germany due to the high reliability of the required input data. However, the model can be easily extended to regard other countries.
 In our previous paper \cite{EnhancingtheGermanTransmissionGrid2022}, we present our initial results showing the benefits of DLR in the German power system.
 In this study we expand our former study by adding a sensitivity analysis, using updated cost assumptions and doing further analysis.
 
-\todo[inline]{hier muss später noch angepasst werden:}
+- If Germans Transmission System Operators (TSOs) currently apply DLR, it is mainly based on the seasonal weather data, thus e.g. distinguishing between winter and summer operation. \\
+
+- Therefore, German TSOs do not exploit the full potential of DLR monitoring local, real time cooling effects \cite{bundesnetzagenturMonitoringReport20212022}.
+
+- According to ENTSOE DLR can lead to an increase in line capacity of 200~\% compared to SLR. (https://www.entsoe.eu/Technopedia/techsheets/dynamic-line-rating-dlr)\\
+
+-According to the German TSO Transnetbw, they increase the line capacity up to 50~\%. (https://www.transnetbw.de/de/unternehmen/portraet/innovationen/freileitungsmonitoring)\\
+
+-in a study by FfE \cite{samweberProjektMeritOrder2016} for the German grid, they found an averaged over capacity with DLR of 42\% \\
+- their assumed cost for the implementation of DLR is 60 - 80 thousand € per km with a life time of 30a. \\
+
+The literature provides case studies with DLR applied in small scale Energy System Optimization Models (ESOMs) \cite{liDayAheadSchedulingPower2019,dabbaghjamaneshEffectiveSchedulingReconfigurable2019,viaforaDayaheadDispatchOptimization2019}. %Rena suggested a reference. However, is a simulation and not an optimisation, would not put this reference here. Results not comparable as different energy system.
+% IEEE paper Increase cross-border capacity to reduce market splitting of day-ahead electricity markets A dynamic line rating approach; Consentec paper: https://www.currenteurope.eu/wp-content/uploads/2021/12/currENT_Consentec_BenefitsOfInnovativeGridTechnologies_FinalReport_20211208_clean.pdf
+However, it is lacking of an extensive evaluation and assessment of DLR in higher scale ESOMs.
+
+- For our analysis, we only model a single country to ensure we can model a system in high spatial and temporal resolution.
+\\ - As model,we chose Germany due to the reliability of the required data. However, the model can be easily extended to regard other countries.
+\\ - in our previous paper \cite{EnhancingtheGermanTransmissionGrid2022}, we did an initial study discussing the benefits of DLR in the German power system.
+\\ - In this study we want to extend our former study by adding a sensitivity analysis, using updated cost assumptions and doing further analysis
+
 The article is structured as follows.
 Section~\ref{sec:methodology} describes the methodology of the DLR implementation (\ref{sec:dlr}) and the underlying power system modelling (\ref{sec:powersystem}). In Section~\ref{sec:study-cases}, we present two case studies for the German power system used throughout the paper. Section~\ref{sec:results} comprises the main results of the analysis with limitations outlined in Section~\ref{sec:limitations}. A conclusion is presented in Section~\ref{sec:conclusion}.
 
@@ -97,7 +116,7 @@ Section~\ref{sec:methodology} describes the methodology of the DLR implementatio
 
 The key concept of DLR is based on a dynamic estimation of the maximally allowed electrical current, also referred to as ampacity, for the conducting material.
 The ampacity is set such that the conductor does not surpass the maximally allowed temperature  after which impermissible sag of the line or hardware damage can be expected \cite{KARIMI2018600}.
-There are two widely used standards to calculate the ampacity of a conductor, namely the IEEE and the CIGRE standard \cite{ieeeIEEEStd738}, \cite{TechnicalBrochure2072002}. 
+There are two widely used standards to calculate the ampacity of a conductor, namely the IEEE and the CIGRE standard \cite{ieeeIEEEStd738}, \cite{TechnicalBrochure2072002}.
 According to \cite{simmsComparativeAnalysisDynamic2013}, the the IEEE standard is a more conservative method to calculate the ampacity of a transmission line compared to CIGRE.
 Therefore, for simulating the effect of DLR in our model, we follow the IEEE standard.
 
@@ -122,7 +141,7 @@ which for three-phase electric power transmission operating at voltage level $V$
     P_{max} = \sqrt{3} \cdot I_{max} \cdot V
 \end{align}
 
-The IEEE standard is implemented Atlite \cite{hofmannAtliteLightweightPython2021}, a Python package used for converting weather data into renewable power potentials. Atlite obtains the weather data from the ECMWF Reanalysis v5 (ERA5) dataset providing various weather-related variables in a hourly resolution on a $0.25^\circ \times 0.25^\circ$ grid. 
+The IEEE standard is implemented Atlite \cite{hofmannAtliteLightweightPython2021}, a Python package used for converting weather data into renewable power potentials. Atlite obtains the weather data from the ECMWF Reanalysis v5 (ERA5) dataset providing various weather-related variables in a hourly resolution on a $0.25^\circ \times 0.25^\circ$ grid.
 With Atlite, we overlap every weather cell with the given transmission line and calculate its ampacity according to Equation~\ref{ampacity}. If multiple weather grid cells overlap with a transmission line, the grid cell with the most unfavorable condition provides the ampacity for the line. This is illustrated in Figure~\ref{fig:line-rating-calculation}.
 
 \begin{figure}
@@ -151,7 +170,7 @@ Data on the transmission grid, power plants, renewable potentials and demand for
 The representative network of Germany comprises all 256~substations and 333~transmission lines operating at 220~kV and above. Electrical parameters of transmission lines are derived by mapping voltage level of the lines to standard line types given in \cite{oedingElektrischeKraftwerkeUnd2011}.
 The demand data and renewable profile data, provided by Atlite, have an hourly resolution.
 
-For DLR scenarios, the transmission capacity per line and time step is given by the formulation in Section~\ref{sec:dlr}, for SLR scenarios by the standard static transmission capacities. As the DLR scenario is calculated with averaged hourly wind speed data, sub-hourly wind speed fluctuations are neglected. This leads to a slightly overestimated $P_{max}$, which we consequently scale down by an empirically derived factor of $0.95$, see \ref{dlr_factor} for details. Furthermore, we account for N-1 network security in both SLR and DLR scenarios by restricting the power transmission P per line to $-0.7\,P_{max} \le P \le 0.7\,P_{max}$ leaving a 30\% capacity buffer \cite{brownOptimisingEuropeanTransmission2016}. 
+For DLR scenarios, the transmission capacity per line and time step is given by the formulation in Section~\ref{sec:dlr}, for SLR scenarios by the standard static transmission capacities. As the DLR scenario is calculated with averaged hourly wind speed data, sub-hourly wind speed fluctuations are neglected. This leads to a slightly overestimated $P_{max}$, which we consequently scale down by an empirically derived factor of $0.95$, see \ref{dlr_factor} for details. Furthermore, we account for N-1 network security in both SLR and DLR scenarios by restricting the power transmission P per line to $-0.7\,P_{max} \le P \le 0.7\,P_{max}$ leaving a 30\% capacity buffer \cite{brownOptimisingEuropeanTransmission2016}.
 
 
 % Finally, since the error of the linearized power flow approximation increases with the voltage angle differences in the system \cite{dvijothamErrorBoundsDC2016}, we restrict the voltage angle difference $\Delta\theta$ across a line to maximally 30$^\circ$ by introducing the constraint
@@ -163,13 +182,13 @@ For DLR scenarios, the transmission capacity per line and time step is given by 
 
 \section{Study Cases}
 \label{sec:study-cases}
-In the following, we present two study cases. These simulate the year 2019 for short-term benefits (i.e. by running an operational optimization) and 2030 for long-term benefits (i.e. by running a capacity expansion optimization). Both years are modelled using DLR and SLR. The parameters settings for both study cases can be found in the \ref{tab:cases_parameters}.
+The presented work includes five scenarios. In the first scenario, the operation of the existing network is optimized for 2019 to validate the model and demonstrate the near-term system benefits of DLR. The four remaining scenarios cover the year 2030 and beyond to show the long-term benefits of DLR, running an investment optimization with a fixed renewable production share of 80\%, 85\%, 90\% and 95\% respectively. The parameters settings for the study cases can be found in the Appendix~\ref{tab:cases_parameters}.
 
-\subsection{Optimal Operation of the 2019 Power System}
-To quantify the effect of DLR on the existing power system, we choose the pre-pandemic year 2019 in which the system operated under relatively normal circumstances. Electrical load and renewable potentials are derived from historical data of the year 2019 \cite{muehlenpfordtTimeSeries2020}, transmission and generator infrastructure are aligned to the state of 2019, using selected data from \cite{hofmannFRESNAPowerplantmatchingV02022,openpowersystemdataDataPackageNational2017,wiegmansGridkitExtractEntsoE2016}. To approximate the operation of nuclear and lignite power plants mostly running at base load, we enforce a minimal requirement of operation, based on historical data from the ENTSO-E Transparency Platform  \cite{entso-eENTSOETransparencyPlatform2020}.
+\subsection{Optimal Operation for 2019}
+To quantify the effect of DLR on the existing power system, we choose the pre-pandemic year 2019 when operations were relatively average. Electrical load and renewable potentials are derived from historical data of the year 2019 \cite{muehlenpfordtTimeSeries2020}, transmission and generation infrastructure are aligned to the state of 2019, using selected data from \cite{hofmannFRESNAPowerplantmatchingV02022,openpowersystemdataDataPackageNational2017,wiegmansGridkitExtractEntsoE2016}. To approximate the operation of nuclear and lignite power plants mostly running at base load, we enforce a minimal requirement of operation, based on historical data from the ENTSO-E Transparency Platform  \cite{entso-eENTSOETransparencyPlatform2020}.
 
-\subsection{Optimal Investment and Operation of the 2030 Power System }
-In contrast to the 2019 scenario, the 2030 scenario of the German power system allows capacity expansion of renewable power plants, gas turbines, batteries and hydrogen infrastructure. From the existing power plant fleet, only those with a decommissioning date later than 2030 are included. Further, grid expansion projects from the TYNDP \cite{entsoeTYNDP2018Project2018}, which are reported to be built by 2030, are added to the grid infrastructure. In order to align the scenario with the goal of the federal government, 80\% of the electricity supply has to come from wind, solar and hydro power plants \cite{federalministryofeconomicaffairsandclimateactionGermanyCurrentClimate2022}. The electrical load time series, originally representing the base year 2013 of PyPSA-Eur \cite{horschjonasPyPSAEurOpenOptimisation2022}, is scaled up to meet the total predicted demand for 2030 \cite{kemmlerEntwicklungBruttostromverbrauchsBis2021}.
+\subsection{Optimal Investment 2030 and beyond}
+In the scenarios for 2030 and beyond the capacity of renewable power plants, gas turbines, batteries and hydrogen infrastructure are optimized. From the existing power plant fleet, only those with a decommissioning date later than 2030 are included. In addition, the grid infrastructure is supplemented by grid expansion projects from the TYNDP \cite{entsoeTYNDP2018Project2018} to be built by 2030. For each of the scenarios we enforce a production share of 80\%, 85\%, 90\% and 95\% respectively from renewables, i.e. solar, wind, biomass and hydro facilities. To properly reflect the future operational costs of fossil generators, we impose a price of 120 Euro per tonne CO$_2$. For all four scenarios, the electrical load time series, originally representing the default year 2013 of PyPSA-Eur \cite{horschjonasPyPSAEurOpenOptimisation2022}, is scaled up to meet the predicted total net demand for 2030 of 555~TWh \cite{kemmlerEntwicklungBruttostromverbrauchsBis2021}. We place particular emphasis on the 80\% renewables scenario to assess DLR as a supporting measure to reach the German government's target of 80\% renewable power supply by 2030 \cite{federalministryofeconomicaffairsandclimateactionGermanyCurrentClimate2022}.
 
 
 \section{Results}
