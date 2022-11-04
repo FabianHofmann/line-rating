@@ -101,7 +101,7 @@ def plot_operation_difference(ax, networks):
     ax.grid(linestyle="--", linewidth=0.5, alpha=0.5, zorder=2)
     ax.set_xlabel("Energy [TWh]")
     ax.set_ylabel("")
-    ax.set_title("Generation of DLR compared to SLR ")
+    ax.set_title("Supplied Energy: DLR vs. SLR ")
 
 
 def plot_capacity(ax, networks):
