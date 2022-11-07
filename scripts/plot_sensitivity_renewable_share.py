@@ -17,7 +17,7 @@ if __name__ == "__main__":
 
         snakemake = mock_snakemake(
             "plot_sensitivity_renewable_share",
-            year="2035",
+            year="30",
             opts="Co2L-RE0.8-Ep",
             clusters="all",
             rating="",
@@ -48,11 +48,15 @@ if __name__ == "__main__":
 
     costs.div(1e6).plot(
         color=colors,
+        title=list(costs.columns),
+        legend=False,
         subplots=True,
-        figsize=(5, 10),
+        figsize=(6, 5),
+        layout=(4, 2),
+        sharex=True,
+        xlabel="Renewable production share [%]",
     )
     fig = plt.gcf()
-    plt.xlabel("Renewable production share [%]")
     fig.supylabel("Cost savings [m€]")
     plt.xticks(costs.index)
 

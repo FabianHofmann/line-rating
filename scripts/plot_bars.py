@@ -157,11 +157,11 @@ def plot_historical_curtailment(ax, networks):
 
 def plot_cost(ax, networks):
     costs = get_costs(networks[0]) - get_costs(networks[1])
-    costs /= 1e9
+    costs /= 1e6
     costs.plot.barh(stacked=True, ax=ax, zorder=4, legend="reverse")
     ax.grid(linestyle="--", linewidth=0.5, alpha=0.5, zorder=2)
     ax.set_ylabel("")
-    ax.set_xlabel("Cost [bn€]")
+    ax.set_xlabel("Cost [m€]")
     ax.set_title("Total Cost Savings")
 
 

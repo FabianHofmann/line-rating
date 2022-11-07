@@ -159,7 +159,7 @@ plotting:
     cost:
       figsize: [5, 5]
     capacity:
-      figsize: [5, 8]
+      figsize: [5, 6]
     relative_curtailment:
       figsize: [6, 4]
     curtailment:

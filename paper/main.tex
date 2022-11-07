@@ -217,48 +217,63 @@ As we show below, the reason for the shift in generation is the improved transmi
 Fig.~\ref{fig:congestion-correlation-2019} shows the number of congested lines as a function of the total renewable power potential relative to the total load in each time step. The color and size of the dots indicate the renewable curtailment. It stands out that DLR (right panel) leads to a significant decrease in transmission congestion as well as curtailment. While the SLR scenario (left panel) reveals up to 16 congested lines, maximally 8 lines are congested in the the DLR scenario. In particular, at times with a shortage of renewable energy (Potential / Load $<$ 1) the SLR system has to curtail 7 times more power due to transmission congestion. This does not hold for the DLR scenario. The same accounts for times with renewable excess power (Potential / Load $>$ 1), where power is mainly curtailed due to oversupply in the DLR scenario and curtailed due to oversupply and congestion in the SLR scenario.
 
 
-\subsection{Optimal Investment 2030 and beyond}
+\subsection{Optimal Investment 2030}
 
-In the scenarios for 2030 and beyond the capacity of renewable power plants, gas turbines, batteries and hydrogen infrastructure are optimized. From the existing power plant fleet, only those with a decommissioning date later than 2030 are included. In addition, the grid infrastructure is supplemented by grid expansion projects from the TYNDP \cite{entsoeTYNDP2018Project2018} to be built by 2030. For each of the scenarios we enforce a production share of 80\%, 85\%, 90\% and 95\% respectively from renewables, i.e. solar, wind, biomass and hydro facilities. To properly reflect the future operational costs of fossil generators, we impose a price of 120 Euro per tonne CO$_2$. For all four scenarios, the electrical load time series, originally representing the default year 2013 of PyPSA-Eur \cite{horschjonasPyPSAEurOpenOptimisation2022}, is scaled up to meet the predicted total net demand for 2030 of 555~TWh \cite{kemmlerEntwicklungBruttostromverbrauchsBis2021}.
+In the scenario for 2030 the capacity of renewable power plants, gas turbines, batteries and hydrogen infrastructure are optimized. From the existing power plant fleet, only those with a decommissioning date later than 2030 are included. In addition, the grid infrastructure is supplemented by grid expansion projects from the TYNDP \cite{entsoeTYNDP2018Project2018} to be built by 2030.
+We enforce a production share of 80\% for renewable technologies, i.e. solar, wind, biomass and hydro facilities. To properly reflect the future operational costs of fossil generators, we impose a price of 120 Euro per tonne CO$_2$. The electrical load time series, originally representing the default year 2013 of PyPSA-Eur \cite{horschjonasPyPSAEurOpenOptimisation2022}, is scaled up to meet the predicted total net demand for 2030 of 555~TWh \cite{kemmlerEntwicklungBruttostromverbrauchsBis2021}.
 
 
-%In the 2030 capacity expansion scenario, the impact of DLR becomes even more prominent.
-Table \ref{tab:installed capacity} illustrates the optimal capacity expansion and installed capacities for the SLR and DLR scenario. In comparison to today's capacity layout, the installed capacity of renewable generators increases by a factor of 2.55 and 2.69, for DLR and SLR respectively. Largely, this increase is driven by the constraint that at least 80\% of the total power generation has to come from renewables. Note that in none of the scenarios, additional gas turbines are added to the system. However, a strong hydrogen infrastructure for power-to-gas-to-power storage is built out, which serves as backup for periods with low renewable potentials.
+Table \ref{tab:installed capacity} shows the optimal capacities the 80\% renewable scenario with SLR and DLR in comparison to today's capacities. In comparison to today's capacity layout, the installed capacity of renewable generators increases by a factor of 2.55 and 2.69, for DLR and SLR respectively. Largely, this increase is driven by the constraint that at least 80\% of the total power generation has to come from renewables. Note that in none of the scenarios, additional gas turbines are added to the system. However, a strong hydrogen infrastructure for power-to-gas-to-power storage is built out, which serves as backup for periods with low renewable potentials.
 
 In comparison to SLR, the system with DLR builds out more offshore wind and less onshore wind, solar and hydrogen infrastructure. In particular, the DLR implementation leverages the offshore wind potentials which, in contrast to the onshore wind and solar power, supply the system with a relatively steady power feed-in. This determining factor also reduces the need for long-term energy storage, embodied by the H$_2$ infrastructure.
 
 \begin{table}
-    \caption{Capacity expansion / installed capacity in 2030 study case}
-    \begin{tabularx}{\linewidth}{lrrrr}
-        {}               & \multicolumn{2}{l}{Static Line Rating} & \multicolumn{2}{l}{Dynamic Line Rating}                          \\
-        {}               & Exp.~[GW]                              & Inst.~[GW]                              & Exp.~[GW] & Inst.~[GW] \\
+    \caption{Comparison of capacity total for today and the 2030 scenario with a 80\% renewable share with and without Dynamic Line Rating.}
+    \centering
+    \begin{tabular}{lrrrc}
+                       & Today  & SLR   & DLR & Unit \\
         \hline
-        Offshore wind    & 7.6                                    & 15.13                                   & 14.62     & 22.15      \\
-        Onshore wind     & 59.72                                  & 112.91                                  & 50.27     & 103.46     \\
-        Solar            & 118.57                                 & 167.61                                  & 105.75    & 154.79     \\
-        H$_2$ Fuel cells & 19.07                                  & 19.07                                   & 16.4      & 16.4       \\
+        Solar          & 64         & 188.6 & 178 & GW \\
+        Onshore Wind   & 57.7         & 101.2 & 103 & GW\\
+        Offshore Wind  & 8          & 9.3   & 8.8   & GW\\
+        Battery (discharge)  & - & 15.8 & 13 & GW\\
+        Battery Storage & - & 90.5 & 73.6 & GWh\\
+        H$_2$ Electrolysis & - & 2.3 & 1.6 & GW\\
+        H$_2$ Fuel Cell & - & 0.9 & 0.6 & GW\\
+        H$_2$ Storage & - & 77.1 & 54.4 & GWh\\
         \hline
-    \end{tabularx}
+    \end{tabular}
     \label{tab:installed capacity}
 \end{table}
 
 As depicted in Fig.~\ref{fig:load-duration-2030}, transmission congestion is significantly reduced in the DLR scenario. The figure shows the duration curve of the total congestion throughout the simulation year. In the DLR scenario, approximately half the year is free of congestion while, for SLR, this situation can only be observed for a few hundred hours. Furthermore, the number of maximally congested lines drops from 58 to 14 when going from SLR to DLR.
 
-% \begin{figure}[htpb]
-%     \centering
-%     \includegraphics[width=.7\linewidth]{de2030_all_nodes_Co2L-RE0.8-Ep_dlr/congestion_duration_curve.pdf}
-%     \caption{Duration curve for number of congested lines in the 2030 study case.}
-%     \label{fig:load-duration-2030}
-% \end{figure}
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=.7\linewidth]{de2030_all_nodes_Co2L-RE0.8-Ep_dlr_v/congestion_duration_curve.pdf}
+    \caption{Duration curve for number of congested lines in the 2030 study case.}
+    \label{fig:load-duration-2030}
+\end{figure}
 
 Fig.~\ref{fig:cost-bar-2030} illustrates the cost savings for the DLR scenario compared to the SLR scenario. Note that positive costs represent higher expenses for the DLR scenario. The capital cost from Fig.~\ref{fig:cost-bar-2030} directly correlates to the capacity expansion given in Table \ref{tab:installed capacity}. We observe significantly less OPEX for fossil energy carriers in the DLR scenario. The total cost savings for the DLR scenario are 3.4\% which corresponds to 908~mil~Euro per year. %\todo[inline]{more positive framing}
 
-% \begin{figure}[htpb]
-%     \centering
-%     \includegraphics[width=.7\linewidth]{de2030_all_nodes_Co2L-RE0.8-Ep_dlr/cost_bar.pdf}
-%     \caption{Savings of capital expenditures (CAPEX) and operational expenditures (OPEX) when going from SLR to DLR.  Positive costs represent higher expenses of DLR.}
-%     \label{fig:cost-bar-2030}
-% \end{figure}
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=.7\linewidth]{de2030_all_nodes_Co2L-RE0.8-Ep_dlr_v/cost_bar.pdf}
+    \caption{Savings of capital expenditures (CAPEX) and operational expenditures (OPEX) when going from SLR to DLR.  Positive costs represent higher expenses of DLR.}
+    \label{fig:cost-bar-2030}
+\end{figure}
+
+\subsection{Optimal Investment 2035}
+
+
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=\linewidth]{de2030_all_nodes_v/sensitivity_vres_costs.pdf}
+    \caption{Savings of capital expenditures when going from SLR to DLR.  Positive costs represent higher expenses of SLR.}
+    \label{fig:cost-bar-2030}
+\end{figure}
+
 
 \section{Limitations}
 \label{sec:limitations}
