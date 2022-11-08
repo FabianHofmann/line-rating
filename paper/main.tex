@@ -56,7 +56,7 @@ To overcome the mismatch between rapid installation of renewable generation and 
 The transmission of electricity dissipates resistive losses in form of heat. Therefore, the line capacity is limited by the maximally allowed temperature of the conductor ensuring a stable transmission.  This maximal line capacity is also regarded as thermal capacity.
 If the transmission line exceeds its thermal capacity, a safe operation of the transmission line cannot be ensured anymore due to clearance infringements and loss in tensile strength of the conductor \cite{fernandezReviewDynamicLine2016}.
 
-Traditionally, thermal capacity of a transmission line is calculated assuming unfavorable, static weather conditions such as 40$^\circ$C  ambient temperature and 0.6~m/s wind speed \cite{fernandezReviewDynamicLine2016}. This is referred to as Static Line Rating (SLR). 
+Traditionally, thermal capacity of a transmission line is calculated assuming unfavorable, static weather conditions such as 40$^\circ$C  ambient temperature and 0.6~m/s wind speed \cite{fernandezReviewDynamicLine2016}. This is referred to as Static Line Rating (SLR).
 By design, SLR underestimates the thermal capacity of a transmission line and, when implemented in practice, leads to an underutilization of the transmission infrastructure. On the other hand, Dynamic Line Rating (DLR) calculates the line capacity taking into account the prevailing weather conditions. Cold weather and wind cool overheated transmission lines, enabling the thermal capacity to be raised. This results in key benefits in cost-efficiency, congestion reduction and better wind power integration \cite{erdincComprehensiveOverviewDynamic2020}.
 
 According to the grid development plan of the German grid agency, the grid operation should be optimised with DLR wherever possible \cite{bundesnetzagenturNetzentwicklungsplan202120352022}.
@@ -164,7 +164,9 @@ For DLR scenarios, the transmission capacity per line and time step is given by 
 \section{Results}
 \label{sec:results}
 
-The presented work includes five scenarios. In the first scenario, the operation of the existing network is optimized for 2019 to validate the model and demonstrate the near-term system benefits of DLR. The four remaining scenarios cover the year 2030 and beyond to show the long-term benefits of DLR, running an investment optimization with a fixed renewable production share of 80\%, 85\%, 90\% and 95\% respectively. To assess DLR as a supporting measure to reach the German government's target of 80\% renewable power supply by 2030 \cite{federalministryofeconomicaffairsandclimateactionGermanyCurrentClimate2022}, we place particular emphasis on the 80\% renewables scenario. The parameters settings for the study cases can be found in the Appendix~\ref{tab:cases_parameters}.
+The presented work includes five scenarios. In the first scenario, the operation of the existing network is optimized for 2019 to validate the model and demonstrate the near-term system benefits of DLR. In the second scenario, we run an investment optimization for the year 2030 to show the long-term benefits of DLR.
+By enforcing a 80\% renewable production share, we are able to assess DLR as a supporting measure to reach the German government's target of 80\% renewable power supply by 2030 \cite{federalministryofeconomicaffairsandclimateactionGermanyCurrentClimate2022}.
+Looking at 2035 and beyond, we alter the renewable supply constraint to 85\%, 90\% and 95\% in the following three scenarios. The parameters settings for the study cases can be found in the Appendix~\ref{tab:cases_parameters}.
 
 \subsection{Optimal Operation for 2019}
 For quantifying the system benefits of DLR in the existing grid, we choose to model the pre-pandemic year 2019 when operations were relatively average. Electrical load and renewable potentials are derived from historical data of the year 2019 \cite{muehlenpfordtTimeSeries2020}, transmission and generation infrastructure are aligned to the state of 2019, using selected data from \cite{hofmannFRESNAPowerplantmatchingV02022,openpowersystemdataDataPackageNational2017,wiegmansGridkitExtractEntsoE2016}. To approximate the operation of nuclear and lignite power plants mostly running at base load, we enforce a minimal requirement of operation, based on historical data from the ENTSO-E Transparency Platform  \cite{entso-eENTSOETransparencyPlatform2020}.
@@ -219,32 +221,43 @@ Fig.~\ref{fig:congestion-correlation-2019} shows the number of congested lines a
 
 \subsection{Optimal Investment 2030}
 
-In the scenario for 2030 the capacity of renewable power plants, gas turbines, batteries and hydrogen infrastructure are optimized. From the existing power plant fleet, only those with a decommissioning date later than 2030 are included. In addition, the grid infrastructure is supplemented by grid expansion projects from the TYNDP \cite{entsoeTYNDP2018Project2018} to be built by 2030.
-We enforce a production share of 80\% for renewable technologies, i.e. solar, wind, biomass and hydro facilities. To properly reflect the future operational costs of fossil generators, we impose a price of 120 Euro per tonne CO$_2$. The electrical load time series, originally representing the default year 2013 of PyPSA-Eur \cite{horschjonasPyPSAEurOpenOptimisation2022}, is scaled up to meet the predicted total net demand for 2030 of 555~TWh \cite{kemmlerEntwicklungBruttostromverbrauchsBis2021}.
+In the scenario for 2030 the capacity of renewable power plants, gas turbines, batteries and hydrogen infrastructure are optimized. From the existing power plant fleet, only those with a decommissioning date later than 2030 are included. The grid infrastructure is supplemented by grid expansion projects from the TYNDP \cite{entsoeTYNDP2018Project2018} to be built by 2030.
+We enforce a supply of 80\% coming from renewable sources, i.e. solar, wind, biomass and hydro facilities. The electrical load time series, originally representing the default year 2013 of PyPSA-Eur \cite{horschjonasPyPSAEurOpenOptimisation2022}, is scaled up to meet the predicted total net demand for 2030 of 555~TWh \cite{kemmlerEntwicklungBruttostromverbrauchsBis2021}.
+The cost parameters are retrieved from the technology data-base published at \cite{lisazeyenPyPSATechnologydataTechnology2022}. In addition, to properly reflect the future operational costs of fossil generators, we impose a price of 120 Euro per tonne CO$_2$.
 
-
-Table \ref{tab:installed capacity} shows the optimal capacities the 80\% renewable scenario with SLR and DLR in comparison to today's capacities. In comparison to today's capacity layout, the installed capacity of renewable generators increases by a factor of 2.55 and 2.69, for DLR and SLR respectively. Largely, this increase is driven by the constraint that at least 80\% of the total power generation has to come from renewables. Note that in none of the scenarios, additional gas turbines are added to the system. However, a strong hydrogen infrastructure for power-to-gas-to-power storage is built out, which serves as backup for periods with low renewable potentials.
-
-In comparison to SLR, the system with DLR builds out more offshore wind and less onshore wind, solar and hydrogen infrastructure. In particular, the DLR implementation leverages the offshore wind potentials which, in contrast to the onshore wind and solar power, supply the system with a relatively steady power feed-in. This determining factor also reduces the need for long-term energy storage, embodied by the H$_2$ infrastructure.
-
-\begin{table}
-    \caption{Comparison of capacity total for today and the 2030 scenario with a 80\% renewable share with and without Dynamic Line Rating.}
+\begin{table}[h]
+    \caption{Comparison of a selection of capacity totals for today, reported at \cite{burgerInstalledPowerEnergyCharts} by the time of writing, and the optimized 2030 scenario with a 80\% renewable share with Static Line Rating and Dynamic Line Rating. }
     \centering
-    \begin{tabular}{lrrrc}
-                       & Today  & SLR   & DLR & Unit \\
+    \begin{tabular}{lrrrrc}
+                            & today & SLR   & DLR  & $\Delta$ & unit \\
         \hline
-        Solar          & 64         & 188.6 & 178 & GW \\
-        Onshore Wind   & 57.7         & 101.2 & 103 & GW\\
-        Offshore Wind  & 8          & 9.3   & 8.8   & GW\\
-        Battery (discharge)  & - & 15.8 & 13 & GW\\
-        Battery Storage & - & 90.5 & 73.6 & GWh\\
-        H$_2$ Electrolysis & - & 2.3 & 1.6 & GW\\
-        H$_2$ Fuel Cell & - & 0.9 & 0.6 & GW\\
-        H$_2$ Storage & - & 77.1 & 54.4 & GWh\\
+        Solar               & 64    & 188.6 & 178  & -10.6    & GW   \\
+        Onshore Wind        & 57.7  & 101.2 & 103  & +1.8     & GW   \\
+        Offshore Wind       & 8     & 9.3   & 8.8  & -0.5     & GW   \\
+        Natural Gas         & 32    & 26.5  & 26.7 & +0.2     & GW   \\
+        Battery (discharge) & -     & 15.8  & 13   & -2.8     & GW   \\
+        Battery Storage     & -     & 90.5  & 73.6 & -16.9    & GWh  \\
+        H$_2$ Electrolysis  & -     & 2.3   & 1.6  & -0.7     & GW   \\
+        H$_2$ Fuel Cell     & -     & 0.9   & 0.6  & -0.3     & GW   \\
+        H$_2$ Storage       & -     & 77.1  & 54.4 & -22.7    & GWh  \\
         \hline
     \end{tabular}
     \label{tab:installed capacity}
 \end{table}
+
+Table \ref{tab:installed capacity} shows a selection of optimal capacities for the systems with SLR and DLR in comparison to today's capacities. For the other technologies we do not perceive notable differences. The full set of capacity totals as well as the spatial capacity layout can be found in \ref{sec:2030-scenario-plots}.
+Roughly speaking, the optimal solution to meet the 2030 target requires tripling solar capacity, doubling wind capacity, and expanding batteries and hydrogen storage. Neither SLR nor DLR requires new fossil or nuclear generators.
+
+In a direct comparison, the DLR implementation results in a 10.8~GW reduction in newly installed solar capacities, while the differences between offshore and onshore are smaller, +1.8~GW and -0.5~GW, respectively. The DLR setup leads to a slight increase of 0.2~GW additional Natural Gas generators (CCGT + OCGT).
+Relatively large differences are perceived for battery installations and H$_2$ storage infrastructure: The optimal battery discharge capacity is reduced from 15.8~GW to 13~GW when implementing DLR, their total energy storage capacity from 90.5~GWh to 73.6~GWh. The optimal H$_2$ energy storage is reduced from 77.1~GW to 54.5~GW. In absolute terms, electrolysis and fuel cell capacities are reduced less, -0.7~GW and -0.3~GW, respectively, which however accounts for one third of the installed capacity.
+
+
+% TODO: Add CF numbers!
+
+From these numbers, we conclude three main trends. First, the implementation of DLR reduces the need for solar and storage infrastructure.
+
+In particular, the DLR implementation leverages the offshore wind potentials which, in contrast to the onshore wind and solar power, supply the system with a relatively steady power feed-in. This determining factor also reduces the need for long-term energy storage, embodied by the H$_2$ infrastructure.
+
 
 As depicted in Fig.~\ref{fig:load-duration-2030}, transmission congestion is significantly reduced in the DLR scenario. The figure shows the duration curve of the total congestion throughout the simulation year. In the DLR scenario, approximately half the year is free of congestion while, for SLR, this situation can only be observed for a few hundred hours. Furthermore, the number of maximally congested lines drops from 58 to 14 when going from SLR to DLR.
 
@@ -297,14 +310,14 @@ We conclude that in urgent need for decarbonizing the German power system, DLR i
 \subsection{Study Cases Parameters}\label{tab:cases_parameters}
 \begin{tabularx}{\linewidth}{>{\bfseries}l  X  X}
     \hline
-    { }                      & 2019         & 2030                        \\
+    { }                      & 2019                         & 2030                                                          \\
     \hline
-    Generator capacity                                                    \\expansion    &            no &                           yes \\
-    CO2 Limit                & 222 mil tons & 175 mil tons                \\
-    Base load of nuclear                                                  \\and lignite &           yes &                            no \\
-    Renewable generation                                                  \\constraint &            no &      80\% renewable generation \\
-    Generator infrastructure & 2019         & 2019 still existing in 2030 \\
-    Electrical load          & 605 TWh      & 658 TWh                     \\
+    Generator capacity                                                                                                      \\expansion    &            no &                           yes \\
+    CO2 Limit                & 222 mil tons                 & 175 mil tons                                                  \\
+    Base load of nuclear                                                                                                    \\and lignite &           yes &                            no \\
+    Renewable generation                                                                                                    \\constraint &            no &      80\% renewable generation \\
+    Generator infrastructure & historic capacities for 2019 & capacities of 2022 with decommissioning dates later then 2030 \\
+    Electrical load          & 605 TWh                      & 658 TWh                                                       \\
     \hline
 \end{tabularx}
 
@@ -322,6 +335,31 @@ In the following equation,
     \sqrt{\overline{v}_{wind}}=\sqrt{\frac{1}{n}\sum_{i}^{n}{v_{wind,i}}} \ge \frac{1}{n}\sum_{i}^{n}{\sqrt{v_{wind_i}}}
 \end{align*}
 $v_{wind,i}$ corresponds to an sub-hourly wind speed data point going from $i$ to $n$, i.e. from $1$ to $6$ when regarding 10-minute wind speed data. The Equation shows that the root of the averaged sub-hourly wind speed is greater equal the average of the rooted sub-hourly wind speed.
+
+\subsection{Scenario Plots}
+
+\subsubsection{2019}
+
+\subsubsection{2030}
+\label{sec:2030-scenario-plots}
+
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=.7\linewidth]{de2030_all_nodes_Co2L-RE0.8-Ep_dlr_v/capacity_bar.pdf}
+    \caption{Optimized capacities for the 2030 scenario with 80\% renewable supply.}
+    \label{fig:capacity-bar-2030}
+\end{figure}
+
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=\linewidth]{de2030_all_nodes_Co2L-RE0.8-Ep_dlr_v/capacity_map.pdf}
+    \caption{Optimized capacities for the 2030 scenario with 80\% renewable supply.}
+    \label{fig:capacity-bar-2030}
+\end{figure}
+
+
+\subsubsection{2035}
+
 
 \todo[inline]{Transnet BW reference not formatted correctly}
 \clearpage

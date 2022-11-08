@@ -17,7 +17,7 @@ if __name__ == "__main__":
 
         snakemake = mock_snakemake(
             "plot_sensitivity_renewable_share",
-            year="30",
+            year="2030",
             opts="Co2L-RE0.8-Ep",
             clusters="all",
             rating="",
@@ -51,7 +51,7 @@ if __name__ == "__main__":
         title=list(costs.columns),
         legend=False,
         subplots=True,
-        figsize=(6, 5),
+        figsize=(7, 5),
         layout=(4, 2),
         sharex=True,
         xlabel="Renewable production share [%]",
