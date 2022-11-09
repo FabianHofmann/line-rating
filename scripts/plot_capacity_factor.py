@@ -10,10 +10,10 @@ import pandas as pd
 import pypsa
 
 slr = pypsa.Network(
-    "/home/fabian/papers/line-rating/results/de2030_all_nodes_Co2L-RE0.8-Ep_dlr1.0_v.nc"
+    "/home/fabian/papers/line-rating/results/de2030_all_nodes_Co2L-RE1.0-Ep_dlr1.0_v.nc"
 )
 dlr = pypsa.Network(
-    "/home/fabian/papers/line-rating/results/de2030_all_nodes_Co2L-RE0.8-Ep_dlr_v.nc"
+    "/home/fabian/papers/line-rating/results/de2030_all_nodes_Co2L-RE1.0-Ep_dlr_v.nc"
 )
 
 
@@ -34,13 +34,11 @@ supply = [
     dlr.statistics.supply(aggregate_time="sum"),
 ]
 supply = pd.concat(supply, axis=1, keys=["SLR", "DLR"])
-
 supply.loc["Generator"].plot.bar()
 
 curtailment = [
     slr.statistics.curtailment(aggregate_time="sum"),
     dlr.statistics.curtailment(aggregate_time="sum"),
 ]
-curtailment = -pd.concat(curtailment, axis=1, keys=["SLR", "DLR"])
-
+curtailment = pd.concat(curtailment, axis=1, keys=["SLR", "DLR"])
 curtailment.loc["Generator"].plot.bar()
