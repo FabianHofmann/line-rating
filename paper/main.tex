@@ -219,7 +219,7 @@ As we show below, the reason for the shift in generation is the improved transmi
 Fig.~\ref{fig:congestion-correlation-2019} shows the number of congested lines as a function of the total renewable power potential relative to the total load in each time step. The color and size of the dots indicate the renewable curtailment. It stands out that DLR (right panel) leads to a significant decrease in transmission congestion as well as curtailment. While the SLR scenario (left panel) reveals up to 16 congested lines, maximally 8 lines are congested in the the DLR scenario. In particular, at times with a shortage of renewable energy (Potential / Load $<$ 1) the SLR system has to curtail 7 times more power due to transmission congestion. This does not hold for the DLR scenario. The same accounts for times with renewable excess power (Potential / Load $>$ 1), where power is mainly curtailed due to oversupply in the DLR scenario and curtailed due to oversupply and congestion in the SLR scenario.
 
 
-\subsection{Optimal Investment 2030}
+\subsection{Optimal Investment 2030}\label{sec:2030}
 
 In the scenario for 2030 the capacity of renewable power plants, gas turbines, batteries and hydrogen infrastructure are optimized. From the existing power plant fleet, only those with a decommissioning date later than 2030 are included. The grid infrastructure is supplemented by grid expansion projects from the TYNDP \cite{entsoeTYNDP2018Project2018} to be built by 2030.
 We enforce a supply of 80\% coming from renewable sources, i.e. solar, wind, biomass and hydro facilities. The electrical load time series, originally representing the default year 2013 of PyPSA-Eur \cite{horschjonasPyPSAEurOpenOptimisation2022}, is scaled up to meet the predicted total net demand for 2030 of 555~TWh \cite{kemmlerEntwicklungBruttostromverbrauchsBis2021}.
@@ -278,13 +278,35 @@ Fig.~\ref{fig:cost-bar-2030} illustrates the cost savings for the DLR scenario c
 \end{figure}
 
 \subsection{Optimal Investment 2035}
+The 2035 scenario is an extension of the 2030 scenario from Section \ref{sec:2030}.
+In contrast to the 2030 scenario, in this scenario we vary the production share of renewable technologies gradually from 80 to 100 \%.
+This variation represents the pathway from 2030 to 2035 as the German government plans to decarbonise the power sector by 2035 \cite{federalministryofeconomicaffairsandclimateactionUeberblickspapierOsterpaket2022}.
+Note that the all parameters but the renewable production share remain the same as in the 2030 scenario.
+
+
 
 
 \begin{figure}[htpb]
     \centering
     \includegraphics[width=\linewidth]{de2030_all_nodes_v/sensitivity_vres_costs.pdf}
-    \caption{Savings of capital expenditures when going from SLR to DLR.  Positive costs represent higher expenses of SLR.}
-    \label{fig:cost-bar-2030}
+    \caption{Savings of capital expenditures when going from SLR to DLR for different shares of renewable production. Positive costs represent higher expenses of DLR.}
+    \label{fig:cost-sensitivity-2035}
+\end{figure}
+
+
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=\linewidth]{de2030_all_nodes_v/sensitivity_vres_costs_curtailment.pdf}
+    \caption{The top figure shows the cost change from SLR to DLR for different shares of renewable production. The bottom figure depicts the change in averaged congested lines per hour.}
+    \label{fig:cost-curtailment-sensitivity-2035}
+\end{figure}
+
+
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=\linewidth]{de2030_all_nodes_v/sensitivity_vres_capacity.pdf}
+    \caption{Change in build generation capacity for different shares of renewable production}
+    \label{fig:capacity-2035}
 \end{figure}
 
 
