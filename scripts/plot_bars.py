@@ -45,6 +45,35 @@ def get_curtailment(n):
     return curtailment / 1e6  # in TWh
 
 
+def get_adapted_curtailment(n):
+    renewables = n.generators[n.generators.carrier.str.contains(r"solar|wind")].index
+    potential = n.generators_t.p_max_pu[renewables] * n.generators.p_nom_opt[renewables]
+    curtailment = (
+        potential.subtract(n.generators_t.p[renewables], axis="columns")
+        .multiply(n.snapshot_weightings["generators"], axis=0)
+        .sum(axis=1)
+    )
+    storage_unit_demand = (
+        (
+            n.storage_units.eval("p_nom_opt*max_hours")
+            - n.storage_units_t.state_of_charge
+        )
+        .div(n.storage_units.efficiency_store)
+        .replace(np.inf, np.nan)
+    )
+    store_demand = (n.stores.e_nom_opt - n.stores_t.e) / n.links.set_index("bus1").loc[
+        n.stores.bus, "efficiency"
+    ]
+    demand = (
+        storage_unit_demand.sum(axis=1)
+        + store_demand.sum(axis=1)
+        + n.loads_t.p.sum(axis=1)
+    )
+    over_supply = potential.sum(axis=1) - demand
+    curtailment = (curtailment - over_supply.where(over_supply > 0)).sum()
+    return curtailment / 1e6  # in TWh
+
+
 def get_relative_curtailment(n):
     renewables = n.generators[n.generators.carrier.str.contains(r"solar|wind")].index
     curtailment = (

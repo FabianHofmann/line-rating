@@ -59,7 +59,7 @@ scenario_2035:
   rating: [1.0, ""]
   angle: ""
   clusters: "all"
-  opts: ["Co2L-RE0.8-Ep", "Co2L-RE0.85-Ep", "Co2L-RE0.9-Ep", "Co2L-RE0.95-Ep"]
+  opts: ["Co2L-RE0.8-Ep", "Co2L-RE0.85-Ep", "Co2L-RE0.9-Ep", "Co2L-RE0.95-Ep", "Co2L-RE1.0-Ep"]
   year: 2030
   figure:
     [

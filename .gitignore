@@ -38,6 +38,7 @@ benchmarks
 resources
 paper/.\~lock.paper.odt\#
 paper/abstract/abstract-zotero.bib
+paper/presentation/
 arxiv-submission/
 arxiv-submission.zip
 config/config.cluster.yaml
