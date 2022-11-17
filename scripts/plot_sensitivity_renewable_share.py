@@ -19,7 +19,7 @@ def get_congestion(networks):
         c = "Line"
         number_lines_congested = (
             n.pnl(c).mu_lower.abs() + n.pnl(c).mu_upper.abs()
-        ).round(2) != 0
+        ).round(0) != 0
         return number_lines_congested.sum(axis=1).mean()
 
     df = pd.DataFrame(
@@ -88,29 +88,45 @@ if __name__ == "__main__":
     plt.savefig(snakemake.output.sensitivity_costs, bbox_inches="tight")
 
     fig, ax = plt.subplots(1, 1, figsize=(5, 5.5))
-    capacity_change = (
+    capacity_change_relative = (
         (dlr_data.loc["capacity"] / slr_data.loc["capacity"] - 1)
         .where(lambda x: x != 0)
         .dropna(axis=1)
     )
-    capacity_change_absolute = (
-        (dlr_data.loc["capacity"] - slr_data.loc["capacity"])
-        .where(lambda x: x != 0)
-        .dropna(axis=1)
-    )
-    capacity_change.rename(percentage_index).applymap(percentage).T.plot(
+
+    capacity_change_relative.rename(percentage_index).applymap(percentage).T.plot(
         ax=ax,
         kind="bar",
         bottom=0,
         xlabel="",
         ylabel="Relative capacity change\nfrom SLR to DLR [%]",
         rot=45,
-        color=sns.color_palette("viridis", n_colors=len(capacity_change)),
+        color=sns.color_palette("viridis", n_colors=len(capacity_change_relative)),
     )
     ax.legend(title="Renewable production share [%]")
     ax.set_xticklabels(ax.get_xticklabels(), rotation=45, ha="right")
     plt.tight_layout()
-    plt.savefig(snakemake.output.sensitivity_capacity, bbox_inches="tight")
+    plt.savefig(snakemake.output.sensitivity_capacity_relative, bbox_inches="tight")
+
+    fig, ax = plt.subplots(1, 1, figsize=(5, 5.5))
+
+    capacity_change_absolute = (
+        diff.loc["capacity"].where(lambda x: x != 0).dropna(axis=1)
+    )
+
+    capacity_change_absolute.rename(percentage_index).T.plot(
+        ax=ax,
+        kind="bar",
+        bottom=0,
+        xlabel="",
+        ylabel="Absolute capacity change\nfrom SLR to DLR [MW]",
+        rot=45,
+        color=sns.color_palette("viridis", n_colors=len(capacity_change_absolute)),
+    )
+    ax.legend(title="Renewable production share [%]")
+    ax.set_xticklabels(ax.get_xticklabels(), rotation=45, ha="right")
+    plt.tight_layout()
+    plt.savefig(snakemake.output.sensitivity_capacity_absolute, bbox_inches="tight")
 
     fig, axes = plt.subplots(2, 1, figsize=(7, 5.5), sharex=True)
     diff.loc["costs"].sum(1).div(1e6).T.plot(

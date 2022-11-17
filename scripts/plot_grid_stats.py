@@ -49,7 +49,7 @@ def get_congestion_correlation(n):
     over_capacity = available.sum(axis=1) / n.loads_t.p_set.sum(axis=1)
 
     c = "Line"
-    congestion = (n.pnl(c).mu_lower.abs() + n.pnl(c).mu_upper.abs()).round(3) != 0
+    congestion = (n.pnl(c).mu_lower.abs() + n.pnl(c).mu_upper.abs()).round(0) != 0
     cogestion = congestion.sum(axis=1)
 
     keys = [
@@ -65,7 +65,7 @@ def get_congestion_hours_price(n):
     c = "Line"
     congestion_price = (n.pnl(c).mu_lower.abs() + n.pnl(c).mu_upper.abs()).sum(axis=1)
     number_lines_congested = (n.pnl(c).mu_lower.abs() + n.pnl(c).mu_upper.abs()).round(
-        2
+        0
     ) != 0
     number_lines_congested = number_lines_congested.sum(axis=1)
     congestion = pd.concat(
