@@ -18,6 +18,12 @@ rule all:
         parameter_space="figures/parameter-space-reduced.pdf",
 
 
+rule test:
+    input:
+        expand("results/.{scenario}", scenario="test"),
+        parameter_space="figures/parameter-space-reduced.pdf",
+
+
 def get_scenario(w):
     return expand(
         (
@@ -154,6 +160,7 @@ rule describe_network:
         network="results/de{year}_{clusters}_nodes_{opts}_dlr{rating}_v{angle}.nc",
     output:
         description="results/description/de{year}_{clusters}_nodes_{opts}_dlr{rating}_v{angle}.{format}.txt",
+    threads: 4
     script:
         "scripts/describe_network.py"
 

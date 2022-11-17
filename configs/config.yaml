@@ -82,22 +82,30 @@ scenario_2035:
     vres: ["costs"]
 
 test:
-  rating: ["", 1.3]
-  angle: [30, 45]
-  clusters: [5]
-  opts: ["Co2L-24H-BL", "Co2L-24H-RE0.8"]
-  year: [2020, 2030]
+  rating: [1.0, ""]
+  angle: ""
+  clusters: 5
+  opts: ["Co2L-24H-RE0.8", "Co2L-24H-RE1.0"]
+  year: 2030
   figure:
     [
       "operation_map",
+      "operation_difference_bar",
       "capacity_map",
+      "congestion_map",
       "curtailment_bar",
       "capacity_bar",
+      "cost_bar",
       "relative_curtailment_bar",
       "historical_curtailment_bar",
       "potential_correlation",
-      "sensitivity_cost",
+      "congestion_correlation",
+      "potential_correlation",
+      "congestion_duration_curve",
     ]
+  sensitivity:
+    dlr: []
+    vres: []
 
 solving:
   options:
