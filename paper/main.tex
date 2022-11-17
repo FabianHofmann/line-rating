@@ -69,7 +69,7 @@ There are different methods how DLR can ensure that the thermal capacity for a t
 \end{enumerate}
 
 Weather based measuring of the thermal capacity is considered the simplest method to implement as well as the cheapest \cite{KARIMI2018600}.
-The assumed investment cost for the implementation of DLR is between 60-80 thousand \euro{} per km with a life time of 30 years\cite{samweberProjektMeritOrder2016}.
+The assumed investment cost for the implementation of DLR is between 60-80 thousand \euro{} per km with a life time of 30 years \cite{samweberProjektMeritOrder2016}.
 If Germans Transmission System Operators (TSOs) currently apply DLR, it is mainly based on regional and seasonal weather data, thus e.g. distinguishing between winter and summer operation \cite{bundesnetzagenturMonitoringReport20212022}.
 Hence, German TSOs do not exploit the full potential of DLR monitoring local, real time cooling effects.
 According to ENTSOE DLR can lead to an increase in line capacity of 200~\% compared to SLR \cite{entso-eDynamicLineRating}.
@@ -223,7 +223,7 @@ Fig.~\ref{fig:congestion-correlation-2019} shows the number of congested lines a
 
 In the scenario for 2030 the capacity of renewable power plants, gas turbines, batteries and hydrogen infrastructure are optimized. From the existing power plant fleet, only those with a decommissioning date later than 2030 are included. The grid infrastructure is supplemented by grid expansion projects from the TYNDP \cite{entsoeTYNDP2018Project2018} to be built by 2030.
 We enforce a supply of 80\% coming from renewable sources, i.e. solar, wind, biomass and hydro facilities. The electrical load time series, originally representing the default year 2013 of PyPSA-Eur \cite{horschjonasPyPSAEurOpenOptimisation2022}, is scaled up to meet the predicted total net demand for 2030 of 555~TWh \cite{kemmlerEntwicklungBruttostromverbrauchsBis2021}.
-The cost parameters are retrieved from the technology data-base published at \cite{lisazeyenPyPSATechnologydataTechnology2022}. In addition, to properly reflect the future operational costs of fossil generators, we impose a price of 120 Euro per tonne CO$_2$.
+The cost parameters for 2030 are retrieved from the technology data-base published at \cite{lisazeyenPyPSATechnologydataTechnology2022}. In addition, to properly reflect the future operational costs of fossil generators, we impose a price of 120 Euro per tonne CO$_2$.
 
 \begin{table}[h]
     \caption{Comparison of a selection of capacity totals for today, reported at \cite{burgerInstalledPowerEnergyCharts} by the time of writing, and the optimized 2030 scenario with a 80\% renewable share with Static Line Rating and Dynamic Line Rating. }
@@ -231,31 +231,31 @@ The cost parameters are retrieved from the technology data-base published at \ci
     \begin{tabular}{lrrrrc}
                             & today & SLR   & DLR  & $\Delta$ & unit \\
         \hline
-        Solar               & 64    & 188.6 & 178  & -10.6    & GW   \\
-        Onshore Wind        & 57.7  & 101.2 & 103  & +1.8     & GW   \\
-        Offshore Wind       & 8     & 9.3   & 8.8  & -0.5     & GW   \\
-        Natural Gas         & 32    & 26.5  & 26.7 & +0.2     & GW   \\
-        Battery (discharge) & -     & 15.8  & 13   & -2.8     & GW   \\
-        Battery Storage     & -     & 90.5  & 73.6 & -16.9    & GWh  \\
-        H$_2$ Electrolysis  & -     & 2.3   & 1.6  & -0.7     & GW   \\
-        H$_2$ Fuel Cell     & -     & 0.9   & 0.6  & -0.3     & GW   \\
-        H$_2$ Storage       & -     & 77.1  & 54.4 & -22.7    & GWh  \\
+        Solar               & 64    & 202   & 188  & --14      & GW   \\
+        Onshore Wind        & 57.7  & 103   & 104  & +1       & GW   \\
+        Offshore Wind       & 8     & 9.5   & 9.6  & --0.1     & GW   \\
+        Natural Gas         & 32    & 29    & 29.2 & +0.2     & GW   \\
+        Battery (discharge) & -     & 20.2  & 16.2 & --4       & GW   \\
+        Battery Storage     & -     & 126.5 & 100  & --26.5    & GWh  \\
+        H$_2$ Electrolysis  & -     & 0.1   & 0.1  & -        & GW   \\
+        H$_2$ Fuel Cell     & -     & 0.03  & 0.05 & --0.02    & GW   \\
+        H$_2$ Storage       & -     & 4.5   & 6.3  & +1.8     & GWh  \\
         \hline
     \end{tabular}
     \label{tab:installed capacity}
 \end{table}
 
-Table \ref{tab:installed capacity} shows a selection of optimal capacities for the systems with SLR and DLR in comparison to today's capacities. For the other technologies we do not perceive notable differences. The full set of capacity totals as well as the spatial capacity layout can be found in \ref{sec:2030-scenario-plots}.
-Roughly speaking, the optimal solution to meet the 2030 target requires tripling solar capacity, doubling wind capacity, and expanding batteries and hydrogen storage. Neither SLR nor DLR requires new fossil or nuclear generators.
+Table \ref{tab:installed capacity} shows a selection of optimal capacities for the systems with SLR and DLR in comparison to today's capacities. For the other technologies we do not perceive notable differences. The full set of capacity totals as well as the spatial capacity layout can be found in \ref{sec:2030-scenario-plots}. %TODO: add figures and tables t appendix
+Roughly speaking, the optimal solution to meet the 2030 target requires tripling solar capacity, doubling wind capacity, and expanding batteries and some hydrogen storage. Neither SLR nor DLR requires new fossil or nuclear generators.
 
-In a direct comparison, the DLR implementation results in a 10.8~GW reduction in newly installed solar capacities, while the differences between offshore and onshore are smaller, +1.8~GW and -0.5~GW, respectively. The DLR setup leads to a slight increase of 0.2~GW additional Natural Gas generators (CCGT + OCGT).
-Relatively large differences are perceived for battery installations and H$_2$ storage infrastructure: The optimal battery discharge capacity is reduced from 15.8~GW to 13~GW when implementing DLR, their total energy storage capacity from 90.5~GWh to 73.6~GWh. The optimal H$_2$ energy storage is reduced from 77.1~GW to 54.5~GW. In absolute terms, electrolysis and fuel cell capacities are reduced less, -0.7~GW and -0.3~GW, respectively, which however accounts for one third of the installed capacity.
+In a direct comparison, the DLR implementation results in a 14~GW reduction in newly installed solar capacities, while the differences between offshore and onshore are smaller, +1~GW and -0.1~GW, respectively. The DLR setup leads to a slight increase of 0.2~GW additional Natural Gas generators (CCGT + OCGT).
+Relatively large differences are perceived for battery installations. When implementing DLR, the optimal battery discharge capacity is reduced from 20.2~GW to 16.2~GW, their total energy storage capacity from 126.5~GWh to 100~GWh. In comparison, the expanded hydrogen infrastructure is relatively small and stay roughly the same. The optimal H$_2$ energy storage increases from 4.5~GW to 6.3~GWh; fuel cell and electrolysis capacities vary marginally.
 
 
 % TODO: Add CF numbers!
-Together with the changes in the capacity layout, we perceive significant changes in the operation. When implementing DLR, the capacity factor of onshore wind power is lifted from 21.7\% to 22.3\% which translates to an increased supply of 8.7~TWh. In contrast, roughly 7.6~TWh less are produced from solar facilities. By reducing the use of storage technologies and the associated losses, the system produces 1.5~TWh less in total with DLR.
+Together with the changes in the capacity layout, we perceive significant changes in the operation. When implementing DLR, the capacity factor of onshore wind power is lifted from 21.3\% to 22.1\% which translates to an increased supply of 9.5~TWh. In contrast, roughly 10.7~TWh less are produced from solar facilities. By reducing the use of storage technologies and the associated losses, the system produces 1.5~TWh less in total with DLR.
 
-From these numbers, we conclude three main trends. First, the implementation of DLR significantly reduces the need for short-term and long-term storage infrastructure. The reduction of nearly 40~GWh equals roughly a quarter of the total storage capacity.
+From these numbers, we conclude three main trends. First, the implementation of DLR significantly reduces the need for short-term infrastructure. The reduction of 26~GWh equals roughly a quarter of the total storage capacity.
 
 In particular, the DLR implementation leverages the offshore wind potentials which, in contrast to the onshore wind and solar power, supply the system with a relatively steady power feed-in. This determining factor also reduces the need for long-term energy storage, embodied by the H$_2$ infrastructure.
 
