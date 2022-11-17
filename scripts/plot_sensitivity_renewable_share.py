@@ -122,6 +122,7 @@ if __name__ == "__main__":
         ylabel="Absolute capacity change\nfrom SLR to DLR [MW]",
         rot=45,
         color=sns.color_palette("viridis", n_colors=len(capacity_change_absolute)),
+        ylim=(-20000, 15000),
     )
     ax.legend(title="Renewable production share [%]")
     ax.set_xticklabels(ax.get_xticklabels(), rotation=45, ha="right")
