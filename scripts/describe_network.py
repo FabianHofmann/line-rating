@@ -56,7 +56,7 @@ p = production.loc["Generator"]
 out("Generation:", totals(p))
 
 fossils = ["Lignite", "Coal", "Open-Cycle Gas", "Combined-Cycle Gas"]
-out("Fossil generation:", totals(p).loc[fossils].sum())
+out("Fossil generation:", totals(p).reindex(index=fossils).sum())
 
 opex = n.statistics.opex(**kwargs).sum() / 1e6
 print("", "OPEX [m€]", "", opex, sep="\n", file=fn)

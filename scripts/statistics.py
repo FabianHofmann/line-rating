@@ -51,7 +51,7 @@ p = production.loc["Generator"]
 out("Generation:", totals(p), fn)
 
 fossils = ["Lignite", "Coal", "Open-Cycle Gas", "Combined-Cycle Gas"]
-out("Fossil generation:", totals(p).loc[fossils].sum(), fn)
+out("Fossil generation:", totals(p).reindex(index=fossils).sum(), fn)
 
 offshore = ["Offshore Wind (AC)", "Offshore Wind (DC)"]
 out("Offshore generation:", totals(p).loc[offshore].sum(), fn)

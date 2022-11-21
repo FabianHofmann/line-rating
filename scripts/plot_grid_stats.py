@@ -101,7 +101,7 @@ def plot_line_overlay(networks, line_width_factor=None, bus_size_factor=None):
             line_color = "orange"
             g = n.generators.p_nom_opt
             bus_sizes = g.groupby([n.generators.bus, n.generators.carrier]).sum()
-            bus_sizes.drop("load", level=1, inplace=True)
+            bus_sizes.drop("load", errors="ignore", level=1, inplace=True)
             bus_sizes = 0.002
         else:
             alpha = 1

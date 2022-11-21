@@ -106,7 +106,7 @@ def plot_congestion(ax, n, bounds, bus_size_factor=None, line_width_factor=None)
         .sum()
     )
     bus_sizes = curtailment.groupby([n.generators.bus, n.generators.carrier]).sum()
-    bus_sizes.drop("load", level=1, inplace=True)
+    bus_sizes.drop("load", errors="ignore", level=1, inplace=True)
     bus_size_factor = scale_bus_sizes(bus_sizes, bus_size_factor)
 
     # Scale colorbar
@@ -160,7 +160,7 @@ def plot_capacity(
     # Plots capacity of all generators in MW, existing and newly built
     g = n.generators.p_nom_opt
     bus_sizes = g.groupby([n.generators.bus, n.generators.carrier]).sum()
-    bus_sizes.drop("load", level=1, inplace=True)
+    bus_sizes.drop("load", errors="ignore", level=1, inplace=True)
     bus_size_factor = scale_bus_sizes(bus_sizes, bus_size_factor)
     link_widths = n.links.p_nom_opt
     line_widths = n.lines.s_nom_opt

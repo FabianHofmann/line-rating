@@ -110,7 +110,7 @@ test:
 solving:
   options:
     formulation: kirchhoff
-    load_shedding: true
+    load_shedding: false
     noisy_costs: true
     min_iterations: 1
     max_iterations: 1
@@ -119,13 +119,16 @@ solving:
     track_iterations: false
   solver:
     name: gurobi
-    method: 2 # barrier
-    crossover: 0
+    BarHomogeneous: 1     # Use homogeneous barrier if standard does not converge
+    PreDual: 2            # form primal and dual during presolve, heuristically choose
+    method: 2             # barrier
+    crossover: 0          # do not use crossover
     BarConvTol: 1.e-5
     FeasibilityTol: 1.e-5
-    AggFill: 0
-    PreDual: 0
-    GURO_PAR_BARDENSETHRESH: 200
+    OptimalityTol: 1.e-5
+    threads: 8
+    seed: 10
+
 
 electricity:
   # parameters used for the min renewable constraint
