@@ -16,6 +16,7 @@ rule all:
     input:
         expand("results/.{scenario}", scenario=config["scenarios"]),
         parameter_space="figures/parameter-space-reduced.pdf",
+        line_rating_calculation="figures/line_rating_calculation.pdf",
 
 
 rule test:
@@ -163,6 +164,16 @@ rule describe_network:
     threads: 4
     script:
         "scripts/describe_network.py"
+
+
+rule plot_line_rating_calculation:
+    input:
+        network=pypsaeur2020("networks/elec_s_all_ec_lv1.0_Co2L-BL-Ep.nc"),
+        cutout=pypsaeur2020("cutouts/europe-2019-era5.nc"),
+    output:
+        figure="figures/line_rating_calculation.{ext}",
+    script:
+        "scripts/plot-line-rating-calculation.py"
 
 
 rule plot_maps:

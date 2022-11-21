@@ -37,7 +37,7 @@
 
 
     \begin{abstract}
-        The German government announced that, by 2030, 80\% of the power supply should come from renewable energy which, in terms of installations, means a doubling of wind capacity and a tripling of solar capacity. For an efficient integration into the system, the fast ramp up of renewables needs to be accompanied by a reorganization of the transmission system. However, due to its invasive nature, the construction of new power lines requires long planning phases and is often delayed by citizen protests. As an non-invasive alternative, Dynamic Line Rating (DLR) offers the potential to leverage the existing grid capacities by dynamically adjusting the transmission line capacities to the prevailing weather conditions rather than setting conservative invariant ratings. Here we show that a system-wide integration of DLR not only facilitates the 80\% feed-in target for renewables, but also significantly reduces grid congestion and renewable curtailment. The evolving synergies between DLR and an increased wind power generation leads to overall cost savings of around 900 million euro per year for a scenario of 2030 and are expected to increase for higher shares of renewables. Our results underscore the importance of rapid implementation of DLR in the German power system to support the energy transition and relieve grid congestion.
+        The German government announced that, by 2030, 80\% of the power supply should come from renewable energy sources which, in terms of installations, means a doubling of wind capacity and a tripling of solar capacity. For an efficient integration into the system, the fast ramp up of renewables needs to be accompanied by a reorganization of the transmission system. However, due to its invasive nature, the construction of new power lines requires long planning phases and is often delayed by citizen protests. As an non-invasive alternative, Dynamic Line Rating (DLR) offers the potential to leverage the existing grid capacities by dynamically adjusting the transmission line capacities to the prevailing weather conditions. Here we show that a system-wide integration of DLR not only facilitates the 80\% feed-in target for renewables, but also significantly reduces grid congestion and renewable curtailment. The evolving synergies between DLR and an increased wind power generation leads to overall cost savings of around 900 million euro per year for a scenario of 2030 and increase for higher shares of renewables. Our results underscore the importance of rapid implementation of DLR in the German power system to support the energy transition and relieve grid congestion.
     \end{abstract}
 
     \begin{keyword}
@@ -47,43 +47,43 @@
 \end{frontmatter}
 
 \section{Introduction}
-The expansion of new renewable energy sources far from load centers is leading to an increasing need for grid capacity. A notable example can be found in Germany, where most of the wind energy is generated in the North while there is significant industrial demand in the South \cite{kuhneConflictsNegotiationProcesses2018}. The current federal government plans to have 100~GW onshore and 40~GW offshore wind power capacity in place by 2030 \cite{federalministryofeconomicaffairsandclimateactionGermanyCurrentClimate2022}. For this an expansion of the transmission line capacities is essential. However, in the last decade only few grid expansion projects have been realized. Most of these are delayed due to administrative problems and protest activities \cite{neukirchProtestsGermanElectricity2016}, \cite{fernandezReviewDynamicLine2016}. Furthermore,  transmission lines typically require 5-10 years from initial planning phase to final construction, which exacerbates the problem of missing transmission capacities even more \cite{michiorriForecastingDynamicLine2015}.
 
-This trend will likely increase transmission system congestion, which may lead to more grid instability and curtailment \cite{erdincComprehensiveOverviewDynamic2020}. There is therefore a strong incentive to make better use of the existing grid infrastructure.
+The efficient integration of renewable energy sources into today's power system requires a restructuring of key components such as transmission systems. With new production centers at sites with good renewable resources and decentralized power generation on house-hold level, electricity is flowing along new paths pushing transmission to its physical limits. A notable example can be found in Germany. Here, most of the wind infrastructure built up throughout the last two decades is located in the North while there is significant industrial demand in the South \cite{kuhneConflictsNegotiationProcesses2018}.
+The current federal government plans to have 100~GW onshore and 40~GW offshore wind power capacity in place by 2030 \cite{federalministryofeconomicaffairsandclimateactionGermanyCurrentClimate2022} which means roughly a doubling of today's capacities. For the integration, an expansion of the transmission system is essential. However, in the last decade only few grid expansion projects have been realized. Most of these are delayed due to administrative problems and protest activities \cite{neukirchProtestsGermanElectricity2016}, \cite{fernandezReviewDynamicLine2016}. Furthermore, transmission lines typically require 5-10 years from initial planning phase to final construction, which exacerbates the problem of missing transmission capacities even more \cite{michiorriForecastingDynamicLine2015}.
 
-To overcome the mismatch between rapid installation of renewable generation and slow installation of transmission lines, several, complementing measures can be taken:  (1) large scale implementation of storage facilities to flatten power feed-ins and power demands \cite{caoPreventPromoteGrid2021}; (2) usage of alternative energy carrier networks like hydrogen to relieve the electricity grid \cite{welderDesignEvaluationHydrogen2019}; (3) leveraging the existing grid infrastructure to increase the transmission line capacity. In the following, we will focus on the last point, which in comparison to (1) and (2) stands out through a fast, low-cost and non-invasive implementation \cite{deutscheenergie-agenturgmbhdenaErgebnispapierDenaStakeholderprozessHohere, minguezApplicationDigitalElevation2022}.
+This trend of rapid installation of renewable generation and slow installation of transmission lines will likely increase transmission system congestion, which may lead to more grid instability and curtailment \cite{erdincComprehensiveOverviewDynamic2020}. There is therefore a strong incentive to make better use of the existing grid infrastructure as soon as possible.
+
+To overcome the mismatch, several, complementing measures can be taken:  (1) large scale implementation of storage facilities to flatten power feed-ins and power demands \cite{caoPreventPromoteGrid2021}; (2) usage of alternative energy carrier networks like hydrogen to relieve the electricity grid \cite{welderDesignEvaluationHydrogen2019}; (3) leveraging the existing grid infrastructure to increase the transmission line capacity. In the following, we will focus on the last point, which in comparison to (1) and (2) stands out through a fast, low-cost and non-invasive implementation \cite{deutscheenergie-agenturgmbhdenaErgebnispapierDenaStakeholderprozessHohere, minguezApplicationDigitalElevation2022}.
 
 The transmission of electricity dissipates resistive losses in form of heat. Therefore, the line capacity is limited by the maximally allowed temperature of the conductor ensuring a stable transmission.  This maximal line capacity is also regarded as thermal capacity.
-If the transmission line exceeds its thermal capacity, a safe operation of the transmission line cannot be ensured anymore due to clearance infringements and loss in tensile strength of the conductor \cite{fernandezReviewDynamicLine2016}.
+If the transmission line exceeds its thermal capacity, a safe operation of the transmission line is no longer guaranteed due to clearance infringements and loss in tensile strength of the conductor \cite{fernandezReviewDynamicLine2016}. %TODO: simplify the second part of the sentence, perhaps only the line sag?
 
-Traditionally, thermal capacity of a transmission line is calculated assuming unfavorable, static weather conditions such as 40$^\circ$C  ambient temperature and 0.6~m/s wind speed \cite{fernandezReviewDynamicLine2016}. This is referred to as Static Line Rating (SLR).
-By design, SLR underestimates the thermal capacity of a transmission line and, when implemented in practice, leads to an underutilization of the transmission infrastructure. On the other hand, Dynamic Line Rating (DLR) calculates the line capacity taking into account the prevailing weather conditions. Cold weather and wind cool overheated transmission lines, enabling the thermal capacity to be raised. This results in key benefits in cost-efficiency, congestion reduction and better wind power integration \cite{erdincComprehensiveOverviewDynamic2020}.
+Traditionally, the thermal capacity of a transmission line is calculated assuming unfavorable, static weather conditions such as 40$^\circ$C  ambient temperature and 0.6~m/s wind speed \cite{fernandezReviewDynamicLine2016}. This is referred to as Static Line Rating (SLR).
+By design, SLR underestimates the thermal capacity of a transmission line and, when implemented in practice, leads to an underutilization of the transmission infrastructure. On the other hand, Dynamic Line Rating (DLR) calculates the line capacity taking into account prevailing weather conditions. Cold weather and wind cool overheated transmission lines, enabling the thermal capacity to be raised. This results in key benefits in cost-efficiency, congestion reduction and better wind power integration \cite{erdincComprehensiveOverviewDynamic2020}.
 
-According to the grid development plan of the German grid agency, the grid operation should be optimised with DLR wherever possible \cite{bundesnetzagenturNetzentwicklungsplan202120352022}.
-There are different methods how DLR can ensure that the thermal capacity for a transmission line is not exceeded \cite{albizuMethodsIncreasingRating2005}:
-\begin{enumerate}
-    \item Weather measurement: Prevailing weather conditions from weather stations are used to calculate the temperature of the conductor
-    \item Conductor temperature measurement: Sensors along the line measure the real time temperature of the conductor
-    \item Tension measurement: A load cell measures the tension of the line to derive the clearance of the line
-    \item Sag measurement: Directly monitoring of the security clearance
-\end{enumerate}
-
-Weather based measuring of the thermal capacity is considered the simplest method to implement as well as the cheapest \cite{KARIMI2018600}.
-The assumed investment cost for the implementation of DLR is between 60-80 thousand \euro{} per km with a life time of 30 years \cite{samweberProjektMeritOrder2016}.
-If Germans Transmission System Operators (TSOs) currently apply DLR, it is mainly based on regional and seasonal weather data, thus e.g. distinguishing between winter and summer operation \cite{bundesnetzagenturMonitoringReport20212022}.
-Hence, German TSOs do not exploit the full potential of DLR monitoring local, real time cooling effects.
-According to ENTSOE DLR can lead to an increase in line capacity of 200~\% compared to SLR \cite{entso-eDynamicLineRating}.
-On the other hand, the German TSO TransnetBW expects an increase of line capacity with DLR up to 50~\% compared to SLR \cite{transnetbwFreileitungsmonitoring}.
+There are several methods DLR can use to ensure that the thermal capacity for a transmission line is not exceeded \cite{albizuMethodsIncreasingRating2005}:
+\begin{itemize}
+    \item \textbf{Weather measurement:} Nearby weather stations measure ambient conditions to calculate the theoretical thermal capacity.
+    \item \textbf{Conductor temperature measurement:} Sensors along the line measure the real time temperature of the conductor.
+    \item \textbf{Tension measurement:} A load cell measures the tension of the line to derive the clearance of the line.
+    \item \textbf{Sag measurement:} Directly monitoring of the security clearance.
+\end{itemize}
 
 
-The literature provides case studies with DLR applied in small scale Energy System Optimization Models (ESOMs) \cite{liDayAheadSchedulingPower2019,dabbaghjamaneshEffectiveSchedulingReconfigurable2019,viaforaDayaheadDispatchOptimization2019}.
-Additionally, there is a DLR potential study on Germany \cite{samweberProjektMeritOrder2016}. However, the German DLR study does not include an ESOM.
+Among these, weather based measuring of the thermal capacity is considered the simplest method to implement as well as the cheapest \cite{KARIMI2018600}.
+The assumed investment costs for the implementation of the DLR are between 60k and 80k \euro{} per km with a service life of 30 years. \cite{samweberProjektMeritOrder2016}.
 
-Therefore, literature is lacking of an extensive evaluation and assessment of DLR in higher scale ESOMs for Germany.
-In our analysis, we model a single country to ensure high spatial and temporal resolution of the model.
-As country, we chose Germany due to the high reliability of the required input data. However, the model can be easily extended to regard other countries.
-In our previous paper \cite{EnhancingtheGermanTransmissionGrid2022}, we present an initial study discussing the benefits of DLR in the German power system.
-In this study we want to extend our former study by adding a sensitivity analysis, using updated cost assumptions and doing further analysis.
+Today, DLR is applied by the German Transmission System Operators (TSOs) only rarely and in a simplified form, distinguishing between regional winter and summer capacities \cite{bundesnetzagenturMonitoringReport20212022}. However, this is set to change according to the Federal Network Agency's network development plan, which calls on TSOs to implement real-time DLR wherever possible \cite{bundesnetzagenturMonitoringReport20212022}.
+
+% TODO add these to DLR cap explanation
+% The European power system, the European association for the cooperation of TSOs (ENTSOE) expects an increase of up to 100~\% in transmission capacity when implementing DLR \cite{entso-eDynamicLineRating}. %TODO: this seems to be not in average; missing ref
+% Other sources like the German TSO TransnetBW expects an increase of line capacity with DLR up to 50~\% compared to SLR \cite{transnetbwFreileitungsmonitoring}. %TODO: missing ref
+
+In the literature, only a few studies can be found that address the topic of DLR. The publications in \cite{liDayAheadSchedulingPower2019,dabbaghjamaneshEffectiveSchedulingReconfigurable2019,viaforaDayaheadDispatchOptimization2019} assess DLR on the basis of an small scale Energy System Optimization Models (ESOMs). A potential study for Germany, however without modelling approach, can be found at \cite{samweberProjektMeritOrder2016}.
+Therefore, the literature lacks a comprehensive assessment and evaluation of DLR on the basis of a large, detailed ESOMs of Germany.
+By reducing our study to Germany only, we allow for a high spatial and temporal resolution of the model as well as high input data quality. The workflow openly available at %TODO
+can be easily extended to other countries.
+The following study builds on our first study, \cite{EnhancingtheGermanTransmissionGrid2022}, with an improved methodology and analysis that uses updated cost assumptions and extends the scope of scenarios to the year 2035.
 
 The article is structured as follows.
 Section~\ref{sec:methodology} describes the methodology of the DLR implementation (\ref{sec:dlr}) and the underlying power system modelling (\ref{sec:powersystem}). Section~\ref{sec:results} presents the results of the different analyzed scenarios with  limitations outlined in Section~\ref{sec:limitations}. A conclusion is presented in Section~\ref{sec:conclusion}.
@@ -95,13 +95,11 @@ Section~\ref{sec:methodology} describes the methodology of the DLR implementatio
 \subsection{Dynamic Line Rating}
 \label{sec:dlr}
 
-The key concept of DLR is based on a dynamic estimation of the maximally allowed electrical current, also referred to as ampacity, for the conducting material.
+The key concept of DLR is based on a dynamic estimation of the maximally allowed electrical current for the conducting material, also referred to as ampacity.
 The ampacity is set such that the conductor does not surpass the maximally allowed temperature  after which impermissible sag of the line or hardware damage can be expected \cite{KARIMI2018600}.
-There are two widely used standards to calculate the ampacity of a conductor, namely the IEEE and the CIGRE standard \cite{ieeeIEEEStd738}, \cite{TechnicalBrochure2072002}.
-According to \cite{simmsComparativeAnalysisDynamic2013}, the IEEE standard is a more conservative method to calculate the ampacity of a transmission line compared to CIGRE.
-Therefore, for simulating the effect of DLR in our model, we follow the IEEE standard.
+There are two widely used standards to calculate the ampacity of a conductor, namely the IEEE and the CIGRE standard \cite{ieeeIEEEStd738}, \cite{ThermalBehaviourOverhead}. As the IEEE standard is known to be  more conservative \cite{simmsComparativeAnalysisDynamic2013}, we choose this for our model.
 
-The following outlines the basic concept of DLR according to IEEE, for further detail refer to \cite{ieeeIEEEStandardCalculating2012}, \cite{ieeeIEEEStd738}.
+The following outlines the basic concept of DLR according to IEEE. For further details refer to \cite{ieeeIEEEStandardCalculating2012}, \cite{ieeeIEEEStd738}.
 For each conductor, the heat balance equation
 \begin{align}
     q_c +q_r = q_s + I^2 \cdot R(T)
@@ -122,13 +120,13 @@ which for three-phase electric power transmission operating at voltage level $V$
     P_{max} = \sqrt{3} \cdot I_{max} \cdot V
 \end{align}
 
-The IEEE standard is implemented Atlite \cite{hofmannAtliteLightweightPython2021}, a Python package used for converting weather data into renewable power potentials. Atlite obtains the weather data from the ECMWF Reanalysis v5 (ERA5) dataset providing various weather-related variables in a hourly resolution on a $0.25^\circ \times 0.25^\circ$ grid.
+For this study the IEEE standard was implemented in Atlite \cite{hofmannAtliteLightweightPython2021}, a Python package used for converting weather data into renewable power potentials. Atlite obtains the weather data from the ECMWF Reanalysis v5 (ERA5) dataset providing various weather-related variables in a hourly resolution on a $0.25^\circ \times 0.25^\circ$ grid.
 With Atlite, we overlap every weather cell with the given transmission line and calculate its ampacity according to Equation~\ref{ampacity}. If multiple weather grid cells overlap with a transmission line, the grid cell with the most unfavorable condition provides the ampacity for the line. This is illustrated in Figure~\ref{fig:line-rating-calculation}.
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.7\linewidth]{line_rating_calculation.pdf}
-    \caption{This figure shows a transmission line which passes through 3 different weather cells, all having their own wind speeds. Therefore, Atlite calculates three different ampacities for the transmission line. The minimal calculated ampacity limits the flow of the given line and hence is taken as limit for the whole line.}
+    \includegraphics[width=.8\linewidth]{line_rating_calculation.pdf}
+    \caption{The figure shows a transmission line intersecting different weather cells with individual wind speeds. The implementation in Atlite calculates different ampacities for each of the overlapping line segments, of which the minimum value determines the ampacity for the entire line.}
     \label{fig:line-rating-calculation}
 \end{figure}
 
@@ -143,7 +141,7 @@ Fig.~\ref{fig:parameter-space-reduced} shows $P_{max}$ for a single wire of a ty
 %
 \subsection{Power System Modeling}
 \label{sec:powersystem}
-Using the Python package \textit{Python for Power System Analysis} (PyPSA) \cite{brownPyPSAPythonPower2018,browntomPyPSAPythonPower2022}, the linear ESOM is represented by a set of buses which are interconnected via transmission lines and complemented by loads, generators and storage facilities. Further, time-dependent electric demand per bus and generation potentials per generator are included for one year with hourly resolution. The generator dispatch and deployment is determined by minimizing the total system cost, where the optimization uses the linearized power flow approximation \cite{purchalaUsefulnessDCPower2005,brownLinearOptimalPower2016} and may be subject to systemic constraints (CO$_2$ budget, limited capacity expansion, etc.).
+Using the Python package \textit{Python for Power System Analysis} (PyPSA) \cite{brownPyPSAPythonPower2018,browntomPyPSAPythonPower2022}, the linear ESOM is represented by a set of buses interconnected via transmission lines and complemented by loads, generators and storage facilities. Further, time-dependent electric demand per bus and generation potentials per generator are included for one year with hourly resolution. The generator dispatch and deployment is determined by minimizing the total system cost. The optimization uses the linearized power flow approximation \cite{purchalaUsefulnessDCPower2005,brownLinearOptimalPower2016} and may be subject to systemic constraints (CO$_2$ budget, limited capacity expansion, etc.).
 
 % The underlying model is created from the PyPSA-Eur framework [16], and for Germany consists of 256 representative nodes and considers a time horizon of one year with an hourly resolution. To model the effect of DLR on the power system, we use the IEEE standard \cite{IEEEStandardCalculating2012} with highly resolved historical weather data implemented in the Atlite software \cite{hofmannAtliteLightweightPython2021}. The advantages of the DLR are illustrated by comparison with an SLR-based system. Therefore, we analyze and compare curtailment, grid congestion as well as the optimal generator deployment.
 
@@ -151,7 +149,7 @@ Data on the transmission grid, power plants, renewable potentials and demand for
 The representative network of Germany comprises all 256~substations and 333~transmission lines operating at 220~kV and above. Electrical parameters of transmission lines are derived by mapping voltage level of the lines to standard line types given in \cite{oedingElektrischeKraftwerkeUnd2011}.
 The demand data and renewable profile data, provided by Atlite, have an hourly resolution.
 
-For DLR scenarios, the transmission capacity per line and time step is given by the formulation in Section~\ref{sec:dlr}, for SLR scenarios by the standard static transmission capacities. As the DLR scenario is calculated with averaged hourly wind speed data, sub-hourly wind speed fluctuations are neglected. This leads to a slightly overestimated $P_{max}$, which we consequently scale down by an empirically derived factor of $0.95$, see \ref{dlr_factor} for details. Furthermore, we account for N-1 network security in both SLR and DLR scenarios by restricting the power transmission P per line to $-0.7\,P_{max} \le P \le 0.7\,P_{max}$ leaving a 30\% capacity buffer \cite{brownOptimisingEuropeanTransmission2016}.
+For the DLR model, the transmission capacity per line and time step is given by the formulation in Section~\ref{sec:dlr}, for the SLR model by the standard static transmission capacities. As DLR is calculated with averaged hourly wind speed data, sub-hourly wind speed fluctuations are neglected. This leads to a slightly overestimated $P_{max}$, which we consequently scale down by an empirically derived factor of $0.95$, see \ref{dlr_factor} for details. Furthermore, we account for N--1 network security in both SLR and DLR models by restricting the power transmission P per line to $-0.7\,P_{max} \le P \le 0.7\,P_{max}$ leaving a 30\% capacity buffer \cite{brownOptimisingEuropeanTransmission2016}.
 
 
 % Finally, since the error of the linearized power flow approximation increases with the voltage angle differences in the system \cite{dvijothamErrorBoundsDC2016}, we restrict the voltage angle difference $\Delta\theta$ across a line to maximally 30$^\circ$ by introducing the constraint
@@ -164,9 +162,8 @@ For DLR scenarios, the transmission capacity per line and time step is given by 
 \section{Results}
 \label{sec:results}
 
-The presented work includes five scenarios. In the first scenario, the operation of the existing network is optimized for 2019 to validate the model and demonstrate the near-term system benefits of DLR. In the second scenario, we run an investment optimization for the year 2030 to show the long-term benefits of DLR.
-By enforcing a 80\% renewable production share, we are able to assess DLR as a supporting measure to reach the German government's target of 80\% renewable power supply by 2030 \cite{federalministryofeconomicaffairsandclimateactionGermanyCurrentClimate2022}.
-Looking at 2035 and beyond, we alter the renewable supply constraint to 85\%, 90\% and 95\% in the following three scenarios. The parameters settings for the study cases can be found in the Appendix~\ref{tab:cases_parameters}.
+The presented work includes six scenarios. In the first scenario, the operation of the existing network is optimized for 2019 to validate the model and demonstrate the near-term system benefits of DLR. In the second scenario, we run an investment optimization for the year 2030 to show the long-term benefits of DLR.
+By enforcing a 80\% renewable production share, we are able to assess DLR as a supporting measure to reach the German government's target of 80\% renewable power supply by 2030 \cite{federalministryofeconomicaffairsandclimateactionGermanyCurrentClimate2022}. Beyond that, the German government targets climate neutrality of the power sector by 2035. We therefore alter the renewable supply constraint to 85\%, 90\%, 95\% and 100\% in the four further scenarios. The parameters settings for the study cases can be found in the Appendix~\ref{tab:cases_parameters}.
 
 \subsection{Optimal Operation for 2019}
 For quantifying the system benefits of DLR in the existing grid, we choose to model the pre-pandemic year 2019 when operations were relatively average. Electrical load and renewable potentials are derived from historical data of the year 2019 \cite{muehlenpfordtTimeSeries2020}, transmission and generation infrastructure are aligned to the state of 2019, using selected data from \cite{hofmannFRESNAPowerplantmatchingV02022,openpowersystemdataDataPackageNational2017,wiegmansGridkitExtractEntsoE2016}. To approximate the operation of nuclear and lignite power plants mostly running at base load, we enforce a minimal requirement of operation, based on historical data from the ENTSO-E Transparency Platform  \cite{entso-eENTSOETransparencyPlatform2020}.
