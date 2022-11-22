@@ -64,9 +64,9 @@ print("", "OPEX [m€]", "", opex, sep="\n", file=fn)
 capex = n.statistics.capex().sum() / 1e6
 print("", "CAPEX [m€]", "", capex, sep="\n", file=fn)
 
-out("Installed Capacity [GW]", n.statistics.installed_capacity() / 1e3)
+out("Installed Capacity [GW]", n.statistics.installed_capacity().div(1e3).round(2))
 
-out("Optimized Capacity [GW]", n.statistics.optimal_capacity() / 1e3)
+out("Optimized Capacity [GW]", n.statistics.optimal_capacity().div(1e3).round(2))
 
 gross = (n.generators_t.p / n.generators.efficiency).sum()
 gross = gross.groupby(n.generators.carrier).sum().rename(n.carriers.nice_name)
