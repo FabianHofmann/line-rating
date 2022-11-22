@@ -213,8 +213,7 @@ The main reason for the shift in generation is the improved transmission capacit
     \label{fig:congestion-correlation-2019}
 \end{figure}
 
-Fig.~\ref{fig:congestion-correlation-2019} shows the number of congested lines as a function of the total renewable power potential relative to the total load in each time step. The color and size of the dots indicate the renewable curtailment. It stands out that DLR (right panel) leads to a significant decrease in transmission congestion as well as curtailment. While the SLR model (left panel) reveals up to 16 congested lines, maximally 8 lines are congested in the the DLR model. In particular, at times with a shortage of renewable energy (Potential / Load $<$ 1) the SLR system has to curtail 7 times more power due to transmission congestion. This does not hold for the DLR model. The same accounts for times with renewable excess power (Potential / Load $>$ 1), where power is mainly curtailed due to oversupply in the DLR model and curtailed due to oversupply and congestion in the SLR model.
-
+Fig.~\ref{fig:congestion-correlation-2019} shows the number of congested lines as a function of the total renewable power potential relative to the total load in each time step. The color and size of the dots indicate the renewable curtailment. It stands out that DLR (right panel) leads to a significant decrease in transmission congestion as well as curtailment. While the SLR model (left panel) reveals up to 16 congested lines, maximally 8 lines are congested in the the DLR model. In particular, at times with a shortage of renewable energy (Potential / Load $<$ 1) the SLR system has to curtail 7 times more power due to transmission congestion. This does not hold for the DLR model. The same accounts for times with renewable excess power (Potential / Load $>$ 1), where power is mainly curtailed due to oversupply in the DLR model and curtailed due to oversupply and congestion in the SLR model. \\
 
 \subsection{Optimal Investment 2030}\label{sec:2030}
 
@@ -249,7 +248,6 @@ In a direct comparison, the DLR implementation results in a 14~GW reduction in n
 Relatively large differences are perceived for battery installations. When implementing DLR, the optimal battery discharge capacity is reduced from 20.2~GW to 16.2~GW, their total energy storage capacity from 126.5~GWh to 100~GWh. In comparison, the expanded hydrogen infrastructure is relatively small and stay roughly the same. The optimal H$_2$ energy storage increases from 4.5~GW to 6.3~GWh; fuel cell and electrolysis capacities vary marginally.
 
 
-% TODO: Add CF numbers!
 Together with the changes in the capacity layout, we perceive significant changes in the operation. When implementing DLR, the capacity factor of onshore wind power is lifted from 21.3\% to 22.1\% which translates to an increased supply of 9.5~TWh. In contrast, roughly 10.7~TWh less are produced from solar facilities. By reducing the use of storage technologies and the associated losses, the system produces 1.5~TWh less in total with DLR.
 
 From these numbers, we conclude three main trends. First, the implementation of DLR significantly reduces the need for short-term infrastructure. The reduction of 26~GWh equals roughly a quarter of the total storage capacity.
@@ -274,6 +272,18 @@ Fig.~\ref{fig:cost-bar-2030} illustrates the cost savings for the DLR model comp
     \caption{Savings of capital expenditures (CAPEX) and operational expenditures (OPEX) when going from SLR to DLR.  Positive costs represent higher expenses of DLR.}
     \label{fig:cost-bar-2030}
 \end{figure}
+
+In the following, we show that these results still hold true when implementing a DLR transmission capacity limit, e.g. for network security reasons. Figure~\ref{fig:sensitivity_dlr_combined} shows the system cost, optimal generation capacity, total curtailment, and relative total cost savings compared to the SLR model as a function of the maximum allowed transmission capacity per line in the DLR model. It can be seen that the largest benefits occurs in the first step when DLR transmission capacities are limited rather conservatively to 130\% of the SLR capacity. From then onwards, the optimal generation capacity and curtailment hardly change and system costs are only slightly reduced. In light of the results of Figure~\ref{fig:potential-correlation-2019}, this finding can be attributed to two facts: First, only a minority of time steps ($<$~20\%) reveal a relative transmission capacity increase of DLR of more than 50\%. Second, even at higher transmission rates, the onshore wind capacity factor is most likely higher than 0.5, resulting in a onshore wind power production of more than 100~GW. This is much more then the average load of 63.3~GW of the system is. Therefore, in these times the excess energy is curtailed independent of the DLR transmission capacity limit.
+
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=.7\linewidth]{de2030_all_nodes_Co2L-RE0.8-Ep_v/sensitivity_dlr_combined.pdf}
+    \caption{Total cost, optimal capacity, total constraint, and relative total cost savings compared to the SLR model as a function of the maximum line rating allowed per line in the DLR model. Already with a conservative cap at 130\% of the SLR capacity, strong system benefits are achieved.}
+    \label{fig:sensitivity_dlr_combined}
+\end{figure}
+
+
 
 \subsection{Optimal Investment 2035}
 The 2035 scenario is an extension of the 2030 scenario from Section \ref{sec:2030}.

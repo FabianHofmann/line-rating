@@ -8,6 +8,7 @@ Created on Mon Sep 12 10:25:36 2022.
 
 import matplotlib.pyplot as plt
 import pandas as pd
+import seaborn as sns
 from common import load_network
 from plot_bars import get_capacity, get_costs, get_curtailment
 
@@ -50,48 +51,58 @@ if __name__ == "__main__":
     gcolors = ref.carriers.groupby("group").color.first()[data.columns]
 
     # %%
-    fig, axes = plt.subplots(4, 1, sharex=True, figsize=(5, 10))
+    fig, axes = plt.subplots(4, 1, sharex=True, figsize=(5, 8))
     axes = iter(axes)
-    ax = next(axes)
-    data.loc["costs"].div(1e9).plot.area(
-        ax=ax,
-        color=gcolors,
-        lw=0,
-    )
-    ax.legend(
-        title="",
-        bbox_to_anchor=(0.5, 1),
-        loc="lower center",
-        ncol=2,
-        frameon=False,
-    )
-    ax.set_xlabel("Maximally allowed rating")
-    ax.set_ylabel("System cost [bn€]")
 
-    ax = next(axes)
-    data.loc["capacity"].div(1e3).plot.area(
-        ax=ax,
-        color=gcolors,
-        legend=False,
-        lw=0,
-    )
-    ax.set_xlabel("Maximally allowed rating")
-    ax.set_ylabel("Capacity [GW]")
+    with sns.axes_style("white", rc={"font.family": "Times New Roman"}):
+        ax = next(axes)
+        data.loc["costs"].div(1e9).plot.area(
+            ax=ax,
+            color=gcolors,
+            lw=0,
+            alpha=0.7,
+        )
+        ax.legend(
+            title="",
+            bbox_to_anchor=(0.5, 1),
+            loc="lower center",
+            ncol=2,
+            frameon=False,
+        )
+        ax.set_xlabel("Maximally allowed rating")
+        ax.set_ylabel("System cost [bn€]")
+        ax.spines[["top", "right"]].set_visible(False)
 
-    ax = next(axes)
-    data.loc["curtailment"].plot.area(
-        ax=ax,
-        color=gcolors,
-        legend=False,
-        lw=0,
-    )
-    ax.set_xlabel("Maximally allowed rating")
-    ax.set_ylabel("Curtailment [TWh]")
+        ax = next(axes)
+        data.loc["capacity"].div(1e3).plot.area(
+            ax=ax,
+            color=gcolors,
+            legend=False,
+            lw=0,
+            alpha=0.7,
+        )
+        ax.set_xlabel("Maximally allowed rating")
+        ax.set_ylabel("Capacity [GW]")
+        ax.spines[["top", "right"]].set_visible(False)
+
+        ax = next(axes)
+        data.loc["curtailment"].plot.area(
+            ax=ax,
+            color=gcolors,
+            legend=False,
+            lw=0,
+            alpha=0.7,
+        )
+        ax.set_xlabel("Maximally allowed rating")
+        ax.set_ylabel("Curtailment [TWh]")
+        ax.spines[["top", "right"]].set_visible(False)
 
     ax = next(axes)
     data.loc[("costs", 1.0)].sub(data.loc["costs"]).sum(1).div(1e6).plot(ax=ax)
     ax.set_xlabel("Maximally allowed rating")
     ax.set_ylabel("Costs savings[m€]")
+    ax.spines[["top", "right"]].set_visible(False)
+    ax.set_xlim(left=0)
 
     fig.tight_layout()
     fig.savefig(snakemake.output.sensitivity_combined, bbox_inches="tight")
