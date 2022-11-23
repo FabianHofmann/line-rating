@@ -19,6 +19,11 @@ sns.set(font="Times New Roman")
 from shapely.geometry import LineString as Line
 from shapely.geometry import Point
 
+if "snakemake" not in globals():
+    from _helpers import mock_snakemake
+
+    snakemake = mock_snakemake("plot_line_rating_calculation", ext="pdf")
+
 n = pypsa.Network(snakemake.input.network)
 
 cutout = atlite.Cutout(snakemake.input.cutout)
@@ -56,15 +61,16 @@ cbar_kwargs = {
     "ticks": [],
     "orientation": "horizontal",
     "drawedges": False,
-    "pad": 0.05,
+    "pad": 0.04,
     "aspect": 40,
 }
 
-fig, ax = plt.subplots(figsize=(6, 3), subplot_kw={"projection": ccrs.EqualEarth()})
-overlap_nodes.plot(ax=ax, zorder=1, color="grey", lw=4, alpha=0.8)
+fig, ax = plt.subplots(figsize=(5, 3.5), subplot_kw={"projection": ccrs.EqualEarth()})
+overlap_nodes.plot(ax=ax, zorder=2, color="grey", lw=4, alpha=0.8)
 # overlap_shapes.plot(ax=ax, color='grey', zorder=0)
 ckwargs = {**cbar_kwargs, "label": "Line Rating"}
 line_shapes.plot(
+    zorder=5,
     column="rating",
     ax=ax,
     legend=True,
@@ -76,7 +82,15 @@ line_shapes.plot(
 ckwargs = {**cbar_kwargs, "label": "Wind Speed"}
 wind = scutout.data.wnd100m.sel(time=t)
 vmin = wind.min().compute().item() - 5
-wind.plot(ax=ax, alpha=0.5, cmap="Blues", cbar_kwargs=ckwargs, vmin=vmin)
+wind.plot(
+    ax=ax,
+    alpha=0.5,
+    cmap="Blues",
+    cbar_kwargs=ckwargs,
+    vmin=vmin,
+    edgecolor="lightgray",
+    zorder=1,
+)
 
 ax.set_title("")
 fig.tight_layout()
