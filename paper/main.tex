@@ -291,31 +291,47 @@ In contrast to the 2030 scenario, in this scenario we vary the production share 
 This variation represents the pathway from 2030 to 2035 as the German government plans to decarbonise the power sector by 2035~\cite{federalministryofeconomicaffairsandclimateactionUeberblickspapierOsterpaket2022}.
 Note that the all parameters but the renewable production share remain the same as in the 2030 scenario.
 
+Figure \ref{fig:capacity-2035} shows the absolute capacity change from SLR to DLR. We can observe that in general the DLR cases need less capacities for all technologies except offshore wind.
+For offshore wind, we see an increase in capacity for DLR with increasing renewable production share. Going from the 95\% to the 100\% case the additional offshore wind capacity does not change.
+When looking at onshore wind, we see at the 80\% and 85\% case DLR builds more capacities than SLR. However, when going to 100\% share, DLR builds progressively less capacities with a reduction of 17~GW at 100\% share.
+For solar PV all DLR cases build less capacity than SLR. The reduction of solar capacities for DLR stay in a constant range from -12GW to -16GW \todo[inline]{check values}.
+The results from \ref{fig:capacity-2035} indicate that for the DLR cases, offshore wind capacities substitute the onshore wind capacities when going from 80\% to 100\% share.
+For the storage infrastructure, we see that in general less storage capacity is needed for DLR compared to SLR. For battery infrastructure, the trend difference from DLR to SLR is decreasing from 80\% (x GW) towards 100\% (x GW) renewable share.
 
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=0.7\linewidth]{de2030_all_nodes_v/sensitivity_vres_capacity_absolute.pdf}
+    \caption{Change in built generation capacity for different shares of renewable production}
+    \label{fig:capacity-2035}
+\end{figure}
+
+In figure \ref{fig:cost-curtailment-sensitivity-2035} the cost and grid congestion difference is depicted when going from 80\% to 100\% renewable production share.
+The cost savings from DLR compared to SLR increase from around 900~m€ to 2600~m€ per year. This indicates that the power system benefits even more from DLR when going to a decarbonised system.
+When regarding grid congestion, DLR similarly shows an increasing benefit when going towards a decarbonised power system.
+
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=0.7\linewidth]{de2030_all_nodes_v/sensitivity_vres_costs_curtailment.pdf}
+    \caption{The top figure shows the cost change from SLR to DLR for different shares of renewable production. The bottom figure depicts the change in averaged congested lines per hour.}
+    \label{fig:cost-curtailment-sensitivity-2035}
+\end{figure}
+
+Looking closer to the cost benefits, Figure \ref{fig:cost-sensitivity-2035} shows the cost savings for all the regarded generators and storage infrastructures.
+The trends for the renewable generators are similar to the changes in capacity we regarded in Figure \ref{fig:capacity-2035}.
 
 
 \begin{figure}[htpb]
     \centering
-    \includegraphics[width=\linewidth]{de2030_all_nodes_v/sensitivity_vres_costs.pdf}
+    \includegraphics[width=0.7\linewidth]{de2030_all_nodes_v/sensitivity_vres_costs.pdf}
     \caption{Savings of capital expenditures when going from SLR to DLR for different shares of renewable production. Positive costs represent higher expenses of DLR.}
     \label{fig:cost-sensitivity-2035}
 \end{figure}
 
 
-\begin{figure}[htpb]
-    \centering
-    \includegraphics[width=\linewidth]{de2030_all_nodes_v/sensitivity_vres_costs_curtailment.pdf}
-    \caption{The top figure shows the cost change from SLR to DLR for different shares of renewable production. The bottom figure depicts the change in averaged congested lines per hour.}
-    \label{fig:cost-curtailment-sensitivity-2035}
-\end{figure}
 
 
-\begin{figure}[htpb]
-    \centering
-    \includegraphics[width=\linewidth]{de2030_all_nodes_v/sensitivity_vres_capacity_relative.pdf}
-    \caption{Change in build generation capacity for different shares of renewable production}
-    \label{fig:capacity-2035}
-\end{figure}
+
+
 
 
 \section{Limitations}
