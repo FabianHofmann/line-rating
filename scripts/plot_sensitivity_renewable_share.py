@@ -87,66 +87,80 @@ if __name__ == "__main__":
     plt.tight_layout()
     plt.savefig(snakemake.output.sensitivity_costs, bbox_inches="tight")
 
-    fig, ax = plt.subplots(1, 1, figsize=(5, 5.5))
+    def line_break_long_labels(label):
+        return label.replace(" ", "\n") if len(label) > 20 else label
+
+    fig, ax = plt.subplots(1, 1, figsize=(7, 3.5))
     capacity_change_relative = (
         (dlr_data.loc["capacity"] / slr_data.loc["capacity"] - 1)
         .where(lambda x: x != 0)
         .dropna(axis=1)
+        .rename(columns=line_break_long_labels)
     )
-
     capacity_change_relative.rename(percentage_index).applymap(percentage).T.plot(
         ax=ax,
         kind="bar",
         bottom=0,
         xlabel="",
-        ylabel="Relative capacity change\nfrom SLR to DLR [%]",
-        rot=45,
+        ylabel="Relative capacity change (SLR - DLR) [%]",
         color=sns.color_palette("viridis", n_colors=len(capacity_change_relative)),
     )
-    ax.legend(title="Renewable production share [%]")
-    ax.set_xticklabels(ax.get_xticklabels(), rotation=45, ha="right")
-    plt.tight_layout()
-    plt.savefig(snakemake.output.sensitivity_capacity_relative, bbox_inches="tight")
-
-    fig, ax = plt.subplots(1, 1, figsize=(5, 5.5))
-
-    capacity_change_absolute = (
-        diff.loc["capacity"].where(lambda x: x != 0).dropna(axis=1)
+    ax.legend(
+        title="Renewable production share [%]",
+        bbox_to_anchor=(0.5, 1),
+        loc="lower center",
+        ncol=5,
     )
+    fig.tight_layout()
+    fig.savefig(snakemake.output.sensitivity_capacity_relative, bbox_inches="tight")
 
+    fig, ax = plt.subplots(1, 1, figsize=(7, 3.5))
+    capacity_change_absolute = (
+        diff.loc["capacity"]
+        .div(1e3)
+        .where(lambda x: x != 0)
+        .dropna(axis=1)
+        .rename(columns=line_break_long_labels)
+    )
     capacity_change_absolute.rename(percentage_index).T.plot(
         ax=ax,
         kind="bar",
         bottom=0,
         xlabel="",
-        ylabel="Absolute capacity change\nfrom SLR to DLR [MW]",
-        rot=45,
+        ylabel="Capacity change [GW]",
         color=sns.color_palette("viridis", n_colors=len(capacity_change_absolute)),
-        ylim=(-20000, 15000),
+        ylim=(None, 10),
     )
-    ax.legend(title="Renewable production share [%]")
-    ax.set_xticklabels(ax.get_xticklabels(), rotation=45, ha="right")
-    plt.tight_layout()
-    plt.savefig(snakemake.output.sensitivity_capacity_absolute, bbox_inches="tight")
+    ax.legend(
+        title="Renewable production share [%]",
+        bbox_to_anchor=(0.5, 1),
+        loc="lower center",
+        ncol=5,
+    )
+    fig.tight_layout()
+    fig.savefig(snakemake.output.sensitivity_capacity_absolute, bbox_inches="tight")
 
-    fig, axes = plt.subplots(2, 1, figsize=(7, 5.5), sharex=True)
-    diff.loc["costs"].sum(1).div(1e6).T.plot(
+    fig, axes = plt.subplots(2, 1, figsize=(5, 3), sharex=True)
+    diff.loc["costs"].mul(-1).sum(1).div(1e9).T.plot(
         ax=axes[0],
         linestyle="--",
         marker="o",
-        ylabel="Cost change\nfrom SLR to DLR [M€]",
+        ylabel="Savings [bn€]",
+        title="System cost savings (SLR - DLR)",
     )
-    congestion_diff = get_congestion(dlr) - get_congestion(slr)
+    axes[0].margins(y=0.1)
+    congestion_diff = get_congestion(slr) - get_congestion(dlr)
     congestion_diff.plot(
         ax=axes[1],
         linestyle="--",
         marker="o",
-        ylabel="Average number of\ncongested lines per hour\nfrom SLR to DLR [#/h]",
+        title="Average number of relieved line congestions",
+        ylabel="# Congestions",
         xlabel="Renewable share [%]",
         xticks=congestion_diff.index,
         legend=False,
     )
+    axes[1].margins(y=0.1)
     axes[1].set_xticklabels(congestion_diff.rename(percentage_index).index)
-
-    plt.tight_layout()
-    plt.savefig(snakemake.output.sensitivity_costs_curtailment, bbox_inches="tight")
+    fig.tight_layout()
+    fig.savefig(snakemake.output.sensitivity_costs_curtailment, bbox_inches="tight")

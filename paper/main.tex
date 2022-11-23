@@ -6,10 +6,10 @@
 \usepackage{algorithmic}
 \usepackage{textcomp}
 \usepackage{xcolor}
-\usepackage{todonotes}
 \usepackage{fancyhdr,lipsum}
 \usepackage[colorlinks=true,]{hyperref}
 \usepackage{eurosym}
+\usepackage{todonotes}
 
 
 \graphicspath{{../figures/}}
@@ -42,7 +42,7 @@
     \end{abstract}
 
     \begin{keyword}
-        power system analysis computing, power system management, power system planning, renewable energy source
+        power system modelling, thermal rating, power system planning, renewable energy source, energy transition
     \end{keyword}
 
 \end{frontmatter}
@@ -75,10 +75,6 @@ Among these, weather based measuring of the thermal capacity is considered the s
 The assumed investment costs for the implementation of the DLR are between 60k and 80k \euro{} per km with a service life of 30 years.~\cite{samweberProjektMeritOrder2016}.
 
 Today, DLR is applied by the German Transmission System Operators (TSOs) only rarely and in a simplified form, distinguishing between regional winter and summer capacities~\cite{bundesnetzagenturMonitoringReport20212022}. However, this is set to change according to the Federal Network Agency's network development plan, which calls on TSOs to implement real-time DLR wherever possible~\cite{bundesnetzagenturMonitoringReport20212022}.
-
-% TODO add these to DLR cap explanation
-% The European power system, the European association for the cooperation of TSOs (ENTSOE) expects an increase of up to 100~\% in transmission capacity when implementing DLR~\cite{entso-eDynamicLineRating}. %TODO: this seems to be not in average; missing ref
-% Other sources like the German TSO TransnetBW expects an increase of line capacity with DLR up to 50~\% compared to SLR~\cite{transnetbwFreileitungsmonitoring}. %TODO: missing ref
 
 In the literature, only a few studies can be found that address the topic of DLR. The publications in~\cite{liDayAheadSchedulingPower2019,dabbaghjamaneshEffectiveSchedulingReconfigurable2019,viaforaDayaheadDispatchOptimization2019} assess DLR on the basis of an small scale Energy System Optimization Models (ESOMs). A potential study for Germany, however without modelling approach, can be found at~\cite{samweberProjektMeritOrder2016}.
 Therefore, the literature lacks a comprehensive assessment and evaluation of DLR on the basis of a large, detailed ESOMs of Germany.
@@ -228,14 +224,14 @@ The cost parameters for 2030 are retrieved from the technology data-base publish
     \begin{tabular}{lrrrrc}
                             & today & SLR   & DLR  & $\Delta$ & unit \\
         \hline
-        Solar               & 64    & 202   & 188  & --14      & GW   \\
+        Solar               & 64    & 202   & 188  & --14     & GW   \\
         Onshore Wind        & 57.7  & 103   & 104  & +1       & GW   \\
-        Offshore Wind       & 8     & 9.5   & 9.6  & --0.1     & GW   \\
+        Offshore Wind       & 8     & 9.5   & 9.6  & --0.1    & GW   \\
         Natural Gas         & 32    & 29    & 29.2 & +0.2     & GW   \\
-        Battery (discharge) & -     & 20.2  & 16.2 & --4       & GW   \\
-        Battery Storage     & -     & 126.5 & 100  & --26.5    & GWh  \\
+        Battery (discharge) & -     & 20.2  & 16.2 & --4      & GW   \\
+        Battery Storage     & -     & 126.5 & 100  & --26.5   & GWh  \\
         H$_2$ Electrolysis  & -     & 0.1   & 0.1  & -        & GW   \\
-        H$_2$ Fuel Cell     & -     & 0.03  & 0.05 & --0.02    & GW   \\
+        H$_2$ Fuel Cell     & -     & 0.03  & 0.05 & --0.02   & GW   \\
         H$_2$ Storage       & -     & 4.5   & 6.3  & +1.8     & GWh  \\
         \hline
     \end{tabular}
@@ -301,7 +297,7 @@ For the storage infrastructure, we see that in general less storage capacity is 
 
 \begin{figure}[htpb]
     \centering
-    \includegraphics[width=0.7\linewidth]{de2030_all_nodes_v/sensitivity_vres_capacity_absolute.pdf}
+    \includegraphics[width=\linewidth]{de2030_all_nodes_v/sensitivity_vres_capacity_absolute.pdf}
     \caption{Change in built generation capacity for different shares of renewable production}
     \label{fig:capacity-2035}
 \end{figure}
@@ -323,7 +319,7 @@ The trends for the renewable generators are similar to the changes in capacity w
 
 \begin{figure}[htpb]
     \centering
-    \includegraphics[width=0.7\linewidth]{de2030_all_nodes_v/sensitivity_vres_costs.pdf}
+    \includegraphics[width=.9\linewidth]{de2030_all_nodes_v/sensitivity_vres_costs.pdf}
     \caption{Savings of capital expenditures when going from SLR to DLR for different shares of renewable production. Positive costs represent higher expenses of DLR.}
     \label{fig:cost-sensitivity-2035}
 \end{figure}
