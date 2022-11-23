@@ -8,6 +8,7 @@
 \usepackage{xcolor}
 \usepackage{todonotes}
 \usepackage{fancyhdr,lipsum}
+\usepackage[colorlinks=true,]{hyperref}
 \usepackage{eurosym}
 
 
@@ -83,7 +84,7 @@ In the literature, only a few studies can be found that address the topic of DLR
 Therefore, the literature lacks a comprehensive assessment and evaluation of DLR on the basis of a large, detailed ESOMs of Germany.
 By reducing our study to Germany only, we allow for a high spatial and temporal resolution of the model as well as high input data quality. The workflow openly available at %TODO
 can be easily extended to other countries.
-The following study builds on our first study,~\cite{EnhancingtheGermanTransmissionGrid2022}, with an improved methodology and analysis that uses updated cost assumptions and extends the scope of scenarios to the year 2035.
+The following study builds on our first study,~\cite{glaumEnhancingGermanTransmission2022}, with an improved methodology and analysis that uses updated cost assumptions and extends the scope of scenarios to the year 2035.
 
 The article is structured as follows.
 Section~\ref{sec:methodology} describes the methodology of the DLR implementation (\ref{sec:dlr}) and the underlying power system modelling (\ref{sec:powersystem}). Section~\ref{sec:results} presents the results of the different analyzed scenarios with  limitations outlined in Section~\ref{sec:limitations}. A conclusion is presented in Section~\ref{sec:conclusion}.
@@ -97,7 +98,7 @@ Section~\ref{sec:methodology} describes the methodology of the DLR implementatio
 
 The key concept of DLR is based on a dynamic estimation of the maximally allowed electrical current for the conducting material, also referred to as ampacity.
 The ampacity is set such that the conductor does not surpass the maximally allowed temperature  after which impermissible sag of the line or hardware damage can be expected~\cite{KARIMI2018600}.
-There are two widely used standards to calculate the ampacity of a conductor, namely the IEEE and the CIGRE standard~\cite{ieeeIEEEStd738},~\cite{ThermalBehaviourOverhead}. As the IEEE standard is known to be  more conservative~\cite{simmsComparativeAnalysisDynamic2013}, we choose this for our model.
+There are two widely used standards to calculate the ampacity of a conductor, namely the IEEE and the CIGRE standard~\cite{ieeeIEEEStd738},~\cite{iglesiasGUIDETHERMALRATING2014}. As the IEEE standard is known to be  more conservative~\cite{simmsComparativeAnalysisDynamic2013}, we choose this for our model.
 
 The following outlines the basic concept of DLR according to IEEE. For further details refer to~\cite{ieeeIEEEStandardCalculating2012},~\cite{ieeeIEEEStd738}.
 For each conductor, the heat balance equation
@@ -134,7 +135,7 @@ Fig.~\ref{fig:parameter-space-reduced} shows $P_{max}$ for a single wire of a ty
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.7\linewidth]{parameter-space-reduced.pdf}
+    \includegraphics[width=0.65\linewidth]{parameter-space-reduced.pdf}
     \caption{Transmission capacity for different environmental conditions. For three different wind incidence angles (0$^\circ$, 45$^\circ$, 90$^\circ$), the maximal transmission capacity of a typical electricity line ($R(T_{max})$=$9.39\cdot10^{-5}\,\Omega/\text{m}$, $V$~=~380~kV) is shown as a function of temperature and wind speed. The cooling effect of a perpendicular, strong, cold wind can lead to capacity increase of factor 4-5 compared to conservative conditions with 40$^\circ$C and low wind.}
     \label{fig:parameter-space-reduced}
 \end{figure}
@@ -288,7 +289,7 @@ In the following, we show that these results still hold true when implementing a
 \subsection{Optimal Investment 2035}
 The 2035 scenario is an extension of the 2030 scenario from Section \ref{sec:2030}.
 In contrast to the 2030 scenario, in this scenario we vary the production share of renewable technologies gradually from 80 to 100 \%.
-This variation represents the pathway from 2030 to 2035 as the German government plans to decarbonise the power sector by 2035~\cite{federalministryofeconomicaffairsandclimateactionUeberblickspapierOsterpaket2022}.
+This variation represents the pathway from 2030 to 2035 as the German government plans to decarbonize the power sector by 2035~\cite{federalministryofeconomicaffairsandclimateactionUeberblickspapierOsterpaket2022}.
 Note that the all parameters but the renewable production share remain the same as in the 2030 scenario.
 
 Figure \ref{fig:capacity-2035} shows the absolute capacity change from SLR to DLR. We can observe that in general the DLR cases need less capacities for all technologies except offshore wind.
@@ -400,7 +401,7 @@ $v_{wind,i}$ corresponds to an sub-hourly wind speed data point going from $i$ t
     \centering
     \includegraphics[width=\linewidth]{de2030_all_nodes_Co2L-RE0.8-Ep_dlr_v/capacity_map.pdf}
     \caption{Optimized capacities for the 2030 scenario with 80\% renewable supply.}
-    \label{fig:capacity-bar-2030}
+    \label{fig:capacity-map-2030}
 \end{figure}
 
 
