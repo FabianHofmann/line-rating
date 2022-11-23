@@ -285,7 +285,7 @@ rule plot_parameter_space:
     output:
         figure="figures/parameter-space-{kind}.pdf",
     script:
-        "scripts/parameter-space.py"
+        "scripts/plot-parameter-space.py"
 
 
 # ---------------------------------------------------------------------------- #
