@@ -272,7 +272,7 @@ Fig.~\ref{fig:cost-bar-2030} illustrates the cost savings for the DLR model comp
 In the following, we show that these results still hold true when implementing a DLR transmission capacity limit, e.g. for network security reasons. Fig.~\ref{fig:sensitivity_dlr_combined} shows the system cost, optimal generation capacity, total curtailment, and relative total cost savings as a function of the maximum allowed DLR transmission capacity per line. It can be seen that the largest benefits occurs in the first step when DLR transmission capacities are limited rather conservatively to 130\% of the SLR capacity. From then onwards, the optimal generation capacity and curtailment hardly change and system costs are only slightly reduced. In light of the results of Fig.~\ref{fig:potential-correlation-2019}, this finding can be attributed to two facts: First, only a minority of time steps ($<$~20\%) reveal a relative DLR transmission capacity increase of more than 50\%. Second, even at higher possible transmission rates, the onshore wind capacity factor is in most cases higher than 0.5, resulting in a onshore wind power production of more than 100~GW. This is much more then the average load of 63.3~GW of the system is. Therefore, in these times the excess energy is curtailed independently of the DLR transmission capacity limit.
 
 
-\begin{figure}[h!]
+\begin{figure}[!h]
     \centering
     \includegraphics[width=.7\linewidth]{de2030_all_nodes_Co2L-RE0.8-Ep_v/sensitivity_dlr_combined.pdf}
     \caption{Total cost, optimal capacity, total constraint, and relative total cost savings compared to the SLR model as a function of the maximum line rating allowed per line in the DLR model. Already with a conservative cap at 130\% of the SLR capacity, strong system benefits are achieved.}
@@ -287,23 +287,23 @@ Looking beyond the scope of 2030, we vary the production share of renewable tech
 Fig.~\ref{fig:capacity-2035} shows the capacity difference between the SLR and the DLR model for all renewable shares. We find that the DLR models generally require less capacity for all technologies except offshore wind.
 For offshore wind, the optimal capacity in the DLR model increases with the renewable production share. Going from the 95\% to the 100\% case the additional offshore wind capacity does not change.
 Looking at onshore wind, we see in the 80\% and 85\% scenarios the SLR models build more capacities than DLR. However, when going to 100\% share, DLR builds progressively less capacities with a reduction of 17~GW at 100\% renewable share.
-For solar PV all DLR models build less capacity than the SLR models. The reduction of solar capacities for DLR stay in a constant range from -12GW to -16GW.
+For solar PV all DLR models build less capacity than the SLR models. The reduction of solar capacities for DLR stay in a constant range from -12~GW to -16~GW.
 At this point, we may conclude that with increasing share of renewables, the DLR implementation allows to trade a relatively small increase in offshore wind power against a high decrease of onshore wind and solar PV capacity.
 % TODO: change plot to see store capacities instead of production capacities, expand explanation
-For the storage infrastructure, we see that in general less storage capacity is needed for DLR compared to SLR. For battery infrastructure, the trend difference from DLR to SLR is decreasing from 80\% (x GW) towards 100\% (x GW) renewable share.
+For the storage infrastructure, we see that in general DLR needs less storage capacity than SLR. For battery infrastructure, the trend difference from DLR to SLR is decreasing from 80\% (x GW) towards 100\% (x GW) renewable share.
 
-\begin{figure}[htpb]
+\begin{figure}[!h]
     \centering
-    \includegraphics[width=\linewidth]{de2030_all_nodes_v/sensitivity_vres_capacity_absolute.pdf}
+    \includegraphics[width=0.7\linewidth]{de2030_all_nodes_v/sensitivity_vres_capacity_absolute.pdf}
     \caption{Change in built generation capacity for different shares of renewable production}
     \label{fig:capacity-2035}
 \end{figure}
 
-In figure \ref{fig:cost-curtailment-sensitivity-2035} the cost and grid congestion difference is depicted when going from 80\% to 100\% renewable production share.
+In Fig. \ref{fig:cost-curtailment-sensitivity-2035}, the cost and grid congestion difference is depicted when going from 80\% to 100\% renewable production share.
 The cost savings from DLR compared to SLR increase from around 900~m€ to 2600~m€ per year. This indicates that the power system benefits even more from DLR when going to a decarbonised system.
-When regarding grid congestion, DLR similarly shows an increasing benefit when going towards a decarbonised power system.
+In terms of the number of congested lines, DLR similarly shows an increasing benefit in congestion relief with higher renewable production shares.
 
-\begin{figure}[htpb]
+\begin{figure}[!h]
     \centering
     \includegraphics[width=0.7\linewidth]{de2030_all_nodes_v/sensitivity_vres_costs_curtailment.pdf}
     \caption{The top figure shows the cost change from SLR to DLR for different shares of renewable production. The bottom figure depicts the change in averaged congested lines per hour.}
@@ -314,9 +314,9 @@ Looking closer to the cost benefits, Figure \ref{fig:cost-sensitivity-2035} show
 The trends for the renewable generators are similar to the changes in capacity we regarded in Figure \ref{fig:capacity-2035}.
 
 
-\begin{figure}[htpb]
+\begin{figure}[!h]
     \centering
-    \includegraphics[width=.9\linewidth]{de2030_all_nodes_v/sensitivity_vres_costs.pdf}
+    \includegraphics[width=.7\linewidth]{de2030_all_nodes_v/sensitivity_vres_costs.pdf}
     \caption{Savings of capital expenditures when going from SLR to DLR for different shares of renewable production. Positive costs represent higher expenses of DLR.}
     \label{fig:cost-sensitivity-2035}
 \end{figure}

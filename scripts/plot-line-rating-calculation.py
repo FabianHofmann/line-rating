@@ -76,7 +76,7 @@ line_shapes.plot(
     legend=True,
     lw=3,
     legend_kwds=ckwargs,
-    cmap="Greens",
+    cmap="viridis",
     vmin=rating.min() - 50,
 )
 ckwargs = {**cbar_kwargs, "label": "Wind Speed"}
