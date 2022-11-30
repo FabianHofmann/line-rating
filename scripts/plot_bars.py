@@ -21,14 +21,16 @@ def get_operation(n):
     return p.rename(n.name)
 
 
-def get_capacity(n):
+def get_capacity(n, storage_cap=True):
     gens = n.generators.groupby("carrier").p_nom_opt.sum().drop("load", errors="ignore")
 
-    # stos = n.stores.groupby(["carrier"]).e_nom_opt.sum()
-    buses = n.buses.query("carrier == 'AC'").index
-    stos = n.links.groupby(["bus1", "carrier"]).p_nom_opt.sum()
-    if not stos.empty:
-        stos = stos.loc[buses].groupby("carrier").sum().drop("DC")
+    if storage_cap:
+        stos = n.stores.groupby(["carrier"]).e_nom_opt.sum()
+    else:
+        buses = n.buses.query("carrier == 'AC'").index
+        stos = n.links.groupby(["bus1", "carrier"]).p_nom_opt.sum()
+        if not stos.empty:
+            stos = stos.loc[buses].groupby("carrier").sum().drop("DC")
     return pd.concat([gens, stos]).rename(n.name)
 
 

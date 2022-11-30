@@ -7,6 +7,7 @@ Created on Mon Oct 31 14:23:57 2022.
 """
 
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 import seaborn as sns
 from common import load_network
@@ -56,8 +57,17 @@ if __name__ == "__main__":
 
     ref = slr[keys[0]]
 
-    slr_data = get_data(slr)
-    dlr_data = get_data(dlr)
+    sorter = [
+        "Offshore Wind",
+        "Onshore Wind",
+        "Solar",
+        "Other Renewables",
+        "Fossil Carriers",
+        "Battery Infrastructure",
+        "Hydrogen Infrastructure",
+    ]
+    slr_data = get_data(slr).loc[:, sorter]
+    dlr_data = get_data(dlr).loc[:, sorter]
     diff = dlr_data - slr_data
     colors = ref.carriers.groupby("group").color.first()[diff.columns]
     percentage_index = lambda ind: int(ind * 100)
@@ -114,29 +124,52 @@ if __name__ == "__main__":
     fig.tight_layout()
     fig.savefig(snakemake.output.sensitivity_capacity_relative, bbox_inches="tight")
 
-    fig, ax = plt.subplots(1, 1, figsize=(7, 3.5))
+    fig, axes = plt.subplots(1, 2, figsize=(7, 3.5))
     capacity_change_absolute = (
         diff.loc["capacity"]
         .div(1e3)
         .where(lambda x: x != 0)
-        .dropna(axis=1)
+        .dropna(axis=1, how="all")
         .rename(columns=line_break_long_labels)
     )
-    capacity_change_absolute.rename(percentage_index).T.plot(
-        ax=ax,
+    mask_gen = np.row_stack(
+        capacity_change_absolute.apply(
+            lambda x: x.index.str.contains("Infrastructure"), axis=1
+        ).values
+    )
+    capacity_change_absolute.mask(mask_gen).dropna(axis=1, how="all").rename(
+        percentage_index
+    ).T.plot(
+        ax=axes[0],
         kind="bar",
         bottom=0,
         xlabel="",
-        ylabel="Capacity change [GW]",
+        ylabel="Generation capacity change \n (SLR - DLR) [GW]",
         color=sns.color_palette("viridis", n_colors=len(capacity_change_absolute)),
         ylim=(None, 10),
+        legend=False,
     )
-    ax.legend(
-        title="Renewable production share [%]",
-        bbox_to_anchor=(0.5, 1),
-        loc="lower center",
-        ncol=5,
+
+    capacity_change_absolute.mask(~mask_gen).dropna(axis=1, how="all").rename(
+        percentage_index
+    ).div(1e3).T.plot(
+        ax=axes[1],
+        kind="bar",
+        bottom=0,
+        xlabel="",
+        ylabel="Storage capacity change \n (SLR - DLR) [TWh]",
+        color=sns.color_palette("viridis", n_colors=len(capacity_change_absolute)),
+        legend=False,
     )
+    handles, labels = axes[0].get_legend_handles_labels()
+    fig.legend(handles, labels, title="Renewable production share [%]", loc=(0.5, 0.5))
+    # fig.legend(
+    #     title="Renewable production share [%]",
+    #     bbox_to_anchor=(0.5, 1),
+    #     loc="lower center",
+    #     ncol=5,
+    # )
+
     fig.tight_layout()
     fig.savefig(snakemake.output.sensitivity_capacity_absolute, bbox_inches="tight")
 
@@ -146,7 +179,7 @@ if __name__ == "__main__":
         linestyle="--",
         marker="o",
         ylabel="Savings [bn€]",
-        title="System cost savings (SLR - DLR)",
+        title="System cost savings",
     )
     axes[0].margins(y=0.1)
     congestion_diff = get_congestion(slr) - get_congestion(dlr)
