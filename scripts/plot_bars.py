@@ -198,49 +198,53 @@ def plot_cost(ax, networks):
 
 def plot_capex_opex(ax, networks):
     costs = (
-        pd.concat([get_costs(networks[1]), get_costs(networks[0])], axis=1)
+        pd.concat(
+            [get_costs(networks[1]), get_costs(networks[0])],
+            axis=1,
+            keys=[networks[1].name, networks[0].name],
+        )
         .dropna()
         .div(1e9)
     )
-    arrays = [["DLR", "DLR", "SLR", "SLR"], ["OPEX", "CAPEX", "OPEX", "CAPEX"]]
-    tuples = list(zip(*arrays))
-    index = pd.MultiIndex.from_tuples(tuples, names=["rating", "cost"])
-    costs.set_axis(index, axis=1, inplace=True)
     ind = np.arange(len(costs.index))  # the x locations for the groups
     width = 0.35
     slr_color = "#4c72b0"
     dlr_color = "#dd8452"
     ax.bar(
         x=ind - width / 2,
-        height=costs.loc[:, ("DLR", "CAPEX")],
+        height=costs.loc[:, ("Dynamic Line Rating", "CAPEX")],
         width=width,
         color=dlr_color,
+        label="DLR CAPEX",
     )
     ax.bar(
         x=ind - width / 2,
-        height=costs.loc[:, ("DLR", "OPEX")],
-        bottom=costs.loc[:, ("DLR", "CAPEX")],
+        height=costs.loc[:, ("Dynamic Line Rating", "OPEX")],
+        bottom=costs.loc[:, ("Dynamic Line Rating", "CAPEX")],
         width=width,
         color=dlr_color,
         hatch="xx",
+        label="DLR OPEX",
     )
     ax.bar(
         x=ind + width / 2,
-        height=costs.loc[:, ("SLR", "CAPEX")],
+        height=costs.loc[:, ("Static Line Rating", "CAPEX")],
         width=width,
         color=slr_color,
+        label="SLR CAPEX",
     )
     ax.bar(
         x=ind + width / 2,
-        height=costs.loc[:, ("SLR", "OPEX")],
-        bottom=costs.loc[:, ("SLR", "CAPEX")],
+        height=costs.loc[:, ("Static Line Rating", "OPEX")],
+        bottom=costs.loc[:, ("Static Line Rating", "CAPEX")],
         width=width,
         color=slr_color,
         hatch="xx",
+        label="SLR OPEX",
     )
     ax.set_xticks(ind, costs.index)
     plt.setp(ax.get_xticklabels(), rotation=30, horizontalalignment="right")
-    ax.legend(labels=["SLR CAPEX", "SLR OPEX", "DLR CAPEX", "DLR OPEX"])
+    ax.legend()
     ax.grid(linestyle="--", linewidth=0.5, alpha=0.5, zorder=2)
     ax.set_xlabel("")
     ax.set_ylabel("Cost [bn€]")
