@@ -282,7 +282,7 @@ In the following, we show that these results still hold true when implementing a
 
 
 \subsection{Optimal Investment 2035}
-Looking beyond the scope of 2030, we vary the production share of renewable technologies gradually in the SLR and DLR model from 80 to 100\%. This variation represents the pathway from 2030 to 2035 where the German government targets a fully decarbonized power sector~\cite{federalministryofeconomicaffairsandclimateactionUeberblickspapierOsterpaket2022}. Note that all the other  parameters, including the electrical load and weather year, remain the same as in the 2030 scenario to ensure comparability.
+Looking beyond the scope of 2030, we vary the production share of renewable technologies gradually in the SLR and DLR model from 80 to 100\%. This variation represents the pathway from 2030 to 2035 where the German government targets an almost decarbonized power sector~\cite{federalministryofeconomicaffairsandclimateactionUeberblickspapierOsterpaket2022}. Note that all the other  parameters, including the electrical load and weather year, remain the same as in the 2030 scenario to ensure comparability.
 
 Fig.~\ref{fig:capacity-2035} shows the capacity changes between the SLR and the DLR model for all considered renewable shares. Note that other renewables is not depicted as their capacities are equal for both models.
 We find that the DLR models overall require less generation capacity for all technologies except offshore wind.
@@ -295,20 +295,20 @@ Regarding fossil generation, DLR builds slightly more capacity with 1.68~GW at 8
 For the 100\% scenario, in both SLR and DLR model the fossil generation capacity drops to zero due to the decarbonisation of the model without considering carbon capture technologies.
 
 At this point, we may conclude that with increasing share of renewables, the DLR implementation allows to trade a relatively small increase in offshore wind power against a high decrease of onshore wind and solar PV capacity.
-% TODO: change plot to see store capacities instead of production capacities, expand explanation
 When looking at the storage infrastructure, we see that in general DLR needs less storage capacity than SLR. For battery infrastructure, DLR first builds -45~GWh less battery capacity than SLR at 80\% share. However, with increasing renewable share DLR gradually builds more battery capacity which finally leads to a battery capacity increase of 61~GWh at 100\% compared to SLR.
 Regarding hydrogen infrastructure, DLR requires less storage capacity for all renewable share scenarios. The capacity decrease of DLR compared to SLR becomes more prominent when going from 80\% to 100\% share. At 80\% renewable share, the hydrogen storage capacity for both SLR and DLR are the same. However, with increasing renewable share the hydrogen storage capacity of DLR decreases progressively to -2349~GWh at 100\% renewable share compared to SLR.
+Note that the y-axis is clipped at -1000 GWh for better visualization.
 
 
 \begin{figure}[!h]
     \centering
     \includegraphics[width=\linewidth]{de2030_all_nodes_v/sensitivity_vres_capacity_absolute.pdf}
-    \caption{Change in built generation capacity for different shares of renewable production}
+    \caption{Change in expanded generation and storage capacity for different shares of renewable production.}
     \label{fig:capacity-2035}
 \end{figure}
 
 In Fig. \ref{fig:cost-curtailment-sensitivity-2035}, the cost and grid congestion difference is depicted when going from 80\% to 100\% renewable production share.
-The cost savings from DLR compared to SLR increase from 1.2~bn€ per year at 80\% renewable share to 3.9~bn€ per year at 100\% renewable share. This indicates that the power system benefits even more from DLR when going to a decarbonised system.
+The cost savings from DLR compared to SLR increase from 1.2~bn\euro per year at 80\% renewable share to 3.9~bn\euro per year at 100\% renewable share. This indicates that the power system benefits even more from DLR when going to a decarbonised system.
 In terms of the number of congested lines, DLR similarly shows an increasing benefit in congestion relief with higher renewable production shares.
 Here the relation between renewable share and relieved line congestions is not straightforward. From 80\% to 95\%  the benefit of DLR compared to SLR on line congestion relief decrease starting at 2.7 and going to 3.1 relieved line congestions at 80\% and 95\%, respectively.
 However, from 95\% to 100\% renewable share there is a clear increase in congestion relief with 3.8 relieved lines for DLR compared to SLR at 100\% share.
@@ -320,20 +320,46 @@ However, from 95\% to 100\% renewable share there is a clear increase in congest
     \label{fig:cost-curtailment-sensitivity-2035}
 \end{figure}
 
-%todo write text here for DLR SLR comparison for 1.0 renewable share
 
-% move cost-sensitivity-2035 to appendix
-% Looking closer at the cost benefits, Figure \ref{fig:cost-sensitivity-2035} shows the cost differences for all generators and storage infrastructures.
-% The trends for the renewable generators are similar to the changes in capacity regarded in Figure \ref{fig:capacity-2035}.
-% The finding that offshore wind replace onshore wind, solar
+In the following, we take a closer look at the decarbonised power system scenario. Table~\ref{tab:installed capacity_2035} shows the total capacities for the DLR and the SLR model at a 100\% renewable generation share.
+Fig.~\ref{fig:capacity-2035} already illustrated the capacity difference between the SLR and DLR model. However, Table~\ref{tab:installed capacity_2035} puts the numbers into perspective and compares them to the expansion plans of the German government.
+\begin{table}[!h]
+    \caption{Comparison of a selection of total capacity planned by the German government in 2035 \cite{federalministryofeconomicaffairsandclimateactionRegulationDraftEEG2022, federalministryofeconomicaffairsandclimateactionUeberblickspapierOsterpaket2022} and from the optimized 2035 scenario with a 100\% renewable share with Static Line Rating and Dynamic Line Rating. }
+    \centering
+    \begin{tabular}{lrrrrc}
+        & Plan & SLR & DLR & $\Delta$ & Unit  \\
+        \hline
+        Offshore Wind & 40 & 17.8 & 32.7 & 14.9 & GW \\
+        Onshore Wind & 157 & 215.3 & 176.2 & -39 & GW \\
+        Solar & 309 & 244.1 & 220.2 & -23.9 & GW \\
+        Battery Discharge & - & 23.7 & 20.5 & -3.2 & GW \\
+        Battery Storage & - & 176.6 & 237.6 & 61.1 & GWh \\
+        Hydrogen Electrolysis & - & 75.7 & 61.5 & -14.2 & GW \\
+        Hydrogen Fuel Cell & - & 77.4 & 74.8 & -2.6 & GW \\
+        Hydrogen Storage & - & 15473.3 & 13123.6 & -2349.8 & GWh \\
+        \hline
+    \end{tabular}
+    \label{tab:installed capacity_2035}
+\end{table}
+First, we observe that in both DLR and SLR less offshore and solar capacities are built than in the expansion plans of the German government.
+Only for onshore wind, our models build more capacities than the planned by the government.
+The more restrained plans of the government could be due to the ongoing problems in onshore wind acceptance in Germany which leads to slower expansion rates. For offshore and onshore wind, the DLR model gets closer to the planned capacities than the SLR model. However, for solar the SLR model is closer to the plans of the government. Overall, the total generation capacities are on a similar scale with the plans of the government.
+Looking at the storage infrastructure, the storage capacities are enormous with 13~TWh and 15~TWh for SLR and DLR, respectively. One reason for the high storage capacities is the fact that we model Germany as an island without cross border flows.
+However, overall DLR needs less storage capacity than SLR. This indicates that DLR better compensate imbalances in the grid and, therefore DLR requires less storage capacities backup than SLR.
+Furthermore, the smaller expansion of battery discharge and fuel cell capacities of DLR compared to SLR also indicates a more stable transmission with DLR.
 
+
+Finally, we look at the total electricity generation difference between DLR and SLR illustrated in Figure~\ref{fig:RE1-operation-difference}.
 
 \begin{figure}[!h]
     \centering
-    \includegraphics[width=.9\linewidth]{de2030_all_nodes_v/sensitivity_vres_costs.pdf}
-    \caption{Savings of capital expenditures when going from SLR to DLR for different shares of renewable production. Positive costs represent higher expenses of DLR.}
-    \label{fig:cost-sensitivity-2035}
+    \includegraphics[width=0.7\linewidth]{de2030_all_nodes_Co2L-RE1.0-Ep_dlr_v/operation_difference_bar.pdf}
+    \caption{The figure shows the generated electricity difference when going from SLR to DLR. Negative values mean less generation of DLR compared to SLR.}
+    \label{fig:RE1-operation-difference}
 \end{figure}
+ We can see how the additional offshore wind generation of DLR replaces the gap of solar and onshore wind generation in SLR. Even though, according to Table~\ref{tab:installed capacity_2035} DLR generally has less renewable generation capacity compared to SLR, we see how the higher capacity factor of offshore wind compensates for solar and onshore wind.
+Another point which can be seen is that the DLR model requires less power generation than SLR although DLR has less storage capacities. This, as mentioned before, again indicates that with DLR the potential of the grid can be utilized more fully.
+To sum up, DLR enhances the grid such that the power system can better integrate offshore wind while requiring less overall power generation and storage backup capacities.
 
 
 \section{Limitations}
@@ -410,8 +436,12 @@ $v_{wind,i}$ corresponds to an sub-hourly wind speed data point going from $i$ t
 
 
 \subsubsection{2035}
-
-
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=.9\linewidth]{de2030_all_nodes_v/sensitivity_vres_costs.pdf}
+    \caption{Savings of capital expenditures when going from SLR to DLR for different shares of renewable production. Positive costs represent higher expenses of DLR.}
+    \label{fig:cost-sensitivity-2035}
+\end{figure}
 \todo[inline]{Transnet BW reference not formatted correctly}
 \clearpage
 \bibliographystyle{elsarticle-harv}

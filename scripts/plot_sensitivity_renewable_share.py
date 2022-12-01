@@ -144,7 +144,7 @@ if __name__ == "__main__":
         kind="bar",
         bottom=0,
         xlabel="",
-        ylabel="Generation capacity change \n (SLR - DLR) [GW]",
+        ylabel="Generation capacity change \n [GW]",
         color=sns.color_palette("viridis", n_colors=len(capacity_change_absolute)),
         ylim=(None, 10),
         legend=False,
@@ -152,13 +152,14 @@ if __name__ == "__main__":
 
     capacity_change_absolute.mask(~mask_gen).dropna(axis=1, how="all").rename(
         percentage_index
-    ).div(1e3).T.plot(
+    ).T.plot(
         ax=axes[1],
         kind="bar",
         bottom=0,
         xlabel="",
-        ylabel="Storage capacity change \n (SLR - DLR) [TWh]",
+        ylabel="Storage capacity change \n [TWh]",
         color=sns.color_palette("viridis", n_colors=len(capacity_change_absolute)),
+        ylim=(-1000, None),
         legend=False,
     )
     handles, labels = axes[0].get_legend_handles_labels()
