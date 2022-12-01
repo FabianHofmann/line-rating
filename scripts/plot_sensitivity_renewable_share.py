@@ -124,7 +124,7 @@ if __name__ == "__main__":
     fig.tight_layout()
     fig.savefig(snakemake.output.sensitivity_capacity_relative, bbox_inches="tight")
 
-    fig, axes = plt.subplots(1, 2, figsize=(7, 3.5))
+    fig, axes = plt.subplots(1, 2, figsize=(7, 3.5), width_ratios=[4, 2])
     capacity_change_absolute = (
         diff.loc["capacity"]
         .div(1e3)
@@ -162,13 +162,15 @@ if __name__ == "__main__":
         legend=False,
     )
     handles, labels = axes[0].get_legend_handles_labels()
-    fig.legend(handles, labels, title="Renewable production share [%]", loc=(0.5, 0.5))
-    # fig.legend(
-    #     title="Renewable production share [%]",
-    #     bbox_to_anchor=(0.5, 1),
-    #     loc="lower center",
-    #     ncol=5,
-    # )
+    fig.legend(
+        handles,
+        labels,
+        title="Renewable production share [%]",
+        loc="upper center",
+        bbox_to_anchor=(0.5, 1.12),
+        ncol=5,
+    )
+    fig.tight_layout()
 
     fig.tight_layout()
     fig.savefig(snakemake.output.sensitivity_capacity_absolute, bbox_inches="tight")
