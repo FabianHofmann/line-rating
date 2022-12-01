@@ -258,9 +258,8 @@ rule plot_sensitivity_renewable_share:
         networks_dlr=get_renewable_share_networks_dlr,
     output:
         sensitivity_costs="figures/de{year}_{clusters}_nodes_v{angle}/sensitivity_vres_costs.{ext}",
-        sensitivity_capacity_relative="figures/de{year}_{clusters}_nodes_v{angle}/sensitivity_vres_capacity_relative.{ext}",
         sensitivity_costs_curtailment="figures/de{year}_{clusters}_nodes_v{angle}/sensitivity_vres_costs_curtailment.{ext}",
-        sensitivity_capacity_absolute="figures/de{year}_{clusters}_nodes_v{angle}/sensitivity_vres_capacity_absolute.{ext}",
+        sensitivity_capacity="figures/de{year}_{clusters}_nodes_v{angle}/sensitivity_vres_capacity.{ext}",
     threads: 8
     script:
         "scripts/plot_sensitivity_renewable_share.py"

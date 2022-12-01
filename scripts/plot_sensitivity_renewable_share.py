@@ -6,6 +6,7 @@ Created on Mon Oct 31 14:23:57 2022.
 @author: fabian
 """
 
+import matplotlib.gridspec as gridspec
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -100,31 +101,10 @@ if __name__ == "__main__":
     def line_break_long_labels(label):
         return label.replace(" ", "\n") if len(label) > 20 else label
 
-    fig, ax = plt.subplots(1, 1, figsize=(7, 3.5))
-    capacity_change_relative = (
-        (dlr_data.loc["capacity"] / slr_data.loc["capacity"] - 1)
-        .where(lambda x: x != 0)
-        .dropna(axis=1)
-        .rename(columns=line_break_long_labels)
-    )
-    capacity_change_relative.rename(percentage_index).applymap(percentage).T.plot(
-        ax=ax,
-        kind="bar",
-        bottom=0,
-        xlabel="",
-        ylabel="Relative capacity change (SLR - DLR) [%]",
-        color=sns.color_palette("viridis", n_colors=len(capacity_change_relative)),
-    )
-    ax.legend(
-        title="Renewable production share [%]",
-        bbox_to_anchor=(0.5, 1),
-        loc="lower center",
-        ncol=5,
-    )
-    fig.tight_layout()
-    fig.savefig(snakemake.output.sensitivity_capacity_relative, bbox_inches="tight")
+    # %%
+    fig = plt.figure(tight_layout=True, figsize=(7, 3.5))
+    gs = gridspec.GridSpec(4, 3)
 
-    fig, axes = plt.subplots(1, 2, figsize=(7, 3.5), width_ratios=[4, 2])
     capacity_change_absolute = (
         diff.loc["capacity"]
         .div(1e3)
@@ -137,31 +117,47 @@ if __name__ == "__main__":
             lambda x: x.index.str.contains("Infrastructure"), axis=1
         ).values
     )
-    capacity_change_absolute.mask(mask_gen).dropna(axis=1, how="all").rename(
-        percentage_index
-    ).T.plot(
-        ax=axes[0],
+    ax = fig.add_subplot(gs[:, :2])
+    gen_cap = capacity_change_absolute.mask(mask_gen).dropna(axis=1, how="all").T
+    gen_cap.plot(
+        ax=ax,
         kind="bar",
         bottom=0,
         xlabel="",
-        ylabel="Generation capacity change \n [GW]",
+        ylabel="$\Delta$ Generation capacity [GW]",
         color=sns.color_palette("viridis", n_colors=len(capacity_change_absolute)),
-        # ylim=(None, 10),
-    )
-
-    capacity_change_absolute.mask(~mask_gen).dropna(axis=1, how="all").rename(
-        percentage_index
-    ).T.plot(
-        ax=axes[1],
-        kind="bar",
-        bottom=0,
-        xlabel="",
-        ylabel="Storage capacity change \n [TWh]",
-        color=sns.color_palette("viridis", n_colors=len(capacity_change_absolute)),
-        ylim=(-1000, None),
         legend=False,
     )
-    handles, labels = axes[0].get_legend_handles_labels()
+
+    ax = fig.add_subplot(gs[:3, 2])
+    sts_cap = (
+        capacity_change_absolute.mask(~mask_gen).div(1e3).dropna(axis=1, how="all").T
+    )
+    sts_cap.plot(
+        ax=ax,
+        kind="bar",
+        sharex=True,
+        bottom=0,
+        xlabel="",
+        ylabel="",
+        color=sns.color_palette("viridis", n_colors=len(capacity_change_absolute)),
+        ylim=(-0.5, None),
+        legend=False,
+    )
+    ax.set_ylabel("$\Delta$ Storage capacity [TWh]     ", loc="top")
+    ax = fig.add_subplot(gs[3, 2])
+    sts_cap.plot(
+        ax=ax,
+        kind="bar",
+        sharex=True,
+        bottom=0,
+        xlabel="",
+        color=sns.color_palette("viridis", n_colors=len(capacity_change_absolute)),
+        ylim=(None, -0.5),
+        legend=False,
+    )
+
+    handles, labels = ax.get_legend_handles_labels()
     fig.legend(
         handles,
         labels,
@@ -170,11 +166,9 @@ if __name__ == "__main__":
         bbox_to_anchor=(0.5, 1.12),
         ncol=5,
     )
-    fig.tight_layout()
+    fig.savefig(snakemake.output.sensitivity_capacity, bbox_inches="tight")
 
-    fig.tight_layout()
-    fig.savefig(snakemake.output.sensitivity_capacity_absolute, bbox_inches="tight")
-
+    # %%
     fig, axes = plt.subplots(2, 1, figsize=(5, 3), sharex=True)
     diff.loc["costs"].mul(-1).sum(1).div(1e9).T.plot(
         ax=axes[0],

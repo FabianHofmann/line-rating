@@ -79,7 +79,7 @@ scenario_2035:
     ]
   sensitivity:
     dlr: []
-    vres: ["costs"]
+    vres: ["costs", "capacity"]
 
 test:
   rating: [1.0, ""]
