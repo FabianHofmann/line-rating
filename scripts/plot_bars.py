@@ -193,7 +193,7 @@ def plot_cost(ax, networks):
     ax.grid(linestyle="--", linewidth=0.5, alpha=0.5, zorder=2)
     ax.set_ylabel("")
     ax.set_xlabel("Cost [m€]")
-    ax.set_title("Total Cost Savings")
+    ax.set_title("System Cost Savings")
 
 
 def plot_capex_opex(ax, networks):

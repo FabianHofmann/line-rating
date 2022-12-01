@@ -22,7 +22,7 @@ def totals(df):
 if "snakemake" not in globals():
     snakemake = mock_snakemake(
         "describe_network",
-        year=2020,
+        year=2030,
         clusters="all",
         opts="Co2L-BL-Ep",
         rating="1.0",

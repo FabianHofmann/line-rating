@@ -220,23 +220,20 @@ The cost parameters for 2030 are retrieved from the technology data-base publish
     \caption{Comparison of a selection of capacity totals for today, reported at~\cite{burgerInstalledPowerEnergyCharts} by the time of writing, and the optimized 2030 scenario with a 80\% renewable share with Static Line Rating and Dynamic Line Rating. }
     \centering
     \begin{tabular}{lrrrrc}
-                            & today & SLR   & DLR  & $\Delta$ & unit \\
+                            & today & SLR  & DLR  & $\Delta$ & unit \\
         \hline
-        Solar               & 64    & 202   & 188  & --14     & GW   \\
-        Onshore Wind        & 57.7  & 103   & 104  & +1       & GW   \\
-        Offshore Wind       & 8     & 9.5   & 9.6  & --0.1    & GW   \\
-        Natural Gas         & 32    & 29    & 29.2 & +0.2     & GW   \\
-        Battery (discharge) & -     & 20.2  & 16.2 & --4      & GW   \\
-        Battery Storage     & -     & 126.5 & 100  & --26.5   & GWh  \\
-        H$_2$ Electrolysis  & -     & 0.1   & 0.1  & -        & GW   \\
-        H$_2$ Fuel Cell     & -     & 0.03  & 0.05 & --0.02   & GW   \\
-        H$_2$ Storage       & -     & 4.5   & 6.3  & +1.8     & GWh  \\
+        Solar               & 64    & 202  & 188  & --14     & GW   \\
+        Onshore Wind        & 57.7  & 102  & 96.4 & --5.6    & GW   \\
+        Offshore Wind       & 8     & 9.4  & 12.8 & +3.4     & GW   \\
+        Natural Gas         & 32    & 46   & 47.5 & +1.5     & GW   \\
+        Battery (discharge) & -     & 20.9 & 14.2 & --6.7    & GW   \\
+        Battery Storage     & -     & 134  & 88   & --46     & GWh  \\
         \hline
     \end{tabular}
     \label{tab:installed capacity}
 \end{table}
 
-Table \ref{tab:installed capacity} shows a selection of optimal capacities for the systems with SLR and DLR in comparison to today's capacities. For the other technologies we do not perceive notable differences. The full set of capacity totals as well as the spatial capacity layout can be found in \ref{sec:2030-scenario-plots}. %TODO: add figures and tables t appendix
+Table \ref{tab:installed capacity} shows a selection of optimal capacities for the systems with SLR and DLR in comparison to today's capacities. For the other technologies we do not perceive notable differences. %The full set of capacity totals as well as the spatial capacity layout can be found in \ref{sec:2030-scenario-plots}. %TODO: add figures and tables t appendix
 Roughly speaking, the optimal solution to meet the 2030 target requires tripling solar capacity, doubling wind capacity, and expanding batteries and some hydrogen storage. Neither the SLR nor the DLR model requires new fossil or nuclear generators. While solar and onshore wind capacity totals are roughly in alignment the government's target for 2030  (200~GW solar, 100~GW onshore wind), the model expands much less offshore wind power then planned by the government (40~GW)~\cite{federalministryofeconomicaffairsandclimateactionGermanyCurrentClimate2022}, which is mainly related to more conservative cost reductions.
 
 In a direct comparison, the DLR implementation results in a 14~GW reduction in newly installed solar capacities, while the differences between offshore and onshore are smaller, +1~GW and -0.1~GW, respectively. The DLR setup leads to a slight increase of 0.2~GW additional Natural Gas generators (CCGT + OCGT).
@@ -262,14 +259,14 @@ As depicted in Fig.~\ref{fig:load-duration-2030}, transmission congestion is sig
 \begin{figure}[!h]
     \centering
     \includegraphics[width=.7\linewidth]{de2030_all_nodes_Co2L-RE0.8-Ep_dlr_v/cost_bar.pdf}
-    \caption{Savings of capital expenditures (CAPEX) and operational expenditures (OPEX) when going from SLR to DLR.  Positive costs represent higher expenses of DLR.}
+    \caption{Savings of capital expenditures (CAPEX) and operational expenditures (OPEX) when going from SLR to DLR.  Positive costs represent higher expenses of SLR.}
     \label{fig:cost-bar-2030}
 \end{figure}
 
 Fig.~\ref{fig:cost-bar-2030} illustrates the cost savings for the DLR model compared to the SLR model. Note that positive costs represent higher expenses for the DLR model. The capital cost from Fig.~\ref{fig:cost-bar-2030} directly correlates to the capacity expansion given in Table \ref{tab:installed capacity}. We observe significantly less OPEX for fossil energy carriers in the DLR model. The total cost savings for the DLR model are 3.4\% which corresponds to 908~mil~Euro per year. %\todo[inline]{more positive framing}
 \\
 
-In the following, we show that these results still hold true when implementing a DLR transmission capacity limit, e.g. for network security reasons. Fig.~\ref{fig:sensitivity_dlr_combined} shows the system cost, optimal generation capacity, total curtailment, and relative total cost savings as a function of the maximum allowed DLR transmission capacity per line. It can be seen that the largest benefits occurs in the first step when DLR transmission capacities are limited rather conservatively to 130\% of the SLR capacity. From then onwards, the optimal generation capacity and curtailment hardly change and system costs are only slightly reduced. In light of the results of Fig.~\ref{fig:potential-correlation-2019}, this finding can be attributed to two facts: First, only a minority of time steps ($<$~20\%) reveal a relative DLR transmission capacity increase of more than 50\%. Second, even at higher possible transmission rates, the onshore wind capacity factor is in most cases higher than 0.5, resulting in a onshore wind power production of more than 100~GW. This is much more then the average load of 63.3~GW of the system is. Therefore, in these times the excess energy is curtailed independently of the DLR transmission capacity limit.
+In the following, we show that these results still hold true when implementing a DLR transmission capacity limit, e.g. for network security reasons. Fig.~\ref{fig:sensitivity_dlr_combined} shows the system cost, optimal generation capacity, total curtailment, and relative total cost savings as a function of the maximum allowed DLR transmission capacity per line. It can be seen that the largest benefits occurs in the first step when DLR transmission capacities are limited rather conservatively to 130\% of the SLR capacity. From then onwards, the optimal generation capacity and curtailment hardly change and system costs are only slightly reduced. In light of the results of Fig.~\ref{fig:potential-correlation-2019}, this finding can be attributed to two facts: First, only a minority of time steps ($<$~20\%) reveal a relative DLR transmission capacity increase of more than 50\%. Second, even at higher possible transmission rates, the onshore wind capacity factor is in most cases higher than 0.5, resulting in a combined wind power production of more than 65~GW. This is slightly more then the average load of 63.3~GW of the system is. Therefore, in most of these times the excess energy is curtailed independently of the DLR transmission capacity limit.
 
 
 \begin{figure}[!h]
@@ -386,11 +383,11 @@ We conclude that in urgent need for decarbonizing the German power system, DLR i
 \subsection{Study Cases Parameters}\label{tab:cases_parameters}
 \begin{tabularx}{\linewidth}{>{\bfseries}l  X  X}
     \hline
-    { }                      & 2019                         & 2030 - 2035                                                         \\
+    { }                      & 2019                         & 2030 - 2035                                                   \\
     \hline
     Generator capacity                                                                                                      \\expansion    &            no &                           yes \\
-    CO2 Limit                & 222 mil tons                 & -                                                   \\
-    CO2 Price                & -                 & 120~\euro{}/t                                                   \\
+    CO2 Limit                & 222 mil tons                 & -                                                             \\
+    CO2 Price                & -                            & 120~\euro{}/t                                                 \\
     Base load of nuclear                                                                                                    \\and lignite &           yes &                            no \\
     Renewable generation                                                                                                    \\constraint &            no &      80\% -- 100\% renewable generation \\
     Generator infrastructure & historic capacities for 2019 & capacities of 2022 with decommissioning dates later then 2030 \\
