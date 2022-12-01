@@ -98,9 +98,9 @@ if __name__ == "__main__":
         ax.spines[["top", "right"]].set_visible(False)
 
     ax = next(axes)
-    data.loc[("costs", 1.0)].sub(data.loc["costs"]).sum(1).div(1e6).plot(ax=ax)
+    data.loc[("costs", 1.0)].sub(data.loc["costs"]).sum(1).div(1e9).plot(ax=ax)
     ax.set_xlabel("Maximally allowed rating")
-    ax.set_ylabel("Costs savings [m€]")
+    ax.set_ylabel("Cost savings [bn€]")
     ax.spines[["top", "right"]].set_visible(False)
     ax.set_xlim(left=0)
 

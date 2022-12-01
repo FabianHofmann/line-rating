@@ -80,7 +80,7 @@ if __name__ == "__main__":
     costs["Total"] = costs.sum(1)
     colors.loc["Total"] = "grey"
 
-    costs.div(1e6).plot(
+    costs.div(-1e9).plot(
         color=colors,
         title=list(costs.columns),
         legend=False,
@@ -91,7 +91,7 @@ if __name__ == "__main__":
         xlabel="Renewable production share [%]",
     )
     fig = plt.gcf()
-    fig.supylabel("Cost savings [m€]")
+    fig.supylabel("Cost savings [bn€]")
     plt.xticks(costs.index)
 
     plt.tight_layout()
@@ -146,8 +146,7 @@ if __name__ == "__main__":
         xlabel="",
         ylabel="Generation capacity change \n (SLR - DLR) [GW]",
         color=sns.color_palette("viridis", n_colors=len(capacity_change_absolute)),
-        ylim=(None, 10),
-        legend=False,
+        # ylim=(None, 10),
     )
 
     capacity_change_absolute.mask(~mask_gen).dropna(axis=1, how="all").rename(
@@ -181,7 +180,7 @@ if __name__ == "__main__":
         linestyle="--",
         marker="o",
         ylabel="Savings [bn€]",
-        title="System cost savings",
+        title="System cost savings through DLR",
     )
     axes[0].margins(y=0.1)
     congestion_diff = get_congestion(slr) - get_congestion(dlr)

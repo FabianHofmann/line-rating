@@ -137,6 +137,7 @@ electricity:
     offwind: 30 #GW
     solar: 200 #GW
     biomass: 0 #if not given set to 0
+    ror: 0
   # parameters used for the base load constraint
   base_load:
     lignite: 0.2 #min_p_pu value for lignite
