@@ -81,7 +81,7 @@ if __name__ == "__main__":
     costs["Total"] = costs.sum(1)
     colors.loc["Total"] = "grey"
 
-    costs.div(-1e9).plot(
+    costs.div(1e9).plot(
         color=colors,
         title=list(costs.columns),
         legend=False,
@@ -92,7 +92,7 @@ if __name__ == "__main__":
         xlabel="Renewable production share [%]",
     )
     fig = plt.gcf()
-    fig.supylabel("Cost savings [bn€]")
+    fig.supylabel("Cost difference (SLR-DLR) [bn€]")
     plt.xticks(costs.index)
 
     plt.tight_layout()
