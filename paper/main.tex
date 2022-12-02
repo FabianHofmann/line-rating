@@ -258,9 +258,6 @@ From these numbers we conclude the following. The implementation of DLR enables 
 % Fig.~\ref{fig:cost-bar-2030} illustrates the cost savings for the DLR model compared to the SLR model. The capital cost from Fig.~\ref{fig:cost-bar-2030} directly correlates to the capacity expansion given in Table \ref{tab:installed capacity}. We observe significantly less OPEX for fossil energy carriers in the DLR model. The total cost savings for the DLR model are 3.4\% which corresponds to 908~mil~Euro per year. %\todo[inline]{more positive framing}
 % \\
 
-In most of today's real-world implementations, TSO's set a static upper limit to the DLR capacity, e.g. for network security reasons. In the following, we show that the positive effects DLR are robust against such a limit. Fig.~\ref{fig:sensitivity_dlr_combined} shows the system cost, optimal generation capacity, total curtailment, and relative total cost savings as a function of the maximum allowed DLR transmission capacity per line. It can be seen that the largest benefits occurs in the first step going from SLR (1.0) to DLR with a rather conservative upper limit of 130\% of the SLR capacity. From then onwards, optimal generation capacity and curtailment hardly change and system costs are only slightly reduced. In the light of Fig.~\ref{fig:potential-correlation-2019}, this findings can be attributed to two facts: First, only a minority of time steps ($<$~20\%) reveal a relative DLR transmission capacity increase of more than 50\%. Second, even when higher transmission rates are possible, the overall wind power production is so high that the system does not profit from it. With a capacity factor of above 0.5, wind power produced more than 65~GW which is more then the average load of 63.3~GW of the system. Therefore, in most of these times the excess energy is curtailed independently of the DLR transmission capacity limit.
-
-
 \begin{figure}[!h]
     \centering
     \includegraphics[width=.7\linewidth]{de2030_all_nodes_Co2L-RE0.8-Ep_v/sensitivity_dlr_combined.pdf}
@@ -269,19 +266,12 @@ In most of today's real-world implementations, TSO's set a static upper limit to
 \end{figure}
 
 
+In most of today's real-world implementations, TSO's set a static upper limit to the DLR capacity, e.g. for network security reasons. In the following, we show that the positive effects DLR are robust against such a limit. Fig.~\ref{fig:sensitivity_dlr_combined} shows the system cost, optimal generation capacity, total curtailment, and relative total cost savings as a function of the maximum allowed DLR transmission capacity per line. It can be seen that the largest benefits occurs in the first step going from SLR (1.0) to DLR with a rather conservative upper limit of 130\% of the SLR capacity. From then onwards, optimal generation capacity and curtailment hardly change and system costs are only slightly reduced. In the light of Fig.~\ref{fig:potential-correlation-2019}, this findings can be attributed to two facts: First, only a minority of time steps ($<$~20\%) reveal a relative DLR transmission capacity increase of more than 50\%. Second, even when higher transmission rates are possible, the overall wind power production is so high that the system does not profit from it. With a capacity factor of above 0.5, wind power produced more than 65~GW which is more then the average load of 63.3~GW of the system. Therefore, in most of these times the excess energy is curtailed independently of the DLR transmission capacity limit.
+
+
+
 \subsection{Optimal Investment 2035}
 Looking beyond the scope of 2030, we vary the production share of renewable technologies gradually in the SLR and DLR model from 80 to 100\%. This variation represents the pathway from 2030 to 2035 in which the German government targets an almost decarbonized power sector~\cite{federalministryofeconomicaffairsandclimateactionUeberblickspapierOsterpaket2022}. Note that all the other  parameters, including the electrical load and weather year, remain the same as in the 2030 scenario to ensure comparability.
-
-Fig.~\ref{fig:capacity-2035} shows the capacity changes between the SLR and DLR model for all considered renewable shares. Other renewables are not depicted as their capacities are equal for both models.
-Continuing the trend of the 2030 scenario, we find that the DLR models require less generation capacity for all technologies except offshore wind. The optimal offshore wind capacity in the DLR model increases continuously with the share of renewables, from +4.3~GW at a share of 80\% to +14.9~GW at a share of 100\% renewables.
-For onshore wind, we perceive an opposite trend. With increasing renewable share, DLR builds progressively less capacity resulting in a 39~GW reduction.
-The difference in solar capacities for the DLR first decreases from --23~GW at 80\% to --14~GW at 95\% compared to the SLR. Here, the DLR model sees an advantage in integrating more electricity from solar into the grid. However, with the strong increase of offshore wind power in the DLR model, less solar capacity is needed again with --23.8~GW at a share of 100\% renewables.
-Regarding fossil generators, DLR builds slightly more capacity with +1.68~GW at 80\% to +2.2~GW at 95\% production share.
-However, even though more capacities are built in the 95\% case, the fossil generators of the DLR model generate -40~GWh less electricity.
-This indicates that the DLR model only requires a higher fossil power output for single hours with scarce wind resources than SLR.
-%add info that this could be solved with cross border flows
-For the 100\% scenario, in both SLR and DLR model the fossil generation capacity drops to zero due to the full decarbonisation of the model without considering carbon capture technologies.
-
 
 \begin{figure}[!h]
     \centering
@@ -290,17 +280,20 @@ For the 100\% scenario, in both SLR and DLR model the fossil generation capacity
     \label{fig:capacity-2035}
 \end{figure}
 
+Fig.~\ref{fig:capacity-2035} shows the capacity changes between the SLR and DLR model for all considered renewable shares. Other renewables are not depicted as their capacities are equal for both models.
+Continuing the trend of the 2030 scenario, we find that the DLR models require less generation capacity for all technologies except offshore wind. The optimal offshore wind capacity in the DLR model increases continuously with the share of renewables, from +4.3~GW at a share of 80\% to +14.9~GW at a share of 100\% renewables.
+For onshore wind, we perceive an opposite trend. With increasing renewable share, DLR builds progressively less capacity resulting in a 39~GW reduction.
+The difference in solar capacities for the DLR first decreases from --23~GW at 80\% to --14~GW at 95\% compared to the SLR. Here, the DLR model sees an advantage in integrating more electricity from solar into the grid. However, with the strong increase of offshore wind power in the DLR model, less solar capacity is needed again with --23.8~GW at a share of 100\% renewables.
+Regarding fossil generators, DLR builds slightly more capacity with +1.68~GW at 80\% to +2.2~GW at 95\% production share.
+However, even though more capacities are built in the 95\% case, the fossil generators of the DLR model generate --40~GWh less electricity.
+This indicates that the DLR model only requires a higher fossil power output for single hours with scarce wind resources than SLR.
+%add info that this could be solved with cross border flows
+For the 100\% scenario, in both SLR and DLR model the fossil generation capacity drops to zero due to the full decarbonisation of the model without considering carbon capture technologies.
+
+
 At this point, we may conclude that with increasing share of renewables, the DLR implementation allows to trade a relatively small increase in offshore wind power against a high decrease of onshore wind and solar PV capacity.
-When looking at the storage infrastructure, we see that in general DLR needs less storage capacity than SLR. For battery infrastructure, DLR first builds --45~GWh less battery capacity than SLR at 80\% share. However, with increasing renewable share DLR gradually builds more battery capacity which finally leads to a battery capacity increase of +61~GWh at 100\% compared to SLR.
-Regarding hydrogen infrastructure, DLR requires less storage capacity for all renewable shares. The capacity decrease of DLR compared to SLR becomes more prominent when going from 80 to 100\% share. At 80\% renewable share, the hydrogen storage capacity for both SLR and DLR are the same. However, with increasing renewable share the hydrogen storage capacity of DLR decreases progressively to --2.35~TWh at 100\% renewable share compared to SLR.
-
-
-
-In Fig. \ref{fig:cost-curtailment-sensitivity-2035}, the cost and grid congestion difference is depicted when going from 80 to 100\% renewable share.
-The cost savings from DLR compared to SLR increase from 1.2~bn\euro{}/yr at 80\% renewable share to 3.9~bn\euro{}/yr at 100\% renewable share. This indicates that the power system benefits even more from DLR when going to a decarbonised system.
-In terms of the number of congested lines, DLR similarly shows an increasing benefit in congestion relief with higher renewable shares.
-Here the relation between renewable share and relieved line congestions is not straightforward. From 80 to 95\%  the benefit of DLR compared to SLR on line congestion relief decrease starting at 2.7 and going up to 3.1 relieved line congestions at 80 and 95\%, respectively.
-However, from 95 to 100\% renewable share there is a clear increase in congestion relief with 3.8 relieved lines for DLR compared to SLR at 100\% share.
+When looking at the storage infrastructure, we see that in general DLR needs less storage capacity than SLR. For battery infrastructure, DLR builds --45~GWh less storage capacity at 80\% share. However, with increasing renewable share DLR gradually builds more battery capacity which finally leads to a battery capacity increase of +61~GWh.
+Regarding hydrogen infrastructure, DLR requires less storage capacity for all renewable shares. The capacity decrease of DLR compared to SLR becomes more prominent. At 80\% renewable share, the hydrogen storage capacity for both SLR and DLR are the same. However, with increasing renewable share the hydrogen storage capacity of DLR decreases progressively to --2.35~TWh at 100\% renewable share.
 
 \begin{figure}[!h]
     \centering
@@ -310,9 +303,13 @@ However, from 95 to 100\% renewable share there is a clear increase in congestio
 \end{figure}
 
 
-In the following, we take a closer look at the decarbonised power system scenario. Table~\ref{tab:installed capacity_2035} shows the total capacities for the DLR and the SLR model at 100\% renewable share.
-Fig.~\ref{fig:capacity-2035} already illustrated the capacity difference between the SLR and DLR model. However, Table~\ref{tab:installed capacity_2035} puts the numbers into perspective and compares them to the expansion plans of the German government.
-\begin{table}[!h]
+In Fig. \ref{fig:cost-curtailment-sensitivity-2035}, the cost and grid congestion difference is depicted when going from 80 to 100\% renewable share.
+The cost savings from DLR compared to SLR increase from 1.2~bn\euro{}/yr at 80\% renewable share to 3.9~bn\euro{}/yr at 100\% renewable share. This indicates that the power system benefits even more from DLR in a decarbonized setup.
+In terms of numbers of congested lines, DLR similarly shows an increasing benefit in congestion relief with higher renewable shares.
+Here the relation between renewable share and relieved line congestions is not straightforward. From 80 to 95\%  the benefit of DLR compared to SLR on line congestion relief decrease starting at 2.7 and going up to 3.1 relieved line congestions at 80 and 95\%, respectively.
+However, from 95 to 100\% renewable share there is a clear increase in congestion relief with 3.8 relieved lines for DLR compared to SLR at 100\% share.
+
+\begin{table}[hb]
     \caption{Comparison of a selection of total capacity planned by the German government in 2035 \cite{federalministryofeconomicaffairsandclimateactionRegulationDraftEEG2022, federalministryofeconomicaffairsandclimateactionUeberblickspapierOsterpaket2022} and from the optimized 2035 scenario with a 100\% renewable share with Static Line Rating and Dynamic Line Rating. The spatial distribution of capacities in the SLR and DLR model can be found in Fig.~\ref{fig:capacity-map-2035}}
     \centering
     \begin{tabular}{lrrrrc}
@@ -330,15 +327,14 @@ Fig.~\ref{fig:capacity-2035} already illustrated the capacity difference between
     \end{tabular}
     \label{tab:installed capacity_2035}
 \end{table}
-First, we observe that in both DLR and SLR less offshore and solar capacities are built than in the expansion plans of the German government.
-Only for onshore wind, our models build more capacities than planned by the government.
-The more restrained onshore wind plans of the government could be due to the ongoing problems in onshore wind acceptance in Germany which leads to slower expansion rates. For offshore and onshore wind, the DLR model gets closer to the planned capacities than the SLR model. On the other hand, for solar the SLR model is closer to the plans of the government. Overall, the total generation capacities are on a similar scale with the plans of the government.
-Looking at the storage infrastructure, the storage capacities are enormous with 13~TWh and 15~TWh for SLR and DLR, respectively. One reason for the high storage capacities is the fact that we model Germany as an island without any cross border flows.
-However, overall DLR needs 2~TWh less storage capacity than SLR. This indicates that DLR better compensate imbalances in the grid and therefore, DLR requires less storage capacity backup than SLR.
-Furthermore, the decrease in capacity expansion for battery discharge and fuel cell of DLR compared to SLR also indicates a more stable transmission with DLR.
+In the following, we take a closer look at the decarbonised power system scenario. Table~\ref{tab:installed capacity_2035} shows the total capacities for the DLR and the SLR model at 100\% renewable share.
+In addition to Fig.~\ref{fig:capacity-2035}, Table~\ref{tab:installed capacity_2035} puts the total capacities into perspective and compares them to the expansion plans of the German government. It shows that both the DLR and the SLR model tend to build less offshore wind and solar and more onshore wind capacities than planned by the German government.
 
-
-Finally, we look at the total electricity generation difference between DLR and SLR illustrated in Fig.~\ref{fig:RE1-operation-difference}.
+% We can assume that the more restrained onshore wind plans of the government are due to ongoing acceptance problems in Germany.
+% For offshore and onshore wind, the DLR model gets closer to the planned capacities than the SLR model. For solar the SLR model is closer to the plans of the government. Overall, the total generation capacities are on a similar scale with the plans of the government.
+% Looking at the storage infrastructure, the storage capacities are enormous with 13~TWh and 15~TWh for SLR and DLR, respectively. One reason for the high storage capacities is the fact that we model Germany as an island without any cross border flows.
+% However, overall DLR needs 2~TWh less storage capacity than SLR. This indicates that DLR better compensate imbalances in the grid and therefore, DLR requires less storage capacity backup.
+% Furthermore, the decrease in capacity expansion for battery discharge and fuel cell of DLR also indicates a more stable transmission.
 
 \begin{figure}[!h]
     \centering
@@ -346,9 +342,11 @@ Finally, we look at the total electricity generation difference between DLR and 
     \caption{The figure shows the total energy difference when going from SLR to DLR. Negative values mean less generation in the DLR model.}
     \label{fig:RE1-operation-difference}
 \end{figure}
-We can see how the additional offshore wind generation of DLR replaces the gap of solar and onshore wind generation in SLR. Even though, according to Table~\ref{tab:installed capacity_2035} DLR generally has less renewable generation capacity, we observe how the higher capacity factor of offshore wind compensates for solar and onshore wind energy production.
+
+Finally, we look at the total electricity generation difference between DLR and SLR illustrated in Fig.~\ref{fig:RE1-operation-difference}.
+We see how additional offshore wind generation in the DLR model substitutes solar and onshore wind generation. Despite less renewable capacity (see Table~\ref{tab:installed capacity_2035}), better integration and higher capacity factors of wind power allow for a stable energy supply.
 In total the DLR model saves 14~TWh in energy production due to reduced storage utilization and associated conversion losses.
-This again shows the advantage of investments in DLR over investments in storage infrastructure.
+This again shows the advantage of investments in DLR over investments in storage infrastructure in power system with need for transmission expansion due to grid bottlenecks.
 To sum up, DLR enhances the grid such that the power system can better integrate offshore wind while requiring less power generation and storage backup capacities.
 
 
