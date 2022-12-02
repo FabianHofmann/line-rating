@@ -354,20 +354,30 @@ To sum up, DLR enhances the grid such that the power system can better integrate
 
 \section{Limitations}
 \label{sec:limitations}
-The presented power system model reveals a high spatial resolution as well as detailed information about installed capacities and renewable potentials. However, it is not able to represent all the power system dynamics. The model is isolated from other countries, neglecting cross-border exchanges. In particular, missing cross-border lines lead to an overestimated curtailment in the north-west of Germany at the substations ``Diele \& Dörpen West'', where much of the curtailed wind power could have been exported to the Netherlands. Further, coal and gas power plants were modelled without ramping limitations.
+The presented power system model reveals a high spatial resolution as well as detailed information about installed capacities and renewable potentials. However, it is not able to represent all the power system dynamics.
 
-%\todo{ERA5 underestimates low wind speeds with reference.} % Could not find a reference for this statement. Only that it underestimates wind speeds, but also found one reference saying it overestimates low wind speeds and underestimates high wind speeds (https://rmets.onlinelibrary.wiley.com/doi/full/10.1002/joc.7103).
-
-The optimization of the model is kept linear, meaning that power transmission losses as well as complex power flow dynamics are neglected. Nonetheless, a nonlinear power flow calculation based on the linearly optimized generation dispatch converged for all of the time steps.
-
- - curtailment is also regarded in the renewable share part
+Furthermore. the model is isolated from other countries, neglecting cross-border exchanges.
+In particular, missing cross-border lines lead to an overestimated storage infrastructure capacity expansion and curtailment.
+Curtailment can be especially seen in the north-west of Germany at the substations ``Diele \& Dörpen West'', where much of the curtailed wind power could have been exported to the Netherlands.
+Additionally, note that the implementation of the renewable share constraint is implemented such that curtailed electricity also accounts as renewable generation.
+This means that e.g. in the 80\% renewable share, renewables can generate 80\% of total electricity, however, parts of it could be curtailed, and therefore, not effectively supplied to the consumers.
+Another limitation is the modelling of the conventional fleet. We do not consider ramping constraints for coal and gas power plants. Therefore, in our model the operation of coal and gas power plants is more flexible compared to reality.
+The optimization of the model is kept linear, neglecting power transmission losses as well as complex power flow dynamics.
+Nonetheless, a nonlinear power flow calculation based on the linearly optimized generation dispatch converged for all of the time steps.
 
 
 \section{Conclusion}
 \label{sec:conclusion}
-In this paper, we evaluate the effect of DLR on multiple study scenarios, namely the German power system in a historical setup for the year 2019 and in a future setup for the year 2030--2035 with a varying renewable share of 80--100\%. We show that DLR offers a considerable and feasible complement to transmission capacity expansion. For the 2019 scenario, we observe cost savings of over 403~mil~Euro due to better wind power integration and a shift away from fossil energy carriers. The 2030 study case shows that an implementation of DLR with a parallel expansion of renewable power saves 908~mil~Euro of annual capital and operational system costs. It also reduces the need for hydrogen storage and fuel cells, which must be widely deployed for a renewable energy supply of 80\%  targeted by 2030. This reduction is mainly due to a better integration of onshore wind power and less transmission congestion. This finding are robust against network security constraints, clipping the maximum power transmission on lines to 130--150\% of the nominal capacity. With increasing share in renewable production up to 100\%, we see that ... %TODO
+In this paper, we evaluate the effect of DLR on multiple study scenarios, namely the German power system in a historical setup for the year 2019 and in a future setup for the year 2030--2035.
+The years 2030--2035 are represented by varying renewable share of 80\% in 2030 and 100\% in 2035. We show that DLR offers a considerable and feasible complement to transmission capacity expansion.
+For the 2019 scenario, we observe cost savings of 583~m\euro{} per year due to better wind power integration and a shift away from fossil energy carriers. The 2030 study case with 80\% renewable generation share shows that an implementation of DLR with a parallel expansion of renewable power saves 1.15~bn\euro{} of annual capital and operational system costs. DLR also reduces the need for battery storage compared to SLR, which must be widely deployed for a renewable energy supply of 80\%  targeted by 2030. This reduction is mainly due to a better integration of wind power and less transmission congestion. This finding are robust against network security constraints, clipping the maximum power transmission on lines to 130--200\% of the nominal capacity. We observe that the largest system benefits occur when going from SLR to DLR with 130\% line capacity limit. However, the benefits of DLR still increase when raising the line capacity limit of DLR.
+
+With increasing share in renewable production from 80--100\%, we see that in DLR gradually increases offshore wind capacities compared to SLR. On the other hand, DLR builds less onshore wind and solar capacities. In the 100\% renewable share scenario, the generation difference between SLR and DLR shows that all generation the DLR model is short of onshore wind and solar compared to SLR is compensated by offshore wind. Furthermore, DLR requires up to -2.2 TWh less storage capacities than SLR when going to 100\% renewable share.
+The total system saving of DLR for the 100\% renewable share scenario is 3.9bn\euro{} per year. Note here that the cost for the implementation of DLR on all modelled lines with $\sim$~80m\euro{} per year are negligible. The underlying cost assumptions for the DLR implementation are investment cost of 80k\euro{} per km, a interest rate of 8\% and a lifetime of 30 years.
 
 We conclude that in urgent need for decarbonizing the German power system, DLR is a viable complement to the current transmission capacity expansion, not only increasing the total welfare but also reducing the grid congestion.
+
+% DLR cost: total line length=11204km ,upper investment cost of DLR 80k€ per km, annualised cost r=5%: 58.31 m€, r=8%: 79.62m€, r=10% 95.09 m€
 
 \newpage
 
