@@ -130,9 +130,9 @@ def plot_operation_difference(ax, networks):
     colors = ref.carriers.groupby("group").color.first()[operation.index]
     operation.plot(kind="barh", ax=ax, zorder=4, color=colors, alpha=0.7)
     ax.grid(linestyle="--", linewidth=0.5, alpha=0.5, zorder=2)
-    ax.set_xlabel("Electricity [TWh]")
+    ax.set_xlabel("Energy [TWh]")
     ax.set_ylabel("")
-    ax.set_title("Generated Electricity: DLR vs. SLR ")
+    ax.set_title("Generated Energy: DLR vs. SLR ")
 
 
 def plot_capacity(ax, networks):

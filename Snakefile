@@ -32,6 +32,7 @@ def get_scenario(w):
             "results/description/de{year}_{clusters}_nodes_{opts}_dlr{rating}_v{angle}.{format}.txt",
             "figures/de{year}_{clusters}_nodes_{opts}_v{angle}/sensitivity_dlr_{sensitivity_dlr}.pdf",
             "figures/de{year}_{clusters}_nodes_v{angle}/sensitivity_vres_{sensitivity_vres}.pdf",
+            "figures/de{year}_{clusters}_nodes_{opts}_dlr{rating}_v{angle}/converged_power_flow_calculation.pdf",
         ),
         **config[w.scenario],
         sensitivity_dlr=config[w.scenario]["sensitivity"]["dlr"],
@@ -271,6 +272,7 @@ rule run_power_flow:
         network_dlr="results/de{year}_{clusters}_nodes_{opts}_dlr{rating}_v{angle}.nc",
     output:
         "figures/de{year}_{clusters}_nodes_{opts}_dlr{rating}_v{angle}/converged_power_flow_calculation.{ext}",
+    threads: 4
     script:
         "scripts/run_power_flow.py"
 
