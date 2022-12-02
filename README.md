@@ -27,3 +27,7 @@ update submodule with:
 git submodule update --remote
 
 ```
+
+## License
+
+This work is licensed under a [Creative Commons Zero v1.0 Universal](https://creativecommons.org/choose/zero/)

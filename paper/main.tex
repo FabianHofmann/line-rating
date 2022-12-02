@@ -50,10 +50,9 @@
 \section{Introduction}
 
 The efficient integration of renewable energy sources into today's power system requires restructuring key network components, in particular the transmission systems. With evolving production centers at sites with favorable renewable resources and decentralized power generation on house-hold level, electricity is flowing along new paths pushing transmission to its physical limits. A notable example can be found in Germany. Here, most of the wind infrastructure built up throughout the last two decades is located in the North while there is significant industrial demand in the South~\cite{kuhneConflictsNegotiationProcesses2018}.
-The current federal government plans to have 100~GW onshore and 40~GW offshore wind power capacity in place by 2030~\cite{federalministryofeconomicaffairsandclimateactionGermanyCurrentClimate2022} which means roughly a doubling of today's capacities. For an economical integration, an expansion of the transmission system is essential. Typically, transmission lines typically require 5-10 years from initial planning phase to final construction~\cite{michiorriForecastingDynamicLine2015}. However, grid expansion projects in the last decade were strongly delayed due to administrative problems and protest activities~\cite{neukirchProtestsGermanElectricity2016},~\cite{fernandezReviewDynamicLine2016}. The situation of lacking transmission capacity is therefore expected to worsen by 2030.
-The trend of rapid installation of renewable generation and slow installation of transmission lines will likely increase transmission system congestion, which may lead to more grid instability and curtailment~\cite{erdincComprehensiveOverviewDynamic2020}. There is therefore a strong incentive to make better use of the existing grid infrastructure in near future.
+The current federal government plans to have 100~GW onshore and 30~GW offshore wind power capacity in place by 2030~\cite{federalministryofeconomicaffairsandclimateactionGermanyCurrentClimate2022} which means roughly a doubling of today's capacities. For an economical integration, an expansion of the transmission system is essential. However, transmission lines typically require 5-10 years from initial planning phase to final construction~\cite{michiorriForecastingDynamicLine2015}. Moreover, grid expansion projects in the last decade were strongly delayed due to administrative problems and protest activities~\cite{neukirchProtestsGermanElectricity2016},~\cite{fernandezReviewDynamicLine2016}. The situation of lacking transmission capacity is therefore expected to worsen by 2030 which, in the light of rapid installation of renewable generation, will likely increase transmission system congestion, curtailment and grid instability~\cite{erdincComprehensiveOverviewDynamic2020}. There is therefore a strong incentive to make better use of the existing grid infrastructure in near future. \\
 
-To overcome the mismatch, several, complementing measures can be taken:  (1) large scale implementation of storage facilities to flatten power feed-ins and power demands~\cite{caoPreventPromoteGrid2021}; (2) usage of alternative energy carrier networks like hydrogen to relieve the electricity grid~\cite{welderDesignEvaluationHydrogen2019}; (3) leveraging the existing grid infrastructure to increase the transmission line capacity. In the following, we will focus on the last point, which in comparison to (1) and (2) stands out through a fast, low-cost and non-invasive implementation~\cite{deutscheenergie-agenturgmbhdenaErgebnispapierDenaStakeholderprozessHohere, minguezApplicationDigitalElevation2022}.
+To counterbalance the lack of transmission capacities, several, complementing measures can be taken:  (1) large scale implementation of storage facilities to flatten power feed-ins and power demands~\cite{caoPreventPromoteGrid2021}; (2) usage of alternative energy carrier networks like hydrogen to relieve the electricity grid~\cite{welderDesignEvaluationHydrogen2019}; (3) leveraging the existing grid infrastructure to increase the transmission line capacity. In the following, we will focus on the last option, which in comparison to (1) and (2) stands out through a fast, low-cost and non-invasive implementation~\cite{deutscheenergie-agenturgmbhdenaErgebnispapierDenaStakeholderprozessHohere, minguezApplicationDigitalElevation2022}.
 
 The transmission of electricity dissipates resistive losses in form of heat. The line capacity is limited by the maximally allowed temperature of the conductor ensuring a stable transmission.  This maximal line capacity is also regarded as thermal capacity.
 If the transmission line exceeds its thermal capacity, a safe operation of the transmission line is no longer guaranteed due increased line sag and clearance infringements~\cite{fernandezReviewDynamicLine2016}.
@@ -270,7 +269,6 @@ In most of today's real-world implementations, TSO's set a static upper limit to
 \end{figure}
 
 
-
 \subsection{Optimal Investment 2035}
 Looking beyond the scope of 2030, we vary the production share of renewable technologies gradually in the SLR and DLR model from 80 to 100\%. This variation represents the pathway from 2030 to 2035 in which the German government targets an almost decarbonized power sector~\cite{federalministryofeconomicaffairsandclimateactionUeberblickspapierOsterpaket2022}. Note that all the other  parameters, including the electrical load and weather year, remain the same as in the 2030 scenario to ensure comparability.
 
@@ -293,7 +291,7 @@ For the 100\% scenario, in both SLR and DLR model the fossil generation capacity
 \end{figure}
 
 At this point, we may conclude that with increasing share of renewables, the DLR implementation allows to trade a relatively small increase in offshore wind power against a high decrease of onshore wind and solar PV capacity.
-When looking at the storage infrastructure, we see that in general DLR needs less storage capacity than SLR. For battery infrastructure, DLR first builds -45~GWh less battery capacity than SLR at 80\% share. However, with increasing renewable share DLR gradually builds more battery capacity which finally leads to a battery capacity increase of +61~GWh at 100\% compared to SLR.
+When looking at the storage infrastructure, we see that in general DLR needs less storage capacity than SLR. For battery infrastructure, DLR first builds --45~GWh less battery capacity than SLR at 80\% share. However, with increasing renewable share DLR gradually builds more battery capacity which finally leads to a battery capacity increase of +61~GWh at 100\% compared to SLR.
 Regarding hydrogen infrastructure, DLR requires less storage capacity for all renewable shares. The capacity decrease of DLR compared to SLR becomes more prominent when going from 80 to 100\% share. At 80\% renewable share, the hydrogen storage capacity for both SLR and DLR are the same. However, with increasing renewable share the hydrogen storage capacity of DLR decreases progressively to --2.35~TWh at 100\% renewable share compared to SLR.
 
 
@@ -322,7 +320,7 @@ Fig.~\ref{fig:capacity-2035} already illustrated the capacity difference between
         \hline
         Offshore Wind & 40 & 17.8 & 32.7 & 14.9 & GW \\
         Onshore Wind & 157 & 215.3 & 176.2 & --39 & GW \\
-        Solar & 309 & 244.1 & 220.2 & -23.9 & GW \\
+        Solar & 309 & 244.1 & 220.2 & --23.9 & GW \\
         Battery Discharge & - & 23.7 & 20.5 & --3.2 & GW \\
         Battery Storage & - & 176.6 & 237.6 & 61.1 & GWh \\
         Hydrogen Electrolysis & - & 75.7 & 61.5 & --14.2 & GW \\
