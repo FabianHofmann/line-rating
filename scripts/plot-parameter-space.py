@@ -66,7 +66,6 @@ v = 380  # kV
 s = np.sqrt(3) * i * v / 1e3  # in MW
 s = s.squeeze()
 
-# %%
 F = s.plot.contourf(
     x="Wind speed",
     y="Temperature",
@@ -78,6 +77,7 @@ F = s.plot.contourf(
         "orientation": "horizontal",
         "label": "Line power capacity [MW]",
         "aspect": 20,
+        "location": "top",
         "shrink": 1,
         "pad": 0.07,
     },

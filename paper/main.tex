@@ -38,8 +38,9 @@
         country={Germany}}
 
     \begin{abstract}
-        The German government announced that 80\% of the power supply should come from renewable energy sources by 2030 which, in terms of installations, roughly means a doubling of today's wind capacity and a tripling of today's solar capacity. For an efficient integration into the system, the fast ramp up of renewables needs to be accompanied by a reorganization of the transmission system. However, due to its invasive nature, the construction of new power lines requires long planning phases and is often delayed by citizen protests. As an non-invasive alternative, Dynamic Line Rating (DLR) offers the potential to leverage the existing grid capacities by dynamically adjusting the transmission line capacities to the prevailing weather conditions. Here we show that a system-wide integration in Germany of DLR not only facilitates the 80\% feed-in target for renewables, but also significantly reduces grid congestion and renewable curtailment. The evolving synergies between DLR and increased wind generation result in total cost savings of about 1.15 billion Euro per year for a 2030 scenario, mainly due to reduced storage and solar capacity needs. If considering a fully decarbonized German electricity system, the cost savings from DLR amount to up to 4 billion euro per year. Our results underscore the importance of a rapid implementation of DLR in the German power system to support the energy transition and relieve grid congestion.
-        \todo[inline]{reformulate}
+        % The German government announced that 80\% of the power supply should come from renewable energy sources by 2030 which, in terms of installations, roughly means a doubling of today's wind capacity and a tripling of today's solar capacity. For an efficient integration into the system, the fast ramp up of renewables needs to be accompanied by a reorganization of the transmission system.
+        The integration of large shares of wind and solar power into the power system benefits from transmission network expansion.
+        However, the construction of new power lines requires long planning phases and is often delayed by citizen protests. As an non-invasive alternative, Dynamic Line Rating (DLR) offers the potential to leverage the existing grid capacities by dynamically adjusting the transmission line capacities to the prevailing weather conditions. In this study, we show that a system-wide integration in Germany of DLR not only facilitates the 80\% feed-in target for renewables, but also significantly reduces grid congestion and renewable curtailment. The evolving synergies between DLR and increased wind generation result in total cost savings of about 1.15 billion Euro per year for a 2030 scenario, mainly due to reduced storage and solar capacity needs. If considering a fully decarbonized German electricity system, the cost savings from DLR amount to up to 4 billion euro per year. Our results underscore the importance of a rapid implementation of DLR in the German power system to support the energy transition and relieve grid congestion.
     \end{abstract}
 
     \begin{keyword}
@@ -47,7 +48,7 @@
     \end{keyword}
 
 \end{frontmatter}
-
+\pagebreak
 \section{Introduction}
 
 The efficient integration of renewable energy sources into today's power system requires restructuring key network components, in particular the transmission systems. With evolving production centers at sites with favorable renewable resources and decentralized power generation on house-hold level, electricity is flowing along new paths that are pushing the transmission network to its physical limits. A notable example can be found in Germany. Here, most of the wind infrastructure built up throughout the last two decades is located in the North while there is significant industrial demand in the South~\cite{kuhneConflictsNegotiationProcesses2018}.
@@ -74,8 +75,9 @@ There are several methods to ensure the thermal capacity for a transmission line
 Among these, weather based measuring of the thermal capacity is considered the simplest method to implement as well as the cheapest~\cite{KARIMI2018600}.
 The assumed investment costs for the implementation of DLR are between 60k and 80k~\euro{} per km with an expected service life of 30 years ~\cite{samweberProjektMeritOrder2016}.
 
-In the literature, several studies address the topic of DLR. The study in~\cite{samweberProjektMeritOrder2016} presents the theoretical overload potential of DLR in Germany.
-However, their study on DLR does not include any simulation or optimization of the German power gird.
+In the literature, several studies address the topic of DLR. The report in~\cite{samweberProjektMeritOrder2016} presents the theoretical overload potential of DLR in Germany.
+Similarly, the report of \cite{energynauticsgmbhoko-insitute.v.bird&birdDistributionSystemStudy2016} comprises a DLR simulation in a high renewable energy scenario for Rhineland-Palatinate.
+However, both reports \cite{samweberProjektMeritOrder2016,energynauticsgmbhoko-insitute.v.bird&birdDistributionSystemStudy2016} on DLR in Germany do not include any operational or capacity expansion optimization of the power system.
 The publications in~\cite{liDayAheadSchedulingPower2019,dabbaghjamaneshEffectiveSchedulingReconfigurable2019,viaforaDayaheadDispatchOptimization2019} assess DLR on the basis of a small scale Energy System Optimization Models (ESOMs).
 In line with that, the publication in \cite{numanCoordinatedOperationReconfigurable2021} presents a mixed-integer optimization model for evaluating the optimal set of line candidates to be upgraded with DLR.
 Most, if not all of the studies do not consider large real-world power system models with fine-grained input data.
@@ -127,7 +129,6 @@ which for three-phase electric power transmission operating at voltage level $V$
     \caption{Transmission capacity for different environmental conditions. For three different wind incidence angles (0$^\circ$, 45$^\circ$, 90$^\circ$), the maximal transmission capacity of a typical electricity line ($R(T_{max})$=$9.39\cdot10^{-5}\,\Omega/\text{m}$, $V$~=~380~kV) is shown as a function of temperature and wind speed. The cooling effect of a perpendicular, strong, cold wind can lead to capacity increase of factor 4-5 compared to conservative conditions with 40$^\circ$C and low wind.}
     \label{fig:parameter-space-reduced}
 \end{figure}
-\todo[inline]{maybe colorbar to the right or top}
 
 Fig.~\ref{fig:parameter-space-reduced} shows $P_{max}$ for a single wire of a typical 3-phase transmission line with $R(T_{max}=80^\circ C) = 9.39\cdot10^{-5}\,\Omega/\text{m}$ and $V$~=~380~kV, as a function of temperature and wind speed for three different wind incidence angles, 0$^\circ$, 45$^\circ$ and 90$^\circ$. The cooling effect at cold temperature with strong perpendicular wind leads to a transmission capacity increase of factor 4-5 compared to conservative conditions with 40$^\circ$C and low wind.
 
@@ -288,7 +289,6 @@ From these numbers we conclude the following. The implementation of DLR enables 
     \caption{Total cost, optimal capacity, curtailment, and relative total cost savings compared to the SLR model as a function of the maximum line rating allowed per line in the DLR model. Already with a conservative cap at 130\% of the SLR capacity, strong system benefits are achieved.}
     \label{fig:sensitivity_dlr_combined}
 \end{figure}
-\todo[inline]{y axis log}
 
 In most of today's real-world implementations, TSO's set a static upper limit to the DLR capacity, e.g. for network security reasons. In the following, we show that the positive effects DLR are robust against such a limit. Fig.~\ref{fig:sensitivity_dlr_combined} shows the system cost, optimal generation capacity, total curtailment, and relative total cost savings as a function of the maximum allowed DLR transmission capacity per line. It can be seen that the largest benefits occurs in the first step going from SLR (1.0) to DLR with a rather conservative upper limit of 130\% of the SLR capacity. From then onwards, optimal generation capacity and curtailment hardly change and system costs are only slightly reduced. In the light of Fig.~\ref{fig:potential-correlation-2019}, this findings can be attributed to two facts: First, only a minority of time steps ($<$~20\%) reveal a relative DLR transmission capacity increase of more than 50\%. Second, even when higher transmission rates are possible, the overall wind power production is so high that the system does not profit from it. With a capacity factor of above 0.5, wind power produced more than 65~GW which is more then the average load of 63.3~GW of the system. Therefore, in most of these times the excess energy is curtailed independently of the DLR transmission capacity limit.
 
@@ -404,7 +404,11 @@ Through DLR, the fully renewable system saves 3.9bn\euro{}/yr. In that regard, t
 We conclude that given the urgent need for decarbonizing the German power system, DLR is a viable complement to transmission capacity expansion, not only increasing the total welfare through a non-invasive measure but also reducing grid congestion.
 
 % DLR cost: total line length=11204km ,upper investment cost of DLR 80k€ per km, annualised cost r=5%: 58.31 m€, r=8%: 79.62m€, r=10% 95.09 m€
-
+\section{Acknowledgement}
+We thank Tom Brown for suggesting the project and Rena Kuwahata from Ampacimon for discussions.
+This paper was conducted partly for the CoNDyNet2 project, which was supported by the German Federal Ministry of Education and Research under grant number 03EK3055E.
+Furthermore, we want to acknowledge that Fabian Hofmann is funded by the Breakthrough Energy Project “Hydrogen
+Integration and Carbon Management in Energy System Models”.
 \newpage
 
 
