@@ -262,6 +262,17 @@ Roughly speaking, the optimal solution to meet the 2030 target requires tripling
 
 On the one hand, the DLR model results in 4.3~GW additional offshore wind expansion and 1.7~GW natural gas expansion. One the other hand, other technologies are expanded significantly less: solar by 23~GW, onshore wind by 5.7~GW, and most importantly battery by a total storage capacity of 45~GWh. This equals to a third of total battery installations in the SLR model.
 
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=\linewidth]{de2030_all_nodes_Co2L-RE0.8-Ep_dlr_v/capacity_map.pdf}
+    \caption{Optimized capacities for the 2030 scenario with 80\% renewable share.}
+    \label{fig:capacity-map-2030}
+\end{figure}
+
+Fig. \ref{fig:capacity-map-2030} shows the spatial distribution of capacities in the SLR and DLR model.
+For the DLR model we observe higher average line ratings than in the SLR model which is represented by the line widths.
+Furthermore, we observe that for DLR especially in the North of Germany more renewable capacities are integrated due to the higher line ratings.
+
 Together with the changes in the capacity layout, we perceive significant changes in the operation. When implementing DLR, the capacity factor of onshore wind power is lifted from 21\% to 22.5\% leading to additional supply of 1.5~TWh by onshore wind despite its lower capacity. The capacity factor of offshore wind power increases from 39.1\% to 41.5\% leading to an additional supply of 17.7~TWh. In contrast, roughly 17.5~TWh less are produced from solar facilities. By reducing the use of storage technologies and the associated losses, the system produces 91~GWh less in total with DLR. To this end, Fig.~\ref{fig:load-duration-2030} shows the duration curve of the total congestion throughout the simulation year. We see that through DLR the transmission congestion is significantly reduced. More than three quarters of the year are free from congestion while, for SLR, congestion appears in nearly 4000 hours. Furthermore, the number of maximally congested lines drops from 58 to 14 when going from SLR to DLR.
 
 \begin{figure}[!h]
@@ -335,7 +346,7 @@ Here the relation between renewable share and relieved line congestions is not s
 However, from 95 to 100\% renewable share there is a clear increase in congestion relief with 3.8 relieved lines for DLR compared to SLR at 100\% share.
 One explanation for this is the missing fossil generation fleet which could still be used at 95\% renewable share to circumvent transmission bottlenecks.
 
-\begin{table}[hb]
+\begin{table}[!h]
     \caption{Comparison of a selection of total capacity planned by the German government in 2035 \cite{federalministryofeconomicaffairsandclimateactionRegulationDraftEEG2022, federalministryofeconomicaffairsandclimateactionUeberblickspapierOsterpaket2022} and from the optimized 2035 scenario with a 100\% renewable share with Static Line Rating and Dynamic Line Rating. The spatial distribution of capacities in the SLR and DLR model can be found in Fig.~\ref{fig:capacity-map-2035}}
     \centering
     \begin{tabular}{lrrrrc}
@@ -354,7 +365,6 @@ One explanation for this is the missing fossil generation fleet which could stil
     \label{tab:installed capacity_2035}
 \end{table}
 In the following, we take a closer look at the decarbonised power system scenario. Table~\ref{tab:installed capacity_2035} shows the total capacities for the DLR and the SLR model at 100\% renewable share.
-\todo[inline]{add capacity map here or reference the plot in the appendix}
 In addition to Fig.~\ref{fig:capacity-2035}, Table~\ref{tab:installed capacity_2035} puts the total capacities into perspective and compares them to the expansion plans of the German government. It shows that both the DLR and the SLR model tend to build less offshore wind and solar and more onshore wind capacities than planned by the German government.
 
 % We can assume that the more restrained onshore wind plans of the government are due to ongoing acceptance problems in Germany.
@@ -460,12 +470,12 @@ $v_{wind,i}$ corresponds to an sub-hourly wind speed data point going from $i$ t
     \label{fig:capacity-bar-2030}
 \end{figure}
 
-\begin{figure}[!h]
-    \centering
-    \includegraphics[width=\linewidth]{de2030_all_nodes_Co2L-RE0.8-Ep_dlr_v/capacity_map.pdf}
-    \caption{Optimized capacities for the 2030 scenario with 80\% renewable share.}
-    \label{fig:capacity-map-2030}
-\end{figure}
+% \begin{figure}[!h]
+%     \centering
+%     \includegraphics[width=\linewidth]{de2030_all_nodes_Co2L-RE0.8-Ep_dlr_v/capacity_map.pdf}
+%     \caption{Optimized capacities for the 2030 scenario with 80\% renewable share.}
+%     \label{fig:capacity-map-2030}
+% \end{figure}
 
 \begin{figure}[!h]
     \centering
