@@ -74,10 +74,10 @@ F = s.plot.contourf(
     aspect=1.2,
     size=3,
     cbar_kwargs={
-        "orientation": "horizontal",
+        "orientation": "vertical",
         "label": "Line power capacity [MW]",
-        "aspect": 20,
-        "location": "top",
+        "aspect": 60,
+        "location": "right",
         "shrink": 1,
         "pad": 0.07,
     },

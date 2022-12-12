@@ -125,7 +125,7 @@ which for three-phase electric power transmission operating at voltage level $V$
 
 \begin{figure}[!h]
     \centering
-    \includegraphics[width=0.65\linewidth]{parameter-space-reduced.pdf}
+    \includegraphics[width=0.6\linewidth]{parameter-space-reduced.pdf}
     \caption{Transmission capacity for different environmental conditions. For three different wind incidence angles (0$^\circ$, 45$^\circ$, 90$^\circ$), the maximal transmission capacity of a typical electricity line ($R(T_{max})$=$9.39\cdot10^{-5}\,\Omega/\text{m}$, $V$~=~380~kV) is shown as a function of temperature and wind speed. The cooling effect of a perpendicular, strong, cold wind can lead to capacity increase of factor 4-5 compared to conservative conditions with 40$^\circ$C and low wind.}
     \label{fig:parameter-space-reduced}
 \end{figure}
@@ -169,11 +169,11 @@ As already shown in Fig.~\ref{fig:parameter-space-reduced}, DLR can easily lead 
 \label{sec:results}
 
 The presented work includes three scenarios given in Table \ref{tab:scenarios}. In the first scenario, the operation of the existing network is optimized for 2019 to validate the model and demonstrate the near-term system benefits of DLR. In the second scenario, we run an investment optimization for the year 2030 to show the long-term benefits of DLR.
-By enforcing a 80\% renewable production share, in following noted as renewable share, we are able to assess DLR as a supporting measure to reach the German government's target of 80\% renewable power supply by 2030~\cite{federalministryofeconomicaffairsandclimateactionGermanyCurrentClimate2022}. Beyond that, the German government targets climate neutrality of the power sector by 2035. In our third scenario, we therefore alter the renewable share from 85\% -- 100\%. The parameters settings for the study cases can be found in the Appendix~\ref{tab:cases_parameters}.
+By enforcing a 80\% renewable production share, in following noted as renewable share, we are able to assess DLR as a supporting measure to reach the German government's target of 80\% renewable power supply by 2030~\cite{federalministryofeconomicaffairsandclimateactionGermanyCurrentClimate2022}. Beyond that, the German government targets climate neutrality of the power sector by 2035. In our third scenario, we therefore alter the renewable share from 85--100\%. The parameters settings for the study cases can be found in the Appendix~\ref{tab:cases_parameters}.
 
 \begin{table}[!h]
     \begin{tabular}{lll}
-        Scenario & Type of optimisation & Renewable share\\
+        Scenario & Type of optimisation & Minimal renewable share\\
         \hline
        2019 & Operational & - \\
        2030 & Operational \& capacity expansion & 80\% \\
@@ -221,7 +221,7 @@ For solar power, the trend is roughly the opposite. During periods of low solar 
 
 In the operational optimization, these effects prove themselves to be quite impactful. Fig. \ref{fig:operation-difference-2019} shows the difference in supply when going from SLR to DLR in the 2019 scenario. Of the 490~TWh total net electricity generation throughout the year, 31\% (149~TWh) is provided by fossil power generation (hard coal, lignite and gas) with SLR. This share drops to 28.9\% (137~TWh) when implementing DLR, while the share of onshore wind power increases from 24\% (116~TWh) to 25\% (122~TWh) and of offshore wind power from from 4.4\% (21.4~TWh) to 5.8\% (28.3~TWh). The total generation of the other carriers change marginally. We recall that the installed generation capacities are the same for both scenarios.
 Solely, from the change in operation, the system saves around 583~m\euro{}/yr operational expenditure (OPEX) which translates to roughly 7~\% of total cost.
-Note here that the assumed gas price is 27\euro{}/MWh and that the system savings with current gas prices caused by the energy crisis would be much higher.
+Note here that the assumed gas price is 27\euro{}/MWh. Considering increased gas prices (roughly 150\euro{}/MWh) due to current energy crisis would lead to higher cost savings.
 In addition to the OPEX savings, the implementation of DLR leads to a carbon emission reduction of 10.8~$\text{MtCO}_2$ (6.5\%) compared to the SLR model. \\
 
 \begin{figure}[h!]
@@ -230,7 +230,6 @@ In addition to the OPEX savings, the implementation of DLR leads to a carbon emi
     \caption{Number of congested lines for SLR and DLR as a function of the ratio between the renewable generation potential and the load for each hour during the year. A ratio higher than 1 implies an over-supply which is curtailed. The size and color of the scatter points correspond to the amount of curtailment at the regarded hour.}
     \label{fig:congestion-correlation-2019}
 \end{figure}
-\todo[inline]{consider removing blob size or color code}
 
 The main reason for the shift in generation is the improved transmission capacity during periods when wind power was previously curtailed. Fig.~\ref{fig:congestion-correlation-2019} shows the number of congested lines as a function of the total renewable power potential relative to the total load in each time step. The color and size of the dots indicate the renewable curtailment. It stands out that DLR (right panel) leads to a significant decrease in transmission congestion as well as curtailment. While the SLR model (left panel) reveals up to 16 congested lines, maximally 8 lines are congested in the the DLR model. In particular, at times with a shortage of renewable energy (Potential / Load $<$ 1) the SLR system has to curtail 7 times more power due to transmission congestion. This does not hold for the DLR model. The same accounts for times with renewable excess power (Potential / Load $>$ 1), where power is mainly curtailed due to oversupply in the DLR model and curtailed due to oversupply and congestion in the SLR model. \\
 
@@ -307,7 +306,7 @@ In most of today's real-world implementations, TSO's set a static upper limit to
 
 \subsection{Optimal Investment 2035}
 Looking beyond the scope of 2030, we vary the production share of renewable technologies gradually in the SLR and DLR model from 80 to 100\%. This variation represents the pathway from 2030 to 2035 in which the German government targets an almost decarbonized power sector~\cite{federalministryofeconomicaffairsandclimateactionUeberblickspapierOsterpaket2022}.
-For the 2035 scenario, no DLR limits are considered meaning there is no $P_{max}$ limit. Note that all the other  parameters, including the electrical load and weather year, remain the same as in the 2030 scenario to ensure comparability.
+For the 2035 scenario, no DLR limits are considered. Note that all the other  parameters, including the electrical load and weather year, remain the same as in the 2030 scenario to ensure comparability.
 
 \begin{figure}[!h]
     \centering
@@ -394,8 +393,6 @@ The presented power system model reveals a high spatial resolution as well as de
 Furthermore, the model is isolated from other countries, neglecting cross-border exchanges.
 In particular, missing cross-border lines lead to an overestimated storage infrastructure capacity expansion and curtailment.
 Curtailment can be especially seen in the north-west of Germany at the substations ``Diele \& Dörpen West'', where much of the curtailed wind power could have been exported to the Netherlands.
-Additionally, note that the implementation of the renewable share constraint is implemented such that curtailed electricity also accounts as renewable generation.
-This means that e.g. if the renewable share is 80\%, renewables could generate 80\% of all electricity, but part of it is not supplied to the consumers but curtailed.
 Another limitation is the modelling of the conventional fleet. We do not consider ramping constraints for coal and gas power plants. Therefore, in our model the operation of coal and gas power plants is more flexible compared to reality.
 Furthermore, the optimization of the model is kept linear, neglecting power transmission losses as well as complex power flow dynamics. Since the losses rise quadratically with current and DLR leads to high line loading, this aspect would have to be investigated.
 Nonetheless, a nonlinear power flow calculation based on the linearly optimized generation dispatch converged for all of the time steps.
@@ -414,10 +411,10 @@ Through DLR, the fully renewable system saves 3.9bn\euro{}/yr. In that regard, t
 We conclude that given the urgent need for decarbonizing the German power system, DLR is a viable complement to transmission capacity expansion, not only increasing the total welfare through a non-invasive measure but also reducing grid congestion.
 
 % DLR cost: total line length=11204km ,upper investment cost of DLR 80k€ per km, annualised cost r=5%: 58.31 m€, r=8%: 79.62m€, r=10% 95.09 m€
-\section{Acknowledgement}
+\section*{Acknowledgement}
 We thank Tom Brown for suggesting the project and Rena Kuwahata from Ampacimon for discussions.
 This paper was conducted partly for the CoNDyNet2 project, which was supported by the German Federal Ministry of Education and Research under grant number 03EK3055E.
-Furthermore, we want to acknowledge that Fabian Hofmann is funded by the Breakthrough Energy Project “Hydrogen
+Furthermore, we thank Breakthrough Energy for partially funding this work in the project “Hydrogen
 Integration and Carbon Management in Energy System Models”.
 \newpage
 
