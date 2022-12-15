@@ -71,8 +71,8 @@ F = s.plot.contourf(
     y="Temperature",
     col="Wind angle",
     col_wrap=col_wrap,
-    aspect=1.2,
-    size=3,
+    aspect=1.4,
+    size=2.5,
     cbar_kwargs={
         "orientation": "vertical",
         "label": "Line power capacity [MW]",
