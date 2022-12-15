@@ -271,7 +271,8 @@ rule run_power_flow:
         network_slr="results/de{year}_{clusters}_nodes_{opts}_dlr1.0_v{angle}.nc",
         network_dlr="results/de{year}_{clusters}_nodes_{opts}_dlr{rating}_v{angle}.nc",
     output:
-        "figures/de{year}_{clusters}_nodes_{opts}_dlr{rating}_v{angle}/converged_power_flow_calculation.{ext}",
+        "figures/de{year}_{clusters}_nodes_{opts}_dlr{rating}_v{angle}/converged_power_flow_calculation.pdf",
+        "figures/de{year}_{clusters}_nodes_{opts}_dlr{rating}_v{angle}/power_flow_losses.csv",
     threads: 4
     script:
         "scripts/run_power_flow.py"

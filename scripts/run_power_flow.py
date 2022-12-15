@@ -44,21 +44,40 @@ if __name__ == "__main__":
         from _helpers import mock_snakemake
 
         snakemake = mock_snakemake(
-            "test_voltage_angles",
-            year="2020",
+            "run_power_flow",
+            year="2030",
             clusters="all",
-            opts="Co2L-BL-Ep",
+            opts="Co2L-RE1.0-Ep",
+            rating="",
+            angle="",
             ext="pdf",
         )
 
     res = {}
+    losses_pf = {}
+    total_transmission_lpf = {}
+    total_transmission_pf = {}
     for name in ["network_slr", "network_dlr"]:
         n = load_network(snakemake.input[name])
+        total_transmission_lpf[name] = (n.lines_t.p0).abs().div(1e6).sum().sum()
         r = run_power_flow(n)
         res[n.name] = r["converged"]
+        losses_pf[name] = (n.lines_t.p0 + n.lines_t.p1).abs().div(1e6).sum().sum()
+        total_transmission_pf[name] = (
+            (n.lines_t.p0.clip(lower=0) + n.lines_t.p1.clip(lower=0))
+            .div(1e6)
+            .sum()
+            .sum()
+        )
     res = pd.concat(res, axis=1).droplevel(1, axis=1)
+    results = pd.DataFrame(
+        [total_transmission_lpf, total_transmission_pf, losses_pf],
+        index=["total_lpf", "total_pf", "losses_pf"],
+    )
 
     fig, ax = plt.subplots(figsize=(5, 3.5))
-    res.sum().plot(kind="bar", ax=ax)
+    res.sum().plot(kind="line", ax=ax)
     fig.tight_layout()
     fig.savefig(snakemake.output[0])
+
+    results.to_csv(snakemake.output[1])
