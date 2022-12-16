@@ -205,9 +205,9 @@ if __name__ == "__main__":
 
         snakemake = mock_snakemake(
             "plot_maps",
-            year="2020",
+            year="2030",
             clusters="all",
-            opts="Co2L-BL-Ep",
+            opts="Co2L-RE0.8-Ep",
             rating="",
             angle="",
             ext="pdf",
@@ -248,7 +248,7 @@ if __name__ == "__main__":
             ax,
             n.carriers.query('color != ""').sort_index(),
             size=refsize,
-            ncol=4,
+            ncol=3,
             scale=bus_size_factor,
             prop=font,
             bbox_to_anchor=(0, 0),

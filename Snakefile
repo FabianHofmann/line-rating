@@ -32,7 +32,7 @@ def get_scenario(w):
             "results/description/de{year}_{clusters}_nodes_{opts}_dlr{rating}_v{angle}.{format}.txt",
             "figures/de{year}_{clusters}_nodes_{opts}_v{angle}/sensitivity_dlr_{sensitivity_dlr}.pdf",
             "figures/de{year}_{clusters}_nodes_v{angle}/sensitivity_vres_{sensitivity_vres}.pdf",
-            "figures/de{year}_{clusters}_nodes_{opts}_dlr{rating}_v{angle}/converged_power_flow_calculation.pdf",
+            # "figures/de{year}_{clusters}_nodes_{opts}_dlr{rating}_v{angle}/converged_power_flow_calculation.pdf",
         ),
         **config[w.scenario],
         sensitivity_dlr=config[w.scenario]["sensitivity"]["dlr"],

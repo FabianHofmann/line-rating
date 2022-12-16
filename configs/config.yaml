@@ -145,7 +145,7 @@ electricity:
 
 plotting:
   map:
-    figsize: [8, 4]
+    figsize: [6, 3]
     boundaries: [5.5, 15.5, 47, 55]
     #If None or commented out the plot_main.py automatically calculates the bus and line factor. If factor is given, then the factor is taken.
     capacity:

@@ -56,7 +56,7 @@ rating = scutout.line_rating(line_shapes.geometry, 9.39e-5)
 
 line_shapes["rating"] = rating.sel(time=t).to_series()
 
-
+# %%
 cbar_kwargs = {
     "ticks": [],
     "orientation": "horizontal",
@@ -66,7 +66,7 @@ cbar_kwargs = {
 }
 
 fig, ax = plt.subplots(figsize=(5, 3.5), subplot_kw={"projection": ccrs.EqualEarth()})
-overlap_nodes.plot(ax=ax, zorder=2, color="grey", lw=4, alpha=0.8)
+overlap_nodes.plot(ax=ax, zorder=6, color="lightgrey", lw=4, alpha=1)
 # overlap_shapes.plot(ax=ax, color='grey', zorder=0)
 ckwargs = {**cbar_kwargs, "label": "Line Rating"}
 line_shapes.plot(
@@ -84,11 +84,11 @@ wind = scutout.data.wnd100m.sel(time=t)
 vmin = wind.min().compute().item() - 5
 wind.plot(
     ax=ax,
-    alpha=0.5,
+    alpha=0.8,
     cmap="Blues",
     cbar_kwargs=ckwargs,
     vmin=vmin,
-    edgecolor="lightgray",
+    edgecolor="None",
     zorder=1,
 )
 
