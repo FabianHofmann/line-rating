@@ -38,9 +38,9 @@
         country={Germany}}
 
     \begin{abstract}
-        The German government announced that 80\% of the power supply should come from renewable energy sources by 2030. In terms of installations, this means roughly a doubling of today's wind capacity and a tripling of today's solar capacity. For an efficient integration into the system, the fast ramp up of renewables needs to be accompanied by a reorganization of the transmission system.
-        % The integration of large shares of wind and solar power into the power system benefits from transmission network expansion.
-        However, the construction of new power lines requires long planning phases and is often delayed by citizen protests. As an non-invasive alternative, Dynamic Line Rating (DLR) offers the potential to leverage the existing grid by dynamically adjusting the transmission line capacities to the prevailing weather conditions. In this study, we show that a system-wide integration of DLR in Germany not only facilitates the 80\% feed-in target for renewables, but also significantly reduces grid congestion and renewable curtailment. The evolving synergies between DLR and increased wind generation result in total cost savings of about 1.15 billion Euro per year for a 2030 scenario, mainly due to reduced storage and solar capacity needs. If considering a fully decarbonized German electricity system, the cost savings from DLR amount to up to 4 billion Euro per year. Our results underscore the importance of a rapid implementation of DLR in the German power system to support the energy transition and relieve grid congestion.
+        % The German government announced that 80\% of the power supply should come from renewable energy sources by 2030. In terms of installations, this means roughly a doubling of today's wind capacity and a tripling of today's solar capacity. For an efficient integration into the system, the fast ramp up of renewables needs to be accompanied by a reorganization of the transmission system.
+        The integration of large shares of wind and solar power into the power system benefits from transmission network expansion.
+        However, the construction of new power lines requires long planning phases and is often delayed by citizen protests. As an non-invasive alternative, Dynamic Line Rating (DLR) offers the potential to leverage the existing grid by dynamically adjusting the transmission line capacities to the prevailing weather conditions. In this study, we show that a system-wide integration of DLR in Germany not only facilitates the 80\% feed-in target for renewables, but also significantly reduces grid congestion and renewable curtailment. The evolving synergies between DLR and increased wind generation result in total cost savings of about 1.15~billion Euro per year for a 2030 scenario, mainly due to reduced storage and solar capacity needs. If considering a fully decarbonized German electricity system, the cost savings from DLR amount to up to 4~billion Euro per year. Our results underscore the importance of a rapid implementation of DLR in the German power system to support the energy transition and relieve grid congestion.
     \end{abstract}
 
     \begin{keyword}
@@ -84,7 +84,6 @@ The publications in~\cite{liDayAheadSchedulingPower2019,dabbaghjamaneshEffective
 In line with that, the publication in \cite{numanCoordinatedOperationReconfigurable2021} presents a mixed-integer optimization model for evaluating the optimal set of line candidates to be upgraded with DLR.
 Most, if not all of the studies do not consider large real-world power system models with fine-grained input data.
 
-\todo[inline]{verstehe Kommentare nicht, dass TYNDP auch zitiert werden soll}
 In particular, the literature lacks a comprehensive assessment and evaluation of DLR based on a detailed ESOM for Germany.
 This study addresses this gap. Our study is the first to examine the benefits of DLR for high renewable penetration and high grid resolution, both of which are necessary to assess the compound system effects of DLR.
 By focusing only on Germany in our study, we allow for a high spatial and temporal resolution of the model as well as a high quality of the input data. The workflow openly available at \cite{hofmannDynamicLineRating}
@@ -395,14 +394,20 @@ The model is isolated from other countries, neglecting cross-border exchanges.
 In particular, missing cross-border lines lead to an overestimated storage infrastructure capacity expansion and curtailment.
 Particularly high curtailment can be seen in the north-west of Germany at the substations ``Diele \& Dörpen West'', where much of the curtailed wind power could be exported to the Netherlands if considering cross-borer flows.
 Another limitation is the modelling of the conventional fleet. We do not consider ramping constraints for coal and gas power plants. Therefore, in our model the operation of coal and gas power plants is more flexible compared to reality.
-Furthermore, the optimization of the model is kept linear, neglecting power transmission losses as well as complex power flow dynamics. Since the losses rise quadratically with current and DLR leads to high line loading, this aspect would have to be investigated.
-Nonetheless, a nonlinear power flow calculation based on the linearly optimized generation dispatch converged for all of the time steps.
+Furthermore, the optimization of the model is kept linear, neglecting power transmission losses as well as complex power flow dynamics.
+Note that the losses rise quadratically with current and DLR leads to high line loading, and therefore higher transmission losses.
+For this reason, we run a nonlinear power flow calculation based on the linearly optimized generation dispatch to compare transmission losses of SLR and DLR.
+We calculate the losses for the models with 100\% renewable share assuming they have the highest losses.
+% due to the difficulty of  integrating of variable renewable sources into the transmission grid.
+The losses in the SLR model account for 1.7\% of the total transmission while for the DLR model they account for 3.6\%.
+In absolute numbers the losses represent 166 and 60~TWh for the DLR and SLR model, respectively.
+When looking at the complex power flow dynamics, the nonlinear power flow calculation converged for 99.99\% of all time steps in all regarded scenarios.
+%Nonetheless, a nonlinear power flow calculation based on the linearly optimized generation dispatch converged for all of the time steps.
 
-%losses RE1.0 DLR: 166 TWh of 4620TWh transmission = 3.57\%
 %losses RE1.0 SLR: 60TWh of 3504 TWh = 1.71\%
-
-
-\todo[inline]{loss differences power flow}
+%losses RE1.0 DLR: 166 TWh of 4620TWh transmission = 3.57\%
+% not converged time steps SLR:6 of 4318680
+% not converged time steps DLR:27 of 4318680
 
 \section{Conclusion}
 \label{sec:conclusion}
