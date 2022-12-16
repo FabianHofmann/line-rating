@@ -6,7 +6,6 @@
 % SHU version modified by Zhendong Li (zhendong.li2001@outlook.com) to fit SHU students.
 
 \documentclass[12pt]{SHUletter}
-\usepackage{fontspec}
 \usepackage{tikz}
 \usepackage{xcolor}
 	\definecolor{tubred}{RGB}{153,0,0}
@@ -27,16 +26,16 @@
 %
 %\setmainfont{[Cambria.ttf]}[BoldFont  = [CambriaBold.ttf], ItalicFont  = [CambriaItalic.ttf], BoldItalicFont = [CambriaBoldItalic.ttf] ]
 
-% \newcommand{\watermark}[3]{\AddToShipoutPictureBG{
-% \parbox[b][\paperheight]{\paperwidth}{
-% \vfill%
-% \centering%
-% \begin{tikzpicture}
-%     \path (0,0) -- (\paperwidth,\paperheight);
-%     \node[opacity=.06] at (current page.center)
-%     {\includegraphics[width=0.55\textwidth]{background_shu.pdf}};   % sculogo watermark
-%     \end{tikzpicture}
-% \vfill}}}
+\newcommand{\watermark}[3]{\AddToShipoutPictureBG{
+\parbox[b][\paperheight]{\paperwidth}{
+\vfill%
+\centering%
+\begin{tikzpicture}
+    \path (0,0) -- (\paperwidth,\paperheight);
+    \node[opacity=.06] at (current page.center)
+    {\includegraphics[width=0.55\textwidth]{tublogo.pdf.pdf}};   % sculogo watermark
+    \end{tikzpicture}
+\vfill}}}
 
 % The material below is a whole big dang thing whose purpose is just to set up a fixed coordinate system for \tikz so that you can put the Department or School address in the upper right-hand side without it moving all around every time you change something in the page.  I think it works.
 % Defining a new coordinate system for the page:
@@ -86,7 +85,7 @@
 % Set the name of your Department or School here
 % I honestly don't know why the negative spacing is necessary to get the alignment of the first line correct.  This must be a ``\tikz'' thing.
 %%%%%%%%%%%%%%%%%%  School or Department %%%%%%%%%%%%%%%
-\def\Where{\hspace{-1.2mm}\textbf{\color{tubred}%{tubred}
+\def\Where{\hspace{-1.2mm}\textbf{\color{tubred}
 	Department of Digital\\Transformation in Energy Systems,\\ TU Berlin
 }}
 

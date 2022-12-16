@@ -35,7 +35,7 @@
 \newcommand{\subject}[1]{\renewcommand{\@subject}{\subjectname: #1}}
 
 \newboolean{logofound}
-\IfFileExists{shu.eps}
+\IfFileExists{tublogo.pdf}
     {\setboolean{logofound}{true}}
     {\setboolean{logofound}{false}}
 
