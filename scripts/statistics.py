@@ -24,7 +24,7 @@ if "snakemake" not in globals():
         "describe_network",
         year=2030,
         clusters="all",
-        opts="Co2L-BL-Ep",
+        opts="Co2L-RE0.8-Ep",
         rating="1.0",
         angle="",
         format="md",
