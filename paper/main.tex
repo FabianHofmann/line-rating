@@ -158,7 +158,7 @@ The transmission lines are mapped onto the weather grid and their transmission c
 \label{sec:powersystem}
 \todo[inline]{The authors claim to present an investment model that includes DLR in a large-scale power system. However, the investment model is not detailed except a general introduction to the Python package PyPSA used for the simulations. This compromises the validity of the article.}
 Using the Python package \textit{Python for Power System Analysis} (PyPSA)~\cite{brownPyPSAPythonPower2018,browntomPyPSAPythonPower2022}, the linear ESOM is represented by a set of buses interconnected via transmission lines and complemented by loads, generators and storage facilities. Further, time-dependent electric demand per bus and generation potentials per generator are included for one year with hourly resolution. The generator dispatch and deployment is determined by minimizing the total system cost. The optimization uses the linearized power flow approximation~\cite{purchalaUsefulnessDCPower2005,horschLinearOptimalPower2018} and is subject to systemic constraints (CO$_2$ budget, limited capacity expansion, etc.).
-The publication in~\cite{brownPyPSAPythonPower2018} provides a detailed formulation of the mathematical optimization model. These include operational, technical and capacity expansion constraints. 
+The publication in~\cite{brownPyPSAPythonPower2018} provides a detailed formulation of the mathematical optimization model. These include operational, technical and capacity expansion constraints.
 
 % The underlying model is created from the PyPSA-Eur framework [16], and for Germany consists of 256 representative nodes and considers a time horizon of one year with an hourly resolution. To model the effect of DLR on the power system, we use the IEEE standard~\cite{IEEEStandardCalculating2012} with highly resolved historical weather data implemented in the Atlite software~\cite{hofmannAtliteLightweightPython2021}. The advantages of the DLR are illustrated by comparison with an SLR-based system. Therefore, we analyze and compare curtailment, grid congestion as well as the optimal generator deployment.
 
@@ -247,7 +247,8 @@ The main reason for the shift in generation is the improved transmission capacit
 
 \subsection{Optimal Investment 2030}\label{sec:2030}
 
-In the scenario for 2030 the capacity of renewable power plants, gas turbines, batteries and hydrogen infrastructure are optimized. From the existing power plant fleet, only gas power plants with a decommissioning date later than 2030 are included. To align our model with the government's coal-phase out plans~\cite{federalministryofeconomicaffairsandclimateactionGermanyCurrentClimate2022}, we do not consider the use of existing coal and lignite assets. The grid infrastructure is supplemented by grid expansion projects from the TYNDP~\cite{entsoeTYNDP2018Project2018} to be built by 2030.
+In the scenario for 2030 the capacity of renewable power plants, gas turbines, batteries and hydrogen infrastructure are optimized. From the existing power plant fleet, only gas power plants with a decommissioning date later than 2030 are included. To align our model with the government's coal-phase out plans~\cite{federalministryofeconomicaffairsandclimateactionGermanyCurrentClimate2022}, we do not consider the use of existing coal and lignite assets. The grid infrastructure is supplemented by grid expansion projects from the TYNDP~\cite{entsoeTYNDP2018Project2018} in permitting and to be built by 2030.
+The grid expansion projects comprise two HVDC lines both going from the North to the South.
 \todo[inline]{2. In section 3.2, the grid infrastructure is supplemented by grid expansion projects from the TYNDP to be built by 2030. What are the changes and extensions of the grid structure compared to the year 2019? Are there further grid expansions for the year 2035? It is necessary to explain the details because the benefits of DLR depend strongly on the grid structure.}
 
 \todo[inline]{
@@ -323,7 +324,7 @@ In most of today's real-world implementations, TSO's set a static upper limit to
 
 \subsection{Optimal Investment 2035}
 Looking beyond the scope of 2030, we vary the production share of renewable technologies gradually in the SLR and DLR model from 80 to 100\%. This variation represents the pathway from 2030 to 2035 in which the German government targets an almost decarbonized power sector~\cite{federalministryofeconomicaffairsandclimateactionUeberblickspapierOsterpaket2022}.
-For this scenario, no DLR limits are considered. Note that all the other  parameters, including the electrical load and weather year, remain the same as in the 2030 scenario to ensure comparability.
+For this scenario, no DLR limits are considered. Note that all the other  parameters, including the electrical load, grid infrastructure and weather year, remain the same as in the 2030 scenario to ensure comparability.
 
 \begin{figure}[!h]
     \centering
@@ -420,9 +421,10 @@ The losses in the SLR model account for 1.7\% of the total transmission while fo
 In absolute numbers the losses represent 166 and 60~TWh for the DLR and SLR model, respectively.
 When looking at the complex power flow dynamics, the nonlinear power flow calculation converged for 99.99\% of all time steps in all regarded scenarios.
 
-Our model is based on perfect knowledge of the future and the available transmission capacity at all points in time. Therefore, the dynamic thermal capacity used in our model may be physically feasible but not fully realized operationally. This is mainly due to the fact that the operation of the transmission system is not optimized but adjusted during redispatch. In addition, cross-border capacity must be committed in advance. Well-functioning forecasting methods must be used for smooth operation at the borders between bidding zones.
+Our model is based on perfect knowledge of the future and the maximal available DLR capacity at all points in time neglecting possible inaccuracies of the deployed DLR method, e.g.  sensors.
+Therefore, the dynamic thermal capacity used in our model may be physically feasible but not fully realized operationally. This is mainly due to the fact that the operation of the transmission system is not optimized but adjusted during redispatch. In addition, cross-border capacity must be committed in advance. Well-functioning forecasting methods must be used for smooth operation at the borders between bidding zones.
 
-Finally, in our model we do not consider the effects of higher thermal loading on the conductors aging as reported in~\cite{tehImpactRealTimeThermal2017}. This can potentially to higher costs for transmission lines due to faster aging.  
+Finally, in our model we do not consider the effects of higher thermal loading on the conductors aging as reported in~\cite{tehImpactRealTimeThermal2017}. This can potentially to higher costs for transmission lines due to faster aging.
 
 
 \todo[inline]{sensors are not 100\% accurate and reality the uprating would be lower}
