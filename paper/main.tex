@@ -152,11 +152,9 @@ For this study the IEEE standard was implemented in Atlite~\cite{hofmannAtliteLi
 
 The transmission lines are mapped onto the weather grid and their transmission capacity is calculated according to Equation~\ref{ampacity}. If multiple weather grid cells overlap with a transmission line, the grid cell with the most unfavorable condition provides the ampacity for the entire line. This is illustrated in Fig.~\ref{fig:line-rating-calculation}.
 
-\todo[inline]{One of the factors affecting the successful implementation of the DTR system is the ability to accurately forecast DTR, as shown in ["Assessment of dynamic line rating forecasting methods", Electric Power System Research], so that power line rating can be anticipated in advanced. System operators normally have to commit a certain level of line rating in advance to identify the amount of allowable wind penetration. However, it is not evidently clear in this paper that the forecasting of line rating has been considered in the proposed model. Hence, it is suggested that the authors additionally consider this factor in their assessment. Otherwise, they should provide a discussion on how the forecasting of DTR could have been included and its impacts towards the results and discussions that are currently presented.}
 
 \subsection{Power System Modeling}
 \label{sec:powersystem}
-\todo[inline]{The authors claim to present an investment model that includes DLR in a large-scale power system. However, the investment model is not detailed except a general introduction to the Python package PyPSA used for the simulations. This compromises the validity of the article.}
 Using the Python package \textit{Python for Power System Analysis} (PyPSA)~\cite{brownPyPSAPythonPower2018,browntomPyPSAPythonPower2022}, the linear ESOM is represented by a set of buses interconnected via transmission lines and complemented by loads, generators and storage facilities. Further, time-dependent electric demand per bus and generation potentials per generator are included for one year with hourly resolution. The generator dispatch and deployment is determined by minimizing the total system cost. The optimization uses the linearized power flow approximation~\cite{purchalaUsefulnessDCPower2005,horschLinearOptimalPower2018} and is subject to systemic constraints (CO$_2$ budget, limited capacity expansion, etc.).
 The publication in~\cite{brownPyPSAPythonPower2018} provides a detailed formulation of the mathematical optimization model. These include operational, technical and capacity expansion constraints.
 
@@ -247,13 +245,8 @@ The main reason for the shift in generation is the improved transmission capacit
 
 \subsection{Optimal Investment 2030}\label{sec:2030}
 
-In the scenario for 2030 the capacity of renewable power plants, gas turbines, batteries and hydrogen infrastructure are optimized. From the existing power plant fleet, only gas power plants with a decommissioning date later than 2030 are included. To align our model with the government's coal-phase out plans~\cite{federalministryofeconomicaffairsandclimateactionGermanyCurrentClimate2022}, we do not consider the use of existing coal and lignite assets. The grid infrastructure is supplemented by grid expansion projects from the TYNDP~\cite{entsoeTYNDP2018Project2018} in permitting and to be built by 2030.
+In the scenario for 2030 the capacity of renewable power plants, gas turbines, batteries and hydrogen infrastructure are optimized. From the existing power plant fleet, only gas power plants with a decommissioning date later than 2030 are included. To align our model with the government's coal-phase out plans~\cite{federalministryofeconomicaffairsandclimateactionGermanyCurrentClimate2022}, we do not consider the use of existing coal and lignite assets. The grid infrastructure is supplemented by grid expansion projects from the TYNDP~\cite{entsoeTYNDP2018Project2018} with status "in permitting" and to be built by 2030.
 The grid expansion projects comprise two HVDC lines both going from the North to the South.
-\todo[inline]{2. In section 3.2, the grid infrastructure is supplemented by grid expansion projects from the TYNDP to be built by 2030. What are the changes and extensions of the grid structure compared to the year 2019? Are there further grid expansions for the year 2035? It is necessary to explain the details because the benefits of DLR depend strongly on the grid structure.}
-
-\todo[inline]{
-nur sagen wieviel mehr übertragungskapazitäten gibt und dass diese hauptsächlich von Norden nach Süden gehen. Nur lines die auch permitted wurden. für das 2035 scenario gibt es keine weiteren übertragundleitungen.
-}
 
 The electrical load time series, originally representing the default year 2013 of PyPSA-Eur~\cite{horschjonasPyPSAEurOpenOptimisation2022}, is scaled up to meet the predicted total net demand for 2030 of 555~TWh~\cite{kemmlerEntwicklungBruttostromverbrauchsBis2021}. The supply from renewables, i.e. solar, wind, biomass and hydro facilities, is enforced to meet the 80\% target.
 The cost parameters for 2030 are retrieved from the technology data-base published at~\cite{lisazeyenPyPSATechnologydataTechnology2022}. In addition, to properly reflect the future operational costs of fossil generators, we impose a price of 120~\euro{} per tonne CO$_2$.
@@ -421,18 +414,14 @@ The losses in the SLR model account for 1.7\% of the total transmission while fo
 In absolute numbers the losses represent 166 and 60~TWh for the DLR and SLR model, respectively.
 When looking at the complex power flow dynamics, the nonlinear power flow calculation converged for 99.99\% of all time steps in all regarded scenarios.
 
-Our model is based on perfect knowledge of the future and the maximal available DLR capacity at all points in time neglecting possible inaccuracies of the deployed DLR method, e.g.  sensors.
-Therefore, the dynamic thermal capacity used in our model may be physically feasible but not fully realized operationally. This is mainly due to the fact that the operation of the transmission system is not optimized but adjusted during redispatch. In addition, cross-border capacity must be committed in advance. Well-functioning forecasting methods must be used for smooth operation at the borders between bidding zones.
+Our model is based on perfect knowledge of the future and the maximal available DLR capacity at all points in time neglecting possible inaccuracies of the deployed DLR method, e.g. from sensors.
+Furthermore, TSOs have to ensure a safe operation of the grid infrastructure which are ensured through different measures like redispatch or transformer switching.
+Therefore, the DLR capacity used in our model may be theoretically feasible but not fully realized operationally in the real world.
+In addition, cross-border capacity must be committed in advance.
+For smooth operation at the borders between bidding zones based on DLR, well-functioning forecasting methods must be applied.
 
 Finally, in our model we do not consider the effects of higher thermal loading on the conductors aging as reported in~\cite{tehImpactRealTimeThermal2017}. This can potentially to higher costs for transmission lines due to faster aging.
 
-
-\todo[inline]{sensors are not 100\% accurate and reality the uprating would be lower}
-
-\todo[inline]{Finally, although the implementation of the DTR system has line uprating benefits, the higher operating temperature of the line also affects line conductor age as shown in ["Impact of the real-time thermal loading on the bulk electric system reliability", IEEE Trans Reliability]. The situation can be further complicated when sensors are not 100\% accurate (as in most real life situation), causing the assessment of line ageing to sway within a range, leaving the appropriate final decision making to expert opinions, based on the analysis, as shown in ["Uncertainty analysis of transmission line end-of-life failure model for bulk electric system reliability studies", IEEE Trans Reliability]. Given that the line ageing factor has been ignored in the proposed model, it is suggested that the authors additionally consider them in their currently proposed model. Otherwise, they should provide a discussion on how the factor could have been included and their potential impacts towards the results and discussions that have been provided.}
-
-
-\todo[inline]{It is assumed that the investment cost for the system-wide implementation of DLR with an expected lifetime of 30 years is negligible compared to the total cost savings. However, the effect of conductor annealing or aging on the benefits of DLR over the 30-year period is not negligible. How is this accounted for?}
 %Nonetheless, a nonlinear power flow calculation based on the linearly optimized generation dispatch converged for all of the time steps.
 
 %losses RE1.0 SLR: 60TWh of 3504 TWh = 1.71\%
@@ -450,9 +439,6 @@ With increasing share in renewable production from 80--100\%, we see that the DL
 These cost savings from DLR remain in the range of bn~\euro{}/yr even if due to higher uprating of the transmission lines with DLR the average lifetime decreases by a few months or years.
 
 We conclude that given the urgent need for decarbonizing the German power system, DLR is a viable complement to transmission capacity expansion, not only increasing the total welfare through a non-invasive measure but also reducing grid congestion.
-
-
-\todo[inline]{Numerous studies have shown that the DTR system functions better and can provide an even higher amount of congestion mitigation benefits when it is combined in synergy with other technologies, such as network topology optimisation (NTO) in ["Network topology optimisation based on dynamic thermal rating and battery storage systems for improved wind penetration and reliability", Applied Energy], and more prominently the battery energy storage system (BESS) in ["Reliability impacts of the dynamic thermal rating and battery energy storage systems on wind-integrated power networks", Sustainable Energy, Grid and Networks]}
 
 % DLR cost: total line length=11204km ,upper investment cost of DLR 80k€ per km, annualised cost r=5%: 58.31 m€, r=8%: 79.62m€, r=10% 95.09 m€
 \section*{Acknowledgement}
